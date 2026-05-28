@@ -1,7 +1,8 @@
 # Review Summary
 
 ## What changed
-- Added the 13 released Surface Intelligence newsletter editions to the Articles archive with LinkedIn source links, generated editorial thumbnails, descriptive alt text, issue/date/category metadata, and previous/next edition cross-links.
+- Added and linked the Board Meeting Language Generator and HOA Pavement Reserve Estimator from the homepage dashboard, Tools page, footer navigation, README, and Netlify redirects.
+- Added the 13 released Surface Intelligence newsletter editions to the Articles archive with LinkedIn source links, article cover images from LinkedIn with local generated SVG fallbacks, descriptive alt text, issue/date/category metadata, and previous/next edition cross-links.
 - Reworked the shared navigation into a sticky, accessible header with skip link, active page/section states, slide-fade mobile menu, and stronger internal links.
 - Rebuilt the homepage with a premium industrial dark-carbon/yellow visual system, animated hero, stronger CTAs, better Free Tools presentation, trust-building content, project/article pathways, and newsletter/contact conversion section.
 - Replaced the older cramped visual treatment with a consistent IBM Plex Sans typography system, larger readable headings, improved line heights, stronger contrast, visible focus states, and mobile-first spacing.

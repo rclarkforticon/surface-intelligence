@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOA Pavement Reserve Estimator — Surface Intelligence</title>
+  <meta name="description" content="Estimate rough HOA pavement reserve funding ranges for seal coat, overlay, and replacement planning using square footage, timeline, condition, and inflation assumptions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body><script src="/assets/nav.js"></script>
+<main class="wrap tool-page">
+  <section class="page-title">
+    <div class="eyebrow">// Free tool · HOA reserve planning</div>
+    <h1 class="display">HOA Pavement Reserve Estimator</h1>
+    <p>Build a rough planning range for pavement reserves before your next budget meeting, reserve study update, or board discussion.</p>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="grid2">
+      <form class="card tool-form" id="reserveForm">
+        <span class="tag">Planning range</span>
+        <h2 class="display">Reserve assumptions</h2>
+        <div class="field"><label for="sqft">Pavement area square feet</label><input class="input" id="sqft" type="number" min="1000" step="500" placeholder="e.g. 45000" required></div>
+        <div class="field"><label for="scope">Likely scope</label><select id="scope"><option value="0.45">Seal coat / crack fill maintenance</option><option value="3.75">Mill and overlay</option><option value="7.5">Full-depth replacement allowance</option><option value="11">Heavy-duty / high-risk replacement allowance</option></select></div>
+        <div class="field"><label for="condition">Current condition</label><select id="condition"><option value="0.9">Good — mostly preventive</option><option value="1">Fair — visible aging and cracking</option><option value="1.18">Poor — failures and patching likely</option><option value="1.35">Critical — base issues likely</option></select></div>
+        <div class="field"><label for="years">Years until work is expected</label><input class="input" id="years" type="number" min="0" max="30" value="5" required></div>
+        <div class="field"><label for="inflation">Annual paving cost inflation</label><select id="inflation"><option value="0.03">3% conservative</option><option value="0.05" selected>5% planning assumption</option><option value="0.07">7% volatile market</option></select></div>
+        <div class="field"><label for="units">HOA units / doors</label><input class="input" id="units" type="number" min="1" step="1" placeholder="e.g. 86" required></div>
+        <button class="btn" type="submit">Estimate reserve need</button>
+      </form>
+
+      <aside class="card tool-output" aria-live="polite">
+        <span class="tag">Reserve output</span>
+        <h2 class="display">Planning result</h2>
+        <div id="reserveOutput" class="notice">Enter the assumptions to see a rough total future cost, annual reserve target, and monthly per-door equivalent.</div>
+        <div class="actions"><a class="btn ghost" href="/contact/">Review a real property</a><a class="btn ghost" href="/articles/#issue-06">Read market article</a></div>
+      </aside>
+    </div>
+  </section>
+</main>
+<script>
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+document.getElementById('reserveForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const sqft = Number(document.getElementById('sqft').value || 0);
+  const unitCost = Number(document.getElementById('scope').value);
+  const condition = Number(document.getElementById('condition').value);
+  const years = Number(document.getElementById('years').value || 0);
+  const inflation = Number(document.getElementById('inflation').value);
+  const units = Math.max(1, Number(document.getElementById('units').value || 1));
+  const today = sqft * unitCost * condition;
+  const future = today * Math.pow(1 + inflation, years);
+  const annual = years > 0 ? future / years : future;
+  const monthlyPerDoor = annual / 12 / units;
+  const low = future * 0.85;
+  const high = future * 1.2;
+  document.getElementById('reserveOutput').innerHTML = `
+    <div class="tool-result-grid">
+      <div class="metric"><strong>${money.format(future)}</strong><span>Projected future budget</span></div>
+      <div class="metric"><strong>${money.format(annual)}</strong><span>Annual reserve target</span></div>
+      <div class="metric"><strong>${money.format(monthlyPerDoor)}</strong><span>Monthly per door</span></div>
+    </div>
+    <p>This is a rough planning range of <strong>${money.format(low)}–${money.format(high)}</strong>, not a bid or reserve study. Confirm quantities, pavement section, drainage, ADA impacts, phasing, and local pricing before setting dues or approving scope.</p>`;
+});
+</script>
+</body>
+</html>

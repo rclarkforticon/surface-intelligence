@@ -8,6 +8,8 @@ Static MVP for surface-intelligence.com. The site now lives at the repository ro
 - `/tools/material-picker/`
 - `/tools/bid-decoder/`
 - `/tools/ada-risk-scorecard/`
+- `/tools/hoa-reserve-estimator/`
+- `/tools/board-meeting-language-generator/`
 - `/projects/`
 - `/articles/`
 - `/contact/`

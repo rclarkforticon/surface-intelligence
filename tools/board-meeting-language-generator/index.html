@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Board Meeting Language Generator — Surface Intelligence</title>
+  <meta name="description" content="Generate board-ready language for pavement, ADA, concrete, and bid decisions so HOA boards and property owners can understand scope, risk, and next steps.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body><script src="/assets/nav.js"></script>
+<main class="wrap tool-page">
+  <section class="page-title">
+    <div class="eyebrow">// Free tool · Board-ready communication</div>
+    <h1 class="display">Board Meeting Language Generator</h1>
+    <p>Turn a pavement, concrete, ADA, or bid concern into clear language a board, owner, or property committee can understand before they vote.</p>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="grid2">
+      <form class="card tool-form" id="languageForm">
+        <span class="tag">2 minutes</span>
+        <h2 class="display">Project context</h2>
+        <div class="field"><label for="projectType">What are you discussing?</label><select id="projectType" required><option value="pavement repair">Pavement repair</option><option value="overlay or resurfacing">Overlay or resurfacing</option><option value="seal coat / maintenance">Seal coat / maintenance</option><option value="ADA parking correction">ADA parking correction</option><option value="bid comparison">Bid comparison</option><option value="concrete / trip hazard repair">Concrete / trip hazard repair</option></select></div>
+        <div class="field"><label for="audience">Audience</label><select id="audience"><option value="HOA board">HOA board</option><option value="property owner">Property owner</option><option value="facility leadership">Facility leadership</option><option value="commercial asset manager">Commercial asset manager</option></select></div>
+        <div class="field"><label for="concern">Primary concern</label><select id="concern"><option value="lowest upfront cost">Lowest upfront cost</option><option value="resident disruption">Resident disruption</option><option value="ADA exposure">ADA exposure</option><option value="unclear contractor scope">Unclear contractor scope</option><option value="deferred maintenance risk">Deferred maintenance risk</option><option value="reserve planning">Reserve planning</option></select></div>
+        <div class="field"><label for="tone">Tone</label><select id="tone"><option value="balanced and practical">Balanced and practical</option><option value="risk-focused">Risk-focused</option><option value="budget-conscious">Budget-conscious</option><option value="owner-friendly">Owner-friendly</option></select></div>
+        <div class="field"><label for="detail">Optional project detail</label><textarea id="detail" rows="4" placeholder="Example: 42,000 SF HOA lot, three bids received, board is focused only on lowest price."></textarea></div>
+        <button class="btn" type="submit">Generate language</button>
+      </form>
+
+      <aside class="card tool-output" aria-live="polite">
+        <span class="tag">Board packet draft</span>
+        <h2 class="display">Recommended language</h2>
+        <div id="languageOutput" class="notice">Complete the form and generate a board-ready explanation you can copy into an agenda packet, email, or meeting notes.</div>
+        <div class="actions"><button class="btn ghost" type="button" id="copyLanguage">Copy language</button><a class="btn ghost" href="/articles/#issue-13">Read board language article</a></div>
+      </aside>
+    </div>
+  </section>
+</main>
+<script>
+const form = document.getElementById('languageForm');
+const output = document.getElementById('languageOutput');
+const copyButton = document.getElementById('copyLanguage');
+let generatedText = '';
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const projectType = document.getElementById('projectType').value;
+  const audience = document.getElementById('audience').value;
+  const concern = document.getElementById('concern').value;
+  const tone = document.getElementById('tone').value;
+  const detail = document.getElementById('detail').value.trim();
+  generatedText = `Recommended ${tone} language for the ${audience}:\n\nWe are not evaluating this ${projectType} as a cosmetic expense only. The decision should be based on useful life, risk reduction, resident or tenant impact, and whether the proposed scope actually addresses the underlying condition.\n\nThe main concern is ${concern}. If we approve the cheapest or least-defined option without clarifying scope, we may reduce the upfront number but increase the chance of change orders, premature failure, ADA exposure, or another capital request sooner than expected.\n\n${detail ? `Project-specific note: ${detail}\n\n` : ''}Recommended next step: ask each contractor to clarify preparation, base or subgrade assumptions, ADA/slope impacts, phasing, warranty, exclusions, and expected service life. The board can then compare options by total risk and cost per useful year instead of price alone.`;
+  output.innerHTML = `<pre class="tool-pre">${generatedText.replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]))}</pre>`;
+});
+copyButton.addEventListener('click', async () => {
+  if (!generatedText) return;
+  await navigator.clipboard.writeText(generatedText);
+  copyButton.textContent = 'Copied';
+  setTimeout(() => { copyButton.textContent = 'Copy language'; }, 1600);
+});
+</script>
+</body>
+</html>

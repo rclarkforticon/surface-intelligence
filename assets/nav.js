@@ -69,6 +69,8 @@
             <a href="/tools/material-picker/">Material Picker</a>
             <a href="/tools/bid-decoder/">Three-Bid Decoder</a>
             <a href="/tools/ada-risk-scorecard/">ADA Risk Scorecard</a>
+            <a href="/tools/board-meeting-language-generator/">Board Language Generator</a>
+            <a href="/tools/hoa-reserve-estimator/">HOA Reserve Estimator</a>
           </nav>
         </div>
       </footer>`;
@@ -89,6 +91,15 @@
         }
       });
     }
+
+    document.querySelectorAll('img[data-fallback]').forEach((img) => {
+      img.addEventListener('error', () => {
+        const fallback = img.dataset.fallback;
+        if (fallback && img.src !== fallback) {
+          img.src = fallback;
+        }
+      }, { once: true });
+    });
 
     if (isHome && 'IntersectionObserver' in window) {
       const observed = ['home', 'tools', 'projects', 'articles', 'contact']
