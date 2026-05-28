@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Asphalt vs Concrete Picker — Surface Intelligence</title>
+<meta name="description" content="Free 60-second tool. Find out which pavement material is actually right for your property — and what it'll cost over 20 years." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-card-hover: #1a1a1a;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+  }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(250,204,21,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(250,204,21,0.03) 0%, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+
+  .question-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .option-btn {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 4px;
+    text-align: left;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    font-family: inherit;
+  }
+  .option-btn:hover {
+    border-color: var(--yellow);
+    background: rgba(250,204,21,0.06);
+  }
+  .option-btn.selected {
+    border-color: var(--yellow);
+    background: var(--yellow);
+    color: #000;
+    font-weight: 600;
+  }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .option-btn .option-sub { display: block; font-size: 11px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .primary-btn {
+    background: var(--yellow);
+    color: #000;
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    padding: 14px 28px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+
+  .ghost-btn {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+
+  input[type="number"], input[type="email"], input[type="text"] {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: border-color 0.15s ease;
+  }
+  input[type="number"]:focus, input[type="email"]:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--yellow);
+  }
+
+  .progress-bar {
+    background: var(--border);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--yellow);
+    transition: width 0.3s ease;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-hero {
+    background: linear-gradient(135deg, var(--yellow) 0%, #EAB308 100%);
+    color: #000;
+    padding: 32px 24px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(45deg, transparent 48%, rgba(0,0,0,0.05) 48%, rgba(0,0,0,0.05) 52%, transparent 52%);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+
+  .cost-stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .cost-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .cost-stat .value { font-family: 'Anton', sans-serif; font-size: 28px; color: var(--yellow); line-height: 1; }
+  .cost-stat .sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-faint); margin-top: 4px; }
+
+  .reason-item {
+    border-left: 2px solid var(--yellow);
+    padding: 8px 14px;
+    background: rgba(250,204,21,0.04);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .risk-item {
+    border-left: 2px solid var(--red);
+    padding: 8px 14px;
+    background: rgba(248,113,113,0.04);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe-bg h-2 w-full"></div>
+
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 backdrop-blur">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">Material Picker</h1>
+    </div>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎60-SECOND DECISION TOOL</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    Asphalt or <br/><span class="text-[var(--yellow)]">Concrete?</span>
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    Most properties pick wrong. Then pay for it for 20 years.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-8 text-sm">
+    Answer 7 questions. Get a real recommendation, lifecycle cost estimate, and the reasons behind it.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Start →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    ~60 seconds · No login · Private
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+  <div class="mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest mb-4" id="questionCounter">QUESTION 1 / 7</div>
+  <div id="questionContainer"></div>
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevQuestion()" style="visibility: hidden;">← Back</button>
+    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
+</main>
+
+<div class="stripe-bg h-2 w-full mt-12"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a>
+</footer>
+
+<script>
+  // -------- DATA --------
+  // Each option carries scoring (negative = asphalt, positive = concrete)
+  // and a "reasoning tag" used in the result page
+  const QUESTIONS = [
+    {
+      id: 'propertyType',
+      question: 'What type of property?',
+      sub: 'This sets the baseline expectation for use, traffic, and aesthetics.',
+      options: [
+        { label: 'Apartment / Multifamily', sub: 'Residents, light vehicles', score: -2, tag: 'multifamily' },
+        { label: 'HOA / Condo community', sub: 'Resident parking + drive aisles', score: -1, tag: 'hoa' },
+        { label: 'Commercial parking lot', sub: 'Office, retail, mixed-use', score: 0, tag: 'commercial' },
+        { label: 'Shopping center', sub: 'High traffic, drive lanes + spots', score: 1, tag: 'retail' },
+        { label: 'Industrial / Warehouse', sub: 'Trucks, equipment, heavy loads', score: 3, tag: 'industrial' }
+      ]
+    },
+    {
+      id: 'traffic',
+      question: 'What kind of vehicles use it?',
+      sub: 'Weight + frequency are the #1 driver of pavement failure.',
+      options: [
+        { label: 'Passenger cars only', sub: 'Residents, employees', score: -2, tag: 'cars' },
+        { label: 'Light commercial', sub: 'Vans, small delivery vehicles', score: 0, tag: 'light' },
+        { label: 'Mixed (cars + occasional trucks)', sub: 'Garbage, moving, delivery', score: 1, tag: 'mixed' },
+        { label: 'Heavy trucks / equipment', sub: 'Daily semi or forklift traffic', score: 3, tag: 'heavy' }
+      ]
+    },
+    {
+      id: 'climate',
+      question: "What's the climate?",
+      sub: 'Freeze/thaw and extreme heat behave very differently on each material.',
+      options: [
+        { label: 'Mild coastal', sub: 'Bay Area, coastal California', score: -1, tag: 'coastal' },
+        { label: 'Hot inland / Mediterranean', sub: 'Central Valley, SoCal, AZ', score: -1, tag: 'hot' },
+        { label: 'Cold / freeze-thaw', sub: 'Sierra, mountain states, Midwest', score: 1, tag: 'freeze' },
+        { label: 'Mixed / four-season', sub: 'Sacramento, foothills', score: 0, tag: 'mixed' }
+      ]
+    },
+    {
+      id: 'lifespan',
+      question: 'How long do you need it to last?',
+      sub: 'Lifecycle expectation drives material economics.',
+      options: [
+        { label: '5–10 years', sub: 'Short hold, near-term sale', score: -2, tag: 'short' },
+        { label: '10–20 years', sub: 'Standard ownership horizon', score: 0, tag: 'medium' },
+        { label: '20+ years', sub: 'Long-hold asset, multi-cycle', score: 2, tag: 'long' }
+      ]
+    },
+    {
+      id: 'priority',
+      question: 'What matters most?',
+      sub: 'Be honest. This is where most properties pick wrong.',
+      options: [
+        { label: 'Lowest upfront cost', sub: 'Capex constrained, budget tight', score: -3, tag: 'upfront' },
+        { label: 'Lowest 20-yr lifecycle cost', sub: 'Total cost of ownership', score: 0, tag: 'lifecycle' },
+        { label: 'Best aesthetics', sub: 'Curb appeal, property value', score: 2, tag: 'aesthetics' },
+        { label: 'Easiest repair / phasing', sub: 'Disruption is the killer', score: -2, tag: 'repair' }
+      ]
+    },
+    {
+      id: 'ada',
+      question: 'Is this a new install or replacement?',
+      sub: 'ADA compliance changes the math significantly on replacements.',
+      options: [
+        { label: 'New install / ground up', sub: 'Designing from scratch', score: 0, tag: 'new' },
+        { label: 'Full replacement', sub: 'Removing old, starting over', score: 1, tag: 'replacement' },
+        { label: 'Resurface / overlay candidate', sub: 'Keeping existing base', score: -1, tag: 'overlay' }
+      ]
+    },
+    {
+      id: 'sqft',
+      question: 'How many square feet?',
+      sub: 'Used to estimate 20-year lifecycle cost. Approximate is fine.',
+      input: 'number',
+      placeholder: 'e.g. 25000',
+      tag: 'sqft'
+    }
+  ];
+
+  // -------- STATE --------
+  let currentQ = 0;
+  let answers = {};
+  let scoreTotal = 0;
+
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[currentQ];
+    const container = document.getElementById('questionContainer');
+    document.getElementById('questionCounter').textContent = `QUESTION ${currentQ + 1} / ${QUESTIONS.length}`;
+    document.getElementById('progressFill').style.width = `${((currentQ) / QUESTIONS.length) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+
+    let html = `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-2">${q.question}</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">${q.sub || ''}</p>
+    `;
+
+    if (q.input === 'number') {
+      const existing = answers[q.id] !== undefined ? answers[q.id] : '';
+      html += `
+        <input type="number" id="numInput" placeholder="${q.placeholder}" value="${existing}" oninput="onNumberInput(this.value)" min="100" step="100" autofocus />
+        <p class="text-xs text-[var(--text-faint)] mt-2 mono">SQUARE FEET · MINIMUM 100</p>
+      `;
+    } else {
+      html += '<div class="space-y-2">';
+      q.options.forEach((opt, i) => {
+        const isSelected = answers[q.id] && answers[q.id].tag === opt.tag;
+        html += `
+          <button class="option-btn ${isSelected ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="option-label">${opt.label}</span>
+            <span class="option-sub">${opt.sub}</span>
+          </button>
+        `;
+      });
+      html += '</div>';
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+    updateNextBtn();
+  }
+
+  function selectOption(idx) {
+    const q = QUESTIONS[currentQ];
+    answers[q.id] = q.options[idx];
+    renderQuestion();
+    updateNextBtn();
+  }
+
+  function onNumberInput(val) {
+    const q = QUESTIONS[currentQ];
+    const num = parseInt(val);
+    answers[q.id] = isNaN(num) || num < 100 ? undefined : num;
+    updateNextBtn();
+  }
+
+  function updateNextBtn() {
+    const q = QUESTIONS[currentQ];
+    const hasAnswer = answers[q.id] !== undefined;
+    document.getElementById('nextBtn').disabled = !hasAnswer;
+    if (currentQ === QUESTIONS.length - 1 && hasAnswer) {
+      document.getElementById('nextBtn').textContent = 'See Result →';
+    } else {
+      document.getElementById('nextBtn').textContent = 'Next →';
+    }
+  }
+
+  function nextQuestion() {
+    if (currentQ < QUESTIONS.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQuestion();
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentQ = 0;
+    answers = {};
+    scoreTotal = 0;
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // -------- RESULT LOGIC --------
+  function calculateResult() {
+    let score = 0;
+    for (const q of QUESTIONS) {
+      if (q.input === 'number') continue;
+      if (answers[q.id]) score += answers[q.id].score;
+    }
+    return score;
+  }
+
+  function getRecommendation(score) {
+    if (score <= -4) return 'ASPHALT';
+    if (score >= 4) return 'CONCRETE';
+    return 'HYBRID';
+  }
+
+  function calculateCosts(sqft, rec) {
+    // Per-sqft estimates based on Bay Area / NorCal commercial rates 2026
+    // Asphalt new install: ~$5.50/sqft midpoint, 20-yr maintenance: ~$4/sqft (sealcoat + 1 mill+pave)
+    // Concrete new install: ~$11/sqft midpoint, 20-yr maintenance: ~$1.50/sqft (joints + spot)
+    const asphaltInstall = sqft * 5.5;
+    const asphaltMaint = sqft * 4;
+    const asphalt20yr = asphaltInstall + asphaltMaint;
+
+    const concreteInstall = sqft * 11;
+    const concreteMaint = sqft * 1.5;
+    const concrete20yr = concreteInstall + concreteMaint;
+
+    // Hybrid = 70% asphalt drive lanes / 30% concrete high-wear zones
+    const hybridInstall = (sqft * 0.7 * 5.5) + (sqft * 0.3 * 11);
+    const hybridMaint = (sqft * 0.7 * 4) + (sqft * 0.3 * 1.5);
+    const hybrid20yr = hybridInstall + hybridMaint;
+
+    if (rec === 'ASPHALT') return { install: asphaltInstall, maint: asphaltMaint, total: asphalt20yr, alt: 'concrete', altInstall: concreteInstall, altTotal: concrete20yr };
+    if (rec === 'CONCRETE') return { install: concreteInstall, maint: concreteMaint, total: concrete20yr, alt: 'asphalt', altInstall: asphaltInstall, altTotal: asphalt20yr };
+    return { install: hybridInstall, maint: hybridMaint, total: hybrid20yr, alt: 'pure asphalt', altInstall: asphaltInstall, altTotal: asphalt20yr };
+  }
+
+  function getReasons(rec) {
+    const reasons = [];
+    const risks = [];
+    const a = answers;
+
+    if (rec === 'ASPHALT') {
+      if (a.priority && a.priority.tag === 'upfront') reasons.push('You prioritized lowest upfront cost — asphalt installs at roughly half the price of concrete.');
+      if (a.priority && a.priority.tag === 'repair') reasons.push('You prioritized easy repair — asphalt patches in days, not weeks, and at ~1/4 the cost.');
+      if (a.traffic && (a.traffic.tag === 'cars' || a.traffic.tag === 'light')) reasons.push('Your traffic profile is light. Concrete is over-engineered for passenger vehicles.');
+      if (a.lifespan && a.lifespan.tag === 'short') reasons.push('On a 5–10 year hold, asphalt + a single sealcoat outlasts your ownership window.');
+      if (a.ada && a.ada.tag === 'overlay') reasons.push('Overlay candidates strongly favor asphalt. Concrete cannot be overlaid economically.');
+      risks.push('Asphalt requires sealcoating every 3–5 years. Skip it and you lose 30–40% of useful life.');
+      risks.push('Watch ADA grades carefully on overlays — a 2" lift can push slopes out of compliance and trigger lawsuit exposure.');
+    } else if (rec === 'CONCRETE') {
+      if (a.traffic && a.traffic.tag === 'heavy') reasons.push('Heavy/repeated truck traffic destroys asphalt fast. Concrete is the only economical answer.');
+      if (a.lifespan && a.lifespan.tag === 'long') reasons.push('Concrete properly installed lasts 25–40 years. Best total cost on long holds.');
+      if (a.priority && a.priority.tag === 'aesthetics') reasons.push('Concrete delivers cleaner aesthetics + stamped/colored options unavailable in asphalt.');
+      if (a.propertyType && a.propertyType.tag === 'industrial') reasons.push('Industrial use means concentrated point loads. Asphalt rutting begins at month 6.');
+      if (a.climate && a.climate.tag === 'freeze') reasons.push('Freeze-thaw cycles destroy asphalt joints faster than concrete control joints.');
+      risks.push('Concrete cost is 2x asphalt upfront — get bids from at least 3 specialized contractors.');
+      risks.push('Joint sealing every 4–6 years is mandatory. Neglected joints = subgrade saturation = full panel replacement.');
+    } else {
+      reasons.push('Your inputs balance light + heavy use, or short-term cost vs. long-term durability.');
+      reasons.push('A hybrid (asphalt drive lanes + concrete high-wear zones like dumpster pads, entry aprons, ADA stalls) gives you 80% of concrete\'s durability at ~60% of the cost.');
+      reasons.push('This is what most Bay Area commercial properties actually need but rarely get bid this way.');
+      risks.push('Most contractors will quote you one material or the other. You\'ll need to specify the hybrid scope explicitly.');
+      risks.push('Transition joints between materials need proper detailing — ask for a control joint spec, not just "concrete here, asphalt there."');
+    }
+
+    // Universal risks
+    if (a.ada && (a.ada.tag === 'overlay' || a.ada.tag === 'replacement')) {
+      risks.push('Any work on existing pavement triggers ADA compliance review. Budget for grade corrections — they\'re not optional.');
+    }
+    return { reasons, risks };
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    const result = document.getElementById('result');
+    result.classList.remove('hidden');
+
+    const score = calculateResult();
+    const rec = getRecommendation(score);
+    const sqft = answers.sqft || 25000;
+    const costs = calculateCosts(sqft, rec);
+    const { reasons, risks } = getReasons(rec);
+
+    const fmt = (n) => '$' + Math.round(n).toLocaleString();
+    const fmtK = (n) => n >= 1000 ? '$' + (Math.round(n/100)/10) + 'K' : '$' + Math.round(n).toLocaleString();
+
+    const recLabel = rec === 'ASPHALT' ? 'Asphalt' : rec === 'CONCRETE' ? 'Concrete' : 'Hybrid Approach';
+    const recSub = rec === 'HYBRID'
+      ? 'Asphalt drive lanes + concrete high-wear zones'
+      : rec === 'ASPHALT'
+        ? 'Lower upfront, higher maintenance — right for your inputs'
+        : 'Higher upfront, lower lifecycle — right for your inputs';
+
+    const altDiff = costs.total - costs.altTotal;
+    const altDiffPct = Math.round(Math.abs(altDiff) / costs.altTotal * 100);
+
+    result.innerHTML = `
+      <div class="fade-in">
+
+        <!-- HERO -->
+        <div class="result-hero relative">
+          <div class="mono text-[10px] uppercase tracking-widest mb-2 opacity-80">// YOUR RECOMMENDATION</div>
+          <div class="display text-5xl md:text-7xl uppercase leading-none mb-2">${recLabel}</div>
+          <p class="text-sm font-medium opacity-90">${recSub}</p>
+          <div class="mt-6 mono text-[10px] uppercase tracking-widest opacity-70">
+            BASED ON ${sqft.toLocaleString()} SQFT · ${Object.values(answers).filter(a => typeof a === 'object').map(a => a.tag).join(' · ')}
+          </div>
+        </div>
+
+        <!-- COST BREAKDOWN -->
+        <div class="mt-8">
+          <div class="section-label">▎20-Year lifecycle cost estimate</div>
+          <div class="grid grid-cols-3 gap-3">
+            <div class="cost-stat">
+              <div class="label">Upfront Install</div>
+              <div class="value">${fmtK(costs.install)}</div>
+              <div class="sub">YEAR 0</div>
+            </div>
+            <div class="cost-stat">
+              <div class="label">20-Yr Maintenance</div>
+              <div class="value">${fmtK(costs.maint)}</div>
+              <div class="sub">REPAIRS + UPKEEP</div>
+            </div>
+            <div class="cost-stat" style="border-color: var(--yellow);">
+              <div class="label">20-Yr Total</div>
+              <div class="value">${fmtK(costs.total)}</div>
+              <div class="sub">ALL-IN</div>
+            </div>
+          </div>
+          <p class="mono text-[10px] text-[var(--text-faint)] mt-3 uppercase tracking-widest">
+            VS. ${costs.alt.toUpperCase()}: ${fmtK(costs.altTotal)} (${altDiff < 0 ? '−' : '+'}${altDiffPct}% ${altDiff < 0 ? 'SAVINGS' : 'MORE'} vs. recommendation)
+          </p>
+          <p class="text-xs text-[var(--text-faint)] mt-3">
+            ⚠ Estimates based on Bay Area / NorCal commercial rates 2026. Actual costs vary ±20% by site conditions, soil, subgrade, and ADA scope.
+          </p>
+        </div>
+
+        <!-- REASONS -->
+        <div class="mt-8">
+          <div class="section-label">▎Why this is right for you</div>
+          <div>
+            ${reasons.map(r => `<div class="reason-item">${r}</div>`).join('')}
+          </div>
+        </div>
+
+        <!-- RISKS -->
+        <div class="mt-8">
+          <div class="section-label" style="color: var(--red)">▎What to watch out for</div>
+          <div>
+            ${risks.map(r => `<div class="risk-item">${r}</div>`).join('')}
+          </div>
+        </div>
+
+        <!-- EMAIL CAPTURE -->
+        <div class="mt-10 question-card" style="border-color: var(--yellow);">
+          <div class="section-label">▎Want the full breakdown?</div>
+          <h3 class="display text-2xl uppercase mb-2">Get the 20-year scorecard</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Free PDF with the full cost math, year-by-year maintenance schedule, ADA risk checklist, and the 6 questions to ask your contractor before signing. Plus: Surface Intelligence weekly newsletter — read by 452 property managers.
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name (optional)" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send Me The Scorecard →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox. If you don't see it in 5 minutes, check spam.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA / SHARE -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print this result</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share with your team</button>
+        </div>
+
+        <!-- RESTART -->
+        <div class="mt-8 text-center">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Start over with different inputs</button>
+        </div>
+
+      </div>
+    `;
+
+    // scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Enter a valid email');
+      return;
+    }
+
+    // Store locally for now - replace with actual endpoint (Netlify Forms / Formspree / Supabase)
+    const submission = {
+      email,
+      name,
+      recommendation: getRecommendation(calculateResult()),
+      answers: Object.fromEntries(Object.entries(answers).map(([k,v]) => [k, typeof v === 'object' ? v.tag : v])),
+      timestamp: new Date().toISOString()
+    };
+    console.log('LEAD CAPTURED:', submission);
+
+    // TODO: replace with actual endpoint
+    // fetch('/.netlify/functions/capture-lead', { method: 'POST', body: JSON.stringify(submission) });
+
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const rec = getRecommendation(calculateResult());
+    const text = `I just used the Surface Intelligence Material Picker. My recommendation: ${rec}. Try it yourself: ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Surface Intelligence Material Picker', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied to clipboard');
+    }
+  }
+</script>
+
+</body>
+</html>
