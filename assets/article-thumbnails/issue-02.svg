@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Surface Intelligence Issue 02: Fiber-Reinforced Asphalt</title>
+<desc id="desc">Abstract dark pavement editorial thumbnail for Fiber-Reinforced Asphalt.</desc>
+<defs>
+  <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#070707" offset="0"/><stop stop-color="#181713" offset="0.55"/><stop stop-color="#f97316" offset="1"/></linearGradient>
+  <radialGradient id="r" cx="78%" cy="18%" r="70%"><stop stop-color="#facc15" stop-opacity="0.42"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/></radialGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.06"/></pattern>
+</defs>
+<rect width="960" height="540" rx="42" fill="url(#g)"/>
+<rect width="960" height="540" rx="42" fill="url(#r)"/>
+<rect width="960" height="540" rx="42" fill="url(#grid)"/>
+<path d="M0 420 C160 340 280 500 450 410 S760 330 960 390 V540 H0Z" fill="#000" fill-opacity="0.32"/>
+<g transform="translate(56 58)">
+  <rect x="0" y="0" width="154" height="42" rx="21" fill="#facc15" fill-opacity="0.16" stroke="#facc15" stroke-opacity="0.5"/>
+  <text x="20" y="27" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700" letter-spacing="2" fill="#facc15">ISSUE 02</text>
+</g>
+<g transform="translate(56 292)">
+  <text font-family="IBM Plex Sans, Arial, sans-serif" font-size="62" font-weight="700" fill="#fafafa" letter-spacing="-2"><tspan x="0" y="0">Fiber-Reinforced Asphalt</tspan></text>
+  <text font-family="IBM Plex Sans, Arial, sans-serif" font-size="28" font-weight="600" fill="#d4d4d8"><tspan x="0" y="48">Game changer or sales pitch?</tspan></text>
+</g>
+<g transform="translate(56 458)">
+  <text font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" fill="#facc15" letter-spacing="3">SURFACE INTELLIGENCE</text>
+</g>
+<g transform="translate(746 58) rotate(45)">
+  <rect width="280" height="18" fill="#facc15"/><rect y="36" width="280" height="18" fill="#050505"/><rect y="72" width="280" height="18" fill="#facc15"/>
+</g>
+</svg>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Forticon / Surface Intelligence</title>
+  <meta name="description" content="Ask a pavement, concrete, ADA, bid, or property maintenance question through Surface Intelligence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body><script src="/assets/nav.js"></script>
+<main class="wrap">
+  <section class="page-title">
+    <div class="eyebrow">// Contact</div>
+    <h1 class="display">Have a pavement, concrete, ADA, or bid question?</h1>
+    <p>Send a project note, bid concern, or property issue. Include the property type, what you are trying to decide, and any deadlines or board constraints.</p>
+  </section>
+  <section class="section" style="padding-top:0">
+    <div class="grid2">
+      <div class="card">
+        <span class="tag">Surface Intelligence + Forticon</span>
+        <h2 class="display">Get clearer next steps before you approve scope.</h2>
+        <p>Built by Ryan Clark for property managers, HOA managers, facility teams, and commercial owners dealing with real pavement decisions.</p>
+        <p class="mono" style="color:var(--yellow)">rclarkforticon@gmail.com</p>
+        <div class="notice">For urgent site-specific ADA, engineering, or legal questions, verify conditions with the appropriate qualified professional.</div>
+      </div>
+      <form class="card" name="contact" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="contact">
+        <div class="field"><label for="name">Name</label><input id="name" class="input" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="email">Email</label><input id="email" class="input" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="company">Company / Property</label><input id="company" class="input" name="company" autocomplete="organization"></div>
+        <div class="field"><label for="property_type">Property type</label><select id="property_type" name="property_type"><option value="">Select property type</option><option>Commercial</option><option>HOA</option><option>Industrial</option><option>Owner-operated</option></select></div>
+        <div class="field"><label for="message">What do you need help with?</label><textarea id="message" name="message" rows="7" required></textarea></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px"><input type="checkbox" name="newsletter"> <span>Send me Surface Intelligence weekly.</span></label>
+        <button class="btn" type="submit">Send my question</button>
+      </form>
+    </div>
+  </section>
+</main></body>
+</html>
