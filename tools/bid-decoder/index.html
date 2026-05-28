@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0a;
@@ -35,7 +35,7 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
-  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .display { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-weight: 700; letter-spacing: 0.01em; }
   .mono { font-family: 'JetBrains Mono', monospace; }
   .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
   .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
@@ -50,7 +50,8 @@
   .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
   .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
   .primary-btn {
-    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    background: var(--yellow); color: #000; font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 700;
     font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
     border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
   }
@@ -99,7 +100,7 @@
   .rank-badge {
     display: flex; align-items: center; justify-content: center;
     width: 40px; height: 40px; border-radius: 50%;
-    font-family: 'Anton', sans-serif; font-size: 20px;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif; font-weight: 700; font-size: 20px;
     background: var(--border); color: var(--text-dim); flex-shrink: 0;
   }
   .rank-badge.rank-1 { background: var(--yellow); color: #000; }
