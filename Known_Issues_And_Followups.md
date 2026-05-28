@@ -7,7 +7,7 @@
 - Automated Playwright responsive screenshots could not be completed in this environment because npm registry access returned HTTP 403 while attempting to install Playwright. Manual browser QA is still recommended at 320, 375, 430, 768, 1024, 1440, and 1920px widths.
 
 ## Content and publishing
-- Article pages are still archive cards/placeholders rather than full weekly article pages. Each weekly issue should be added as `articles/<slug>/index.html` and linked from the archive and homepage.
+- The Articles archive now includes all 13 released LinkedIn newsletter editions as linked cards. Future SEO work could convert each edition into a first-party `articles/<slug>/index.html` page with canonical strategy and full on-site content.
 - Project pages are educational summary cards. Add real case-study pages when approved project content and photos are available.
 
 ## Forms and newsletter operations

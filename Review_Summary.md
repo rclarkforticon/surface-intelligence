@@ -1,6 +1,7 @@
 # Review Summary
 
 ## What changed
+- Added the 13 released Surface Intelligence newsletter editions to the Articles archive with LinkedIn source links, generated editorial thumbnails, descriptive alt text, issue/date/category metadata, and previous/next edition cross-links.
 - Reworked the shared navigation into a sticky, accessible header with skip link, active page/section states, slide-fade mobile menu, and stronger internal links.
 - Rebuilt the homepage with a premium industrial dark-carbon/yellow visual system, animated hero, stronger CTAs, better Free Tools presentation, trust-building content, project/article pathways, and newsletter/contact conversion section.
 - Replaced the older cramped visual treatment with a consistent IBM Plex Sans typography system, larger readable headings, improved line heights, stronger contrast, visible focus states, and mobile-first spacing.
@@ -28,5 +29,6 @@
 ## Remaining concerns
 - Manual responsive QA in a real browser is still recommended because automated Playwright installation was blocked.
 - There is no configured lint, format, or production build pipeline because the current repository is not React/Vite.
-- Article and project cards should be replaced with real published content over time.
+- Article archive now links all 13 released LinkedIn newsletter editions; future work can migrate full article bodies into first-party SEO pages if desired.
+- Project cards should be replaced with real published case-study content over time.
 - Newsletter collection needs Netlify Forms enabled or a real email marketing platform endpoint before launch operations are complete.
