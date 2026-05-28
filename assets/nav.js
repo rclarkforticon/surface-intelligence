@@ -27,19 +27,19 @@
     <div class="stripe" aria-hidden="true"></div>
     <header class="top" data-site-header>
       <div class="wrap nav">
-        <a class="brand" href="/" aria-label="Surface Intelligence home">
-          <small>// Surface Intelligence</small>
-          <strong>Property Decision Hub</strong>
+        <a class="brand" href="/" aria-label="Ryan Clark home">
+          <small>// Ryan Clark</small>
+          <strong>Pavement Decisions</strong>
         </a>
         <nav class="links" aria-label="Primary navigation">${links}</nav>
-        <a class="btn nav-cta" href="/tools/bid-decoder/">Decode a Bid</a>
+        <a class="btn nav-cta" href="/contact/">Email Ryan</a>
         <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <span></span><span></span><span></span>
         </button>
       </div>
       <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
         ${links}
-        <a class="btn" href="/tools/bid-decoder/">Decode a Bid</a>
+        <a class="btn" href="/contact/">Email Ryan</a>
       </nav>
     </header>`;
 
@@ -53,9 +53,9 @@
       <footer class="footer">
         <div class="wrap footer-grid">
           <div>
-            <div class="eyebrow">// Built for property decisions</div>
-            <h2 class="display">Surface Intelligence</h2>
-            <p>Field-informed pavement, ADA, and bid strategy education for property managers, HOA boards, facility teams, and commercial owners.</p>
+            <div class="eyebrow">// Free tools + field notes</div>
+            <h2 class="display">Ryan Clark</h2>
+            <p>Pavement, ADA, and bid strategy education for property managers, HOA boards, facility teams, and commercial owners. Free tools and weekly field notes to help you make better decisions before capital dollars are committed.</p>
           </div>
           <nav aria-label="Footer navigation">
             <h3>Explore</h3>
