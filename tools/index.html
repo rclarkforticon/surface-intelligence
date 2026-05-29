@@ -3,31 +3,154 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Free Pavement, Bid & ADA Tools by Ryan Clark</title>
-  <meta name="description" content="Five free tools from Ryan Clark: Material Picker, Three-Bid Decoder, ADA Risk Scorecard, Board Language Generator, and HOA Reserve Estimator. For property managers and HOA boards.">
+  <title>Free Pavement Decision Funnel by Ryan Clark</title>
+  <meta name="description" content="The complete pavement decision funnel for property managers: assess condition, choose materials, decode bids, check ADA risk, budget reserves, and get board approval.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    .funnel-section { margin: 60px 0; position: relative; }
+    .funnel-header { text-align: center; margin-bottom: 40px; }
+    .funnel-header .eyebrow { color: var(--yellow); }
+    .funnel-header h2 { font-size: clamp(28px, 4vw, 48px); margin: 10px 0 8px; }
+    .funnel-header p { color: var(--dim); font-size: 18px; max-width: 700px; margin: 0 auto; }
+    .tool-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .funnel-step { position: relative; padding: 40px 0; border-left: 3px solid var(--border); padding-left: 32px; margin-left: 16px; }
+    .funnel-step:first-child { border-left-color: var(--yellow); }
+    .funnel-step:nth-child(2) { border-left-color: var(--amber); }
+    .funnel-step:nth-child(3) { border-left-color: var(--yellow); }
+    .funnel-step:nth-child(4) { border-left-color: var(--red); }
+    .funnel-step:nth-child(5) { border-left-color: var(--green); }
+    .funnel-step:nth-child(6) { border-left-color: var(--yellow); }
+    .step-marker { position: absolute; left: -16px; top: 40px; width: 32px; height: 32px; background: var(--bg); border: 3px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--yellow); }
+    .funnel-step:nth-child(2) .step-marker { border-color: var(--amber); color: var(--amber); }
+    .funnel-step:nth-child(3) .step-marker { border-color: var(--yellow); color: var(--yellow); }
+    .funnel-step:nth-child(4) .step-marker { border-color: var(--red); color: var(--red); }
+    .funnel-step:nth-child(5) .step-marker { border-color: var(--green); color: var(--green); }
+    .funnel-step:nth-child(6) .step-marker { border-color: var(--yellow); color: var(--yellow); }
+    .step-content h3 { font-size: 24px; margin: 0 0 8px; }
+    .step-content p { color: var(--dim); margin: 0 0 20px; }
+    .step-cta { display: inline-block; }
+    .step-cta .btn { min-height: 44px; }
+    .step-next { color: var(--muted); font-size: 13px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .final-cta { margin-top: 60px; padding: 40px; background: linear-gradient(135deg, var(--yellow), var(--amber)); border-radius: var(--radius-lg); text-align: center; color: #111; }
+    .final-cta h2 { color: #111; margin: 0 0 12px; }
+    .final-cta p { color: #111; margin: 0 0 20px; }
+    @media (max-width: 980px) {
+      .funnel-step { padding-left: 28px; margin-left: 12px; }
+      .step-marker { left: -14px; width: 28px; height: 28px; font-size: 14px; }
+    }
+  </style>
 </head>
 <body><script src="/assets/nav.js"></script>
 <main class="wrap">
   <section class="page-title">
-    <div class="eyebrow">// Free Tools</div>
-    <h1 class="display">Tools for real property decisions.</h1>
-    <p>Use these before a board meeting, contractor call, budget request, or ADA concern. Each tool is designed to help property managers ask better questions, explain scope clearly, and plan reserves before approving expensive work.</p>
+    <div class="eyebrow">// Complete decision funnel</div>
+    <h1 class="display">From "Should We?" to Board Approval in Six Steps</h1>
+    <p>These tools span the entire lifecycle of a property manager's pavement decision. Use them in order, and you'll move from uncertainty to a defensible decision ready for your board — in minutes, not weeks.</p>
   </section>
-  <section class="section" style="padding-top:20px">
-    <div class="grid3">
-      <a class="card card-link" href="/tools/material-picker/"><span class="tag">60 seconds</span><h2 class="display">Material Picker</h2><p>Find out whether asphalt, concrete, a hybrid design, overlay, or replacement is the right starting point.</p></a>
-      <a class="card card-link" href="/tools/bid-decoder/"><span class="tag">2 minutes</span><h2 class="display">Three-Bid Decoder</h2><p>Compare three paving bids by useful life, scope quality, and cost per year — not just total price.</p></a>
-      <a class="card card-link" href="/tools/ada-risk-scorecard/"><span class="tag">Risk check</span><h2 class="display">ADA Lawsuit Risk Scorecard</h2><p>Spot common accessible parking and path-of-travel red flags before they turn into expensive exposure.</p></a>
-      <a class="card card-link" href="/tools/board-meeting-language-generator/"><span class="tag">Board packet</span><h2 class="display">Board Meeting Language Generator</h2><p>Turn contractor scope, ADA concerns, reserve pressure, or bid confusion into clear board-ready language.</p></a>
-      <a class="card card-link" href="/tools/hoa-reserve-estimator/"><span class="tag">Reserve planning</span><h2 class="display">HOA Pavement Reserve Estimator</h2><p>Build a rough reserve range and monthly per-door planning number for future pavement work.</p></a>
+
+  <section class="funnel-section">
+    <div class="tool-grid">
+      <!-- Step 1: Assess -->
+      <div class="funnel-step">
+        <div class="step-marker">1</div>
+        <div class="step-content">
+          <h3 class="display">Assess Your Condition</h3>
+          <p><strong>Question:</strong> "How bad is our pavement actually?"</p>
+          <p>Upload 3-4 photos of your parking lot. The tool will rate your condition and tell you whether you can wait or need to act now.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/pavement-condition-rating/">Assess Condition →</a>
+          </div>
+          <div class="step-next">↓ Results feed into Material Picker</div>
+        </div>
+      </div>
+
+      <!-- Step 2: Choose Material -->
+      <div class="funnel-step">
+        <div class="step-marker">2</div>
+        <div class="step-content">
+          <h3 class="display">Choose Your Material</h3>
+          <p><strong>Question:</strong> "Is asphalt, concrete, or overlay right for us?"</p>
+          <p>Answer 5 quick questions about your property. Get a starting recommendation plus 20-year cost comparison so you know which material wins for your situation.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/material-picker/">Pick Material →</a>
+          </div>
+          <div class="step-next">↓ Take your recommendation to contractors</div>
+        </div>
+      </div>
+
+      <!-- Step 3: Decode Bids -->
+      <div class="funnel-step">
+        <div class="step-marker">3</div>
+        <div class="step-content">
+          <h3 class="display">Decode Your Bids</h3>
+          <p><strong>Question:</strong> "Which bid is actually the best value?"</p>
+          <p>Paste three contractor bids. The tool ranks them by cost-per-useful-year, not just sticker price. See which bid includes scope and which one is hiding risk.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/bid-decoder/">Decode Bids →</a>
+          </div>
+          <div class="step-next">↓ Check for hidden ADA or safety risks</div>
+        </div>
+      </div>
+
+      <!-- Step 4: Check ADA Risk -->
+      <div class="funnel-step">
+        <div class="step-marker">4</div>
+        <div class="step-content">
+          <h3 class="display">Check ADA & Safety Risk</h3>
+          <p><strong>Question:</strong> "Are we exposed to ADA lawsuits or safety failures?"</p>
+          <p>Answer 8 quick questions about your parking lot and path-of-travel. Identify red flags before they become expensive lawsuits or change orders.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/ada-risk-scorecard/">Check Risk →</a>
+          </div>
+          <div class="step-next">↓ Plan your budget and reserves</div>
+        </div>
+      </div>
+
+      <!-- Step 5: Plan Reserves -->
+      <div class="funnel-step">
+        <div class="step-marker">5</div>
+        <div class="step-content">
+          <h3 class="display">Plan Your Reserves</h3>
+          <p><strong>Question:</strong> "How much should we set aside each month/year?"</p>
+          <p>Input your square footage, timeline, and condition. Get a rough reserve range for your next capital budget or reserve study. See the monthly per-door cost for your board.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/hoa-reserve-estimator/">Plan Reserves →</a>
+          </div>
+          <div class="step-next">↓ Turn it into board-ready language</div>
+        </div>
+      </div>
+
+      <!-- Step 6: Board Language -->
+      <div class="funnel-step">
+        <div class="step-marker">6</div>
+        <div class="step-content">
+          <h3 class="display">Create Board-Ready Language</h3>
+          <p><strong>Question:</strong> "How do I explain this decision to my board?"</p>
+          <p>Generate clear, defensible language that frames your pavement project as risk management, asset protection, and lifecycle planning — not cosmetic maintenance.</p>
+          <div class="step-cta">
+            <a class="btn" href="/tools/board-meeting-language-generator/">Generate Language →</a>
+          </div>
+          <div class="step-next">↓ You're ready for approval and execution</div>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="section" style="padding-top:0">
-    <div class="notice">Not sure where to start? Use the <a href="/tools/bid-decoder/">Three-Bid Decoder</a> when you have proposals in hand, the <a href="/tools/board-meeting-language-generator/">Board Meeting Language Generator</a> before a vote, or <a href="/contact/">send a project question</a> if the scope is unclear.</div>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <h2 class="display">Done with the tools? Let's refine your decision.</h2>
+    <p>You've assessed, chosen materials, decoded bids, checked ADA risk, and planned reserves. Now send Ryan your results. He'll review your specific situation and respond within 24 hours with personalized recommendations on scope, risk, and next steps.</p>
+    <a class="btn" style="background:#111; color:#fff; border-color:#111" href="/contact/">Email Ryan Your Results</a>
   </section>
-</main></body>
+
+  <section class="wrap" style="margin-top: 60px">
+    <div class="notice">
+      <strong>Pro tip for property managers:</strong> Use these tools before your board meeting, contractor calls, or budget planning. Share the results with your team or contractors. Then <a href="/contact/">email Ryan</a> if you want a second opinion or need site-specific guidance before you commit.
+    </div>
+  </section>
+</main>
+</body>
 </html>
