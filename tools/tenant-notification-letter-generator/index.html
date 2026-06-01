@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tenant Notification Letter Generator — Surface Intelligence</title>
+<meta name="description" content="Free tool. Generate professional tenant notification letters for pavement work. Advance notice + reminder, in your tone. 90 seconds." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-paper: #1a1a1a;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+  }
+  html { background-color: #0a0a0a !important; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background-color: #0a0a0a !important;
+    color: #FAFAFA;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(250,204,21,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(74,222,128,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+  .page-shell {
+    background-color: #0a0a0a;
+    color: #FAFAFA;
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Lora', Georgia, serif; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
+  .question-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .option-btn {
+    background: transparent; border: 2px solid var(--border); color: var(--text);
+    padding: 12px 14px; border-radius: 4px; text-align: left; transition: all 0.15s ease;
+    cursor: pointer; font-size: 13px; width: 100%; font-family: inherit;
+  }
+  .option-btn:hover { border-color: var(--yellow); background: rgba(250,204,21,0.06); }
+  .option-btn.selected { border-color: var(--yellow); background: var(--yellow); color: #000; font-weight: 600; }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+  .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+  .primary-btn {
+    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
+    border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  .ghost-btn {
+    background: transparent; color: var(--text-dim); border: 1px solid var(--border);
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace; transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  input[type="number"], input[type="text"], input[type="email"], input[type="date"], textarea {
+    background: var(--bg); border: 2px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 4px; width: 100%; font-size: 16px;
+    font-family: 'JetBrains Mono', monospace; transition: border-color 0.15s ease;
+    color-scheme: dark;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--yellow); }
+  textarea { font-family: 'IBM Plex Sans', sans-serif; resize: vertical; }
+  .progress-bar { background: var(--border); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 100%; background: var(--yellow); transition: width 0.3s ease; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-tab {
+    flex: 1; text-align: center; padding: 8px 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+  .step-tab.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .step-tab.done { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+
+  /* Letter display - looks like actual paper */
+  .letter-container {
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .letter-label {
+    display: inline-block;
+    background: var(--yellow);
+    color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    z-index: 1;
+  }
+  .letter-paper {
+    background: var(--bg-paper);
+    border: 1px solid var(--border-bright);
+    border-radius: 0 4px 4px 4px;
+    padding: 28px 24px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  @media (min-width: 768px) {
+    .letter-paper { padding: 36px 40px; }
+  }
+  .letter-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .letter-action-btn {
+    flex: 1;
+    min-width: 120px;
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.15s ease;
+  }
+  .letter-action-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+  .letter-action-btn.copied { background: var(--green); color: #000; border-color: var(--green); }
+
+  /* Section dividers in letter */
+  .letter-paper h1, .letter-paper h2, .letter-paper h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 1.4em 0 0.4em 0;
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    body, .page-shell { background: white !important; color: black !important; }
+    .question-card, .letter-paper { border: 1px solid #ccc !important; background: white !important; color: black !important; padding: 0.5in !important; }
+    .letter-container { page-break-after: always; }
+    .letter-label { background: transparent !important; color: #555 !important; border: none !important; padding-left: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page-shell">
+
+<div class="stripe-bg h-2 w-full"></div>
+
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">Tenant Notification Letter Generator</h1>
+    </div>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎FREE TOOL · 90 SECONDS</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    Pavement work?<br/><span class="text-[var(--yellow)]">Tell your tenants.</span>
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    Two letters. One advance notice. One reminder. Both in your voice.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-lg mx-auto mb-8 text-sm">
+    Most resident complaints come from how the notification was worded, not the work itself. Tell us about your project and we'll generate professional, ready-to-send letters in your chosen tone.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Generate My Letters →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    No login · Private · Copy or print
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-2 gap-3 text-left">
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">14-DAY</div>
+      <h3 class="display text-sm uppercase mt-2">Advance Notice Letter</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Full details. Send 2 weeks out. Sets expectations and prevents complaints.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">3-DAY</div>
+      <h3 class="display text-sm uppercase mt-2">Final Reminder</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Short. Action-focused. The "move your car" notice that stops tow surprises.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div class="flex gap-1 mb-6 no-print">
+    <div class="step-tab" data-step="0">Project</div>
+    <div class="step-tab" data-step="1">Parking</div>
+    <div class="step-tab" data-step="2">Voice</div>
+  </div>
+
+  <div id="stepContainer"></div>
+
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevStep()" style="visibility: hidden;">← Back</button>
+    <button class="primary-btn" id="nextBtn" onclick="nextStep()" disabled>Next →</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
+</main>
+
+<div class="stripe-bg h-2 w-full mt-12 no-print"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest no-print">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a><br/>
+  Always review and personalize before sending. These are starting drafts.
+</footer>
+
+</div>
+
+<script>
+  // ========== STATE ==========
+  let currentStep = 0;
+  const TOTAL_STEPS = 3;
+
+  // Default start date = today + 14 days
+  const defaultStart = new Date();
+  defaultStart.setDate(defaultStart.getDate() + 14);
+  const defaultEnd = new Date(defaultStart);
+  defaultEnd.setDate(defaultEnd.getDate() + 5);
+
+  const state = {
+    projectType: null,
+    startDate: defaultStart.toISOString().split('T')[0],
+    endDate: defaultEnd.toISOString().split('T')[0],
+    workHours: '7:00 AM – 5:00 PM',
+    affectedAreas: '',
+    vehicleDeadline: '',
+    altParkingProvided: null,
+    altParkingDetails: '',
+    towPolicy: null,
+    tone: null,
+    propertyName: '',
+    senderName: '',
+    senderTitle: '',
+    senderPhone: '',
+    senderEmail: ''
+  };
+
+  // ========== PROJECT TYPE DATA ==========
+  const PROJECTS = {
+    repave: {
+      label: 'Full repave / mill + pave',
+      sub: 'Multi-day, full lot impact',
+      verb_formal: 'undergo a full pavement replacement',
+      verb_friendly: 'getting fully repaved',
+      verb_short: 'pavement replacement',
+      expect_formal: 'During this work, the affected areas will be closed in phases. You may experience noise during work hours, temporary asphalt odors, and changes to traffic flow within the property. After fresh asphalt is laid, the surface requires 24-48 hours to cure before vehicles can return. Our contractor specializes in resident-occupied properties and is committed to minimizing disruption.',
+      expect_friendly: 'Heads up: this is a multi-day project, so expect some noise during work hours, that fresh-asphalt smell for a day or two, and different traffic patterns inside the property. Once new asphalt is poured, it needs 24-48 hours to set before cars can drive on it. The crew has done a ton of work at occupied properties — they know how to keep things smooth.'
+    },
+    overlay: {
+      label: 'Asphalt overlay',
+      sub: '2-3 days, full lot impact',
+      verb_formal: 'be resurfaced with a new asphalt overlay',
+      verb_friendly: 'getting a fresh asphalt layer',
+      verb_short: 'asphalt overlay',
+      expect_formal: 'The work involves installing a 2-3" new asphalt layer over the existing surface. The lot will be closed in sections during pouring, and resurfaced sections require 24 hours to cure. You may notice asphalt odors and equipment noise during work hours.',
+      expect_friendly: 'We\'re adding a fresh 2-3 inch layer of asphalt on top of the existing pavement. Sections will close briefly during pouring (24-hour cure time), and you\'ll smell that "new road" smell for a day or two.'
+    },
+    sealcoat: {
+      label: 'Sealcoat + crack-fill',
+      sub: '1-2 days, brief phased impact',
+      verb_formal: 'undergo a sealcoat application and crack repair',
+      verb_friendly: 'getting sealed and crack-filled',
+      verb_short: 'sealcoat treatment',
+      expect_formal: 'Sealcoat is a protective treatment applied in sections. After application, treated surfaces remain tacky for approximately 24 hours and cannot be driven on. The product has minimal odor. This work extends pavement life by 3-5 years.',
+      expect_friendly: 'Sealcoat is the dark, protective layer that keeps the pavement looking good and lasting longer. It dries tacky for about 24 hours — please respect the cones during that window. Minimal smell, big benefit.'
+    },
+    striping: {
+      label: 'Restriping',
+      sub: 'Overnight or weekend',
+      verb_formal: 'have parking lot striping refreshed',
+      verb_friendly: 'getting freshly restriped',
+      verb_short: 'striping refresh',
+      expect_formal: 'Striping work involves painting new parking stall lines, accessible markings, and traffic flow indicators. Work is typically completed overnight or during a single weekend day. Wet paint areas will be cordoned off — please observe the barriers to prevent paint transfer to vehicles.',
+      expect_friendly: 'Fresh paint on parking lines, accessible stall markings, and arrows. This is usually an overnight or single-weekend job. Just watch out for the cones and tape — wet paint and tires are not a fun mix.'
+    },
+    ada: {
+      label: 'ADA compliance upgrades',
+      sub: 'Targeted areas only',
+      verb_formal: 'undergo accessibility improvements to meet current ADA standards',
+      verb_friendly: 'getting accessibility upgrades to current standards',
+      verb_short: 'ADA accessibility work',
+      expect_formal: 'This work brings parking accessibility features into compliance with current ADA standards. Specific accessible stalls, access aisles, and pathways will be temporarily closed for grade corrections, restriping, and signage updates. The remainder of the parking lot remains available throughout.',
+      expect_friendly: 'We\'re updating our accessible parking and pathways to meet current ADA standards — better for everyone. Specific stalls and paths will be closed briefly while the work happens, but the rest of the lot stays open.'
+    },
+    patch: {
+      label: 'Patch program',
+      sub: 'Multiple short closures',
+      verb_formal: 'undergo targeted patch repairs',
+      verb_friendly: 'getting some targeted fixes',
+      verb_short: 'patch repairs',
+      expect_formal: 'Patch repairs target specific damaged sections of the pavement. Each section typically requires a single-day closure. The rest of the lot remains accessible throughout, and signage will identify active work zones daily.',
+      expect_friendly: 'We\'re fixing the worst spots — potholes, deep cracks, and damaged sections. Each area will be closed for about a day while we patch it. The rest of the lot stays open the whole time.'
+    }
+  };
+
+  // ========== TONES ==========
+  const TONE_LABELS = {
+    formal: 'Formal',
+    friendly: 'Friendly',
+    urgent: 'Urgent'
+  };
+
+  // ========== STEPS ==========
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderStep();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active', 'done');
+      if (i < currentStep) tab.classList.add('done');
+      else if (i === currentStep) tab.classList.add('active');
+    });
+    document.getElementById('progressFill').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+  }
+
+  function renderStep() {
+    updateTabs();
+    const c = document.getElementById('stepContainer');
+    const renderers = [renderProjectStep, renderParkingStep, renderVoiceStep];
+    c.innerHTML = renderers[currentStep]();
+    updateNextBtn();
+  }
+
+  function pickBtn(field, options) {
+    return options.map(opt => `
+      <button class="option-btn ${state[field] === opt.tag ? 'selected' : ''}" onclick="state.${field} = '${opt.tag}'; renderStep();">
+        <span class="option-label">${opt.label}</span>
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
+      </button>
+    `).join('');
+  }
+
+  function renderProjectStep() {
+    const projectOptions = Object.entries(PROJECTS).map(([tag, p]) => ({
+      label: p.label, sub: p.sub, tag
+    }));
+
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">The project</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">What work, when, and where.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Project type</label>
+          <div class="space-y-2">
+            ${pickBtn('projectType', projectOptions)}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Start date</label>
+            <input type="date" value="${state.startDate}" oninput="state.startDate = this.value; updateNextBtn();" />
+          </div>
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">End date</label>
+            <input type="date" value="${state.endDate}" oninput="state.endDate = this.value; updateNextBtn();" />
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Daily work hours</label>
+          <input type="text" placeholder="7:00 AM – 5:00 PM" value="${state.workHours}" oninput="state.workHours = this.value;" />
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Affected areas</label>
+          <textarea rows="2" placeholder="e.g. South parking lot, drive aisles A-C" oninput="state.affectedAreas = this.value; updateNextBtn();">${state.affectedAreas}</textarea>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderParkingStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Parking plan</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">The single most important thing to communicate.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Vehicle move-out deadline</label>
+          <input type="text" placeholder="e.g. Monday, June 9 by 7:00 AM" value="${state.vehicleDeadline}" oninput="state.vehicleDeadline = this.value; updateNextBtn();" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">EXACTLY HOW IT WILL APPEAR IN THE LETTER</p>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Are alternate parking arrangements provided?</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${pickBtn('altParkingProvided', [
+              { label: 'Yes', sub: 'Specific location available', tag: 'yes' },
+              { label: 'No', sub: 'Residents arrange their own', tag: 'no' }
+            ])}
+          </div>
+        </div>
+
+        ${state.altParkingProvided === 'yes' ? `
+          <div class="mb-5 fade-in">
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Alternate parking details</label>
+            <textarea rows="2" placeholder="e.g. Overflow lot on West Side, accessible 24/7 during project" oninput="state.altParkingDetails = this.value; updateNextBtn();">${state.altParkingDetails}</textarea>
+          </div>
+        ` : ''}
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Tow policy</label>
+          <div class="space-y-2">
+            ${pickBtn('towPolicy', [
+              { label: 'Vehicles will be towed at owner expense', sub: 'Strict — strongest legal protection', tag: 'tow' },
+              { label: 'Vehicles will be relocated within property', sub: 'Moved to alt parking, no tow fee', tag: 'relocate' },
+              { label: 'No towing — work around vehicles', sub: 'Lenient — may delay project', tag: 'none' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderVoiceStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Voice & signature</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">How it sounds + who it's from.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Tone of the letter</label>
+          <div class="space-y-2">
+            ${pickBtn('tone', [
+              { label: 'Formal', sub: 'Professional · third-person · corporate property', tag: 'formal' },
+              { label: 'Friendly', sub: 'Warm · first-person · community/HOA feel', tag: 'friendly' },
+              { label: 'Urgent', sub: 'Direct · action-focused · short timeline', tag: 'urgent' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Property name</label>
+          <input type="text" placeholder="e.g. Park Ridge Community" value="${state.propertyName}" oninput="state.propertyName = this.value; updateNextBtn();" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Your name</label>
+            <input type="text" placeholder="Ryan Clark" value="${state.senderName}" oninput="state.senderName = this.value; updateNextBtn();" />
+          </div>
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Your title</label>
+            <input type="text" placeholder="Community Manager" value="${state.senderTitle}" oninput="state.senderTitle = this.value; updateNextBtn();" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Phone</label>
+            <input type="text" placeholder="(555) 123-4567" value="${state.senderPhone}" oninput="state.senderPhone = this.value; updateNextBtn();" />
+          </div>
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Email</label>
+            <input type="text" placeholder="rclark@property.com" value="${state.senderEmail}" oninput="state.senderEmail = this.value; updateNextBtn();" />
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateNextBtn() {
+    let valid = false;
+    if (currentStep === 0) {
+      valid = !!(state.projectType && state.startDate && state.endDate && state.affectedAreas.trim());
+    } else if (currentStep === 1) {
+      valid = !!(state.vehicleDeadline.trim() && state.altParkingProvided && state.towPolicy &&
+        (state.altParkingProvided === 'no' || state.altParkingDetails.trim()));
+    } else if (currentStep === 2) {
+      valid = !!(state.tone && state.propertyName.trim() && state.senderName.trim() && state.senderTitle.trim() &&
+        (state.senderPhone.trim() || state.senderEmail.trim()));
+    }
+    document.getElementById('nextBtn').disabled = !valid;
+    document.getElementById('nextBtn').textContent = currentStep === TOTAL_STEPS - 1 ? 'Generate Letters →' : 'Next →';
+  }
+
+  function nextStep() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentStep = 0;
+    state.projectType = null;
+    state.affectedAreas = '';
+    state.vehicleDeadline = '';
+    state.altParkingProvided = null;
+    state.altParkingDetails = '';
+    state.towPolicy = null;
+    state.tone = null;
+    state.propertyName = '';
+    state.senderName = '';
+    state.senderTitle = '';
+    state.senderPhone = '';
+    state.senderEmail = '';
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // ========== HELPERS ==========
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function todayDate() {
+    return new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function reminderDate() {
+    if (!state.startDate) return '';
+    const d = new Date(state.startDate + 'T12:00:00');
+    d.setDate(d.getDate() - 3);
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function contactLine() {
+    const parts = [];
+    if (state.senderPhone.trim()) parts.push(state.senderPhone);
+    if (state.senderEmail.trim()) parts.push(state.senderEmail);
+    return parts.join(' or ');
+  }
+
+  function parkingSection(formal) {
+    if (state.altParkingProvided === 'yes') {
+      return formal
+        ? `Alternate parking is available at: ${state.altParkingDetails.trim()}`
+        : `Where to park instead: ${state.altParkingDetails.trim()}`;
+    }
+    return formal
+      ? 'No on-site alternate parking has been arranged. We ask that residents make alternate arrangements with friends, family, or nearby off-site parking during the project.'
+      : 'We don\'t have overflow parking set up on-site for this one. Please plan ahead — line up parking with a neighbor, family, or nearby street parking before the deadline.';
+  }
+
+  function towLine(formal) {
+    if (state.towPolicy === 'tow') {
+      return formal
+        ? 'Vehicles remaining in work zones after the deadline will be towed at the owner\'s expense.'
+        : 'Heads up: any car left in the work zone after the deadline will be towed at the owner\'s expense.';
+    } else if (state.towPolicy === 'relocate') {
+      return formal
+        ? 'Vehicles remaining in work zones after the deadline will be relocated to alternate parking on the property at no charge to the owner.'
+        : 'If you forget to move your car, we\'ll relocate it to alternate parking on-site — no tow fee, but you may have to hunt for it.';
+    } else {
+      return formal
+        ? 'Work crews will accommodate parked vehicles where possible, though this may delay project completion.'
+        : 'We won\'t tow you, but the crew will have to work around any cars that don\'t move — it slows everything down.';
+    }
+  }
+
+  // ========== LETTER GENERATORS ==========
+  function generateFormalAdvance() {
+    const p = PROJECTS[state.projectType];
+    return `${todayDate()}
+
+NOTICE OF UPCOMING PAVEMENT WORK
+${state.propertyName}
+
+Dear Residents,
+
+We are writing to inform you that ${state.propertyName} will ${p.verb_formal} beginning ${formatDate(state.startDate)}. This work is necessary to maintain the safety, accessibility, and long-term integrity of our property.
+
+PROJECT SCHEDULE
+• Work begins: ${formatDate(state.startDate)}
+• Estimated completion: ${formatDate(state.endDate)}
+• Daily work hours: ${state.workHours}
+• Affected areas: ${state.affectedAreas}
+
+WHAT TO EXPECT
+${p.expect_formal}
+
+VEHICLE REQUIREMENTS
+All vehicles must be removed from affected areas by ${state.vehicleDeadline}. ${towLine(true)}
+
+ALTERNATE PARKING
+${parkingSection(true)}
+
+EMERGENCY ACCESS
+Emergency vehicle access will be maintained at all times throughout the project.
+
+QUESTIONS OR CONCERNS
+Please contact ${state.senderName}, ${state.senderTitle}, at ${contactLine()} with any questions.
+
+We appreciate your patience and cooperation as we invest in the long-term value of our property.
+
+Sincerely,
+
+${state.senderName}
+${state.senderTitle}
+${state.propertyName}`;
+  }
+
+  function generateFriendlyAdvance() {
+    const p = PROJECTS[state.projectType];
+    return `${todayDate()}
+
+Hi ${state.propertyName} neighbors,
+
+A quick heads-up: we're ${p.verb_friendly} starting ${formatDate(state.startDate)}. Here's everything you need to know.
+
+🚧 THE BASICS
+When: ${formatDate(state.startDate)} through ${formatDate(state.endDate)}
+Hours: ${state.workHours} each day
+Where: ${state.affectedAreas}
+
+🚗 YOUR PARKING
+Please have your car moved by ${state.vehicleDeadline}.
+${parkingSection(false)}
+${towLine(false)}
+
+👷 WHAT TO EXPECT
+${p.expect_friendly}
+
+🚑 EMERGENCIES
+Emergency vehicles will have access throughout the project — that part doesn't change.
+
+📞 QUESTIONS?
+Reach out to me, ${state.senderName} (${state.senderTitle}), at ${contactLine()}. I'm here to help.
+
+Why we're doing this: keeping our pavement in good shape protects property values and prevents bigger expenses down the road. A few days of inconvenience now saves us a lot later.
+
+Thanks for your patience while we get this done!
+
+— ${state.senderName}
+${state.senderTitle}
+${state.propertyName}`;
+  }
+
+  function generateUrgentAdvance() {
+    const p = PROJECTS[state.projectType];
+    return `${todayDate()}
+
+⚠ IMPORTANT NOTICE — ACTION REQUIRED
+${state.propertyName.toUpperCase()} PARKING LOT WORK
+
+Dear Residents,
+
+${state.propertyName} will undergo ${p.verb_short.toUpperCase()} beginning ${formatDate(state.startDate)}.
+
+⚠ ALL VEHICLES MUST BE MOVED BY ${state.vehicleDeadline.toUpperCase()}
+
+${towLine(true)}
+
+PROJECT SCHEDULE
+• Work begins: ${formatDate(state.startDate)}
+• Estimated completion: ${formatDate(state.endDate)}
+• Daily hours: ${state.workHours}
+• Affected areas: ${state.affectedAreas}
+
+WHERE TO PARK
+${parkingSection(true)}
+
+WHAT TO EXPECT
+${p.expect_formal}
+
+EMERGENCY ACCESS
+Emergency vehicle access maintained throughout.
+
+QUESTIONS — ACT EARLY
+${state.senderName} · ${state.senderTitle}
+${contactLine()}
+
+Do not wait until the deadline to make arrangements.
+
+Sincerely,
+
+${state.senderName}
+${state.senderTitle}
+${state.propertyName}`;
+  }
+
+  function generateFormalReminder() {
+    return `${reminderDate()}
+
+REMINDER: PAVEMENT WORK BEGINS ${formatDate(state.startDate).toUpperCase()}
+${state.propertyName}
+
+Dear Residents,
+
+This is a reminder that the scheduled ${PROJECTS[state.projectType].verb_short} at ${state.propertyName} begins in three days, on ${formatDate(state.startDate)}.
+
+VEHICLE ACTION REQUIRED
+All vehicles must be moved from affected areas by ${state.vehicleDeadline}. ${towLine(true)}
+
+KEY DETAILS REMINDER
+• Start date: ${formatDate(state.startDate)}
+• Affected areas: ${state.affectedAreas}
+• Daily hours: ${state.workHours}
+• Alternate parking: ${state.altParkingProvided === 'yes' ? state.altParkingDetails.trim() : 'residents to arrange independently'}
+
+Please direct any last-minute questions to ${state.senderName} at ${contactLine()}.
+
+Thank you for your cooperation.
+
+${state.senderName}
+${state.senderTitle}
+${state.propertyName}`;
+  }
+
+  function generateFriendlyReminder() {
+    return `${reminderDate()}
+
+Hey ${state.propertyName} neighbors,
+
+Quick reminder — parking lot work starts in 3 days, on ${formatDate(state.startDate)}!
+
+⏰ Move your car by ${state.vehicleDeadline}
+🚗 ${state.altParkingProvided === 'yes' ? 'Parking instead: ' + state.altParkingDetails.trim() : 'No on-site overflow — please arrange your own spot'}
+
+${towLine(false)}
+
+Affected areas: ${state.affectedAreas}
+
+Questions? ${contactLine()}.
+
+See you on the other side of fresh pavement!
+
+— ${state.senderName}
+${state.senderTitle}`;
+  }
+
+  function generateUrgentReminder() {
+    return `${reminderDate()}
+
+⚠ FINAL REMINDER — 3 DAYS UNTIL WORK BEGINS
+${state.propertyName.toUpperCase()}
+
+Residents,
+
+PAVEMENT WORK STARTS ${formatDate(state.startDate).toUpperCase()} — IN 3 DAYS.
+
+ACTION REQUIRED:
+• MOVE YOUR VEHICLE BY ${state.vehicleDeadline.toUpperCase()}
+• ${towLine(true)}
+
+WHERE TO PARK
+${parkingSection(true)}
+
+AFFECTED AREAS
+${state.affectedAreas}
+
+LAST-MINUTE QUESTIONS
+${state.senderName} · ${contactLine()}
+
+${state.senderName}
+${state.senderTitle}
+${state.propertyName}`;
+  }
+
+  function generateLetters() {
+    let advance, reminder;
+    if (state.tone === 'formal') {
+      advance = generateFormalAdvance();
+      reminder = generateFormalReminder();
+    } else if (state.tone === 'friendly') {
+      advance = generateFriendlyAdvance();
+      reminder = generateFriendlyReminder();
+    } else {
+      advance = generateUrgentAdvance();
+      reminder = generateUrgentReminder();
+    }
+    return { advance, reminder };
+  }
+
+  // ========== RESULT ==========
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('progressFill').style.width = '100%';
+
+    const letters = generateLetters();
+    const p = PROJECTS[state.projectType];
+
+    document.getElementById('result').innerHTML = `
+      <div class="fade-in">
+
+        <div class="question-card mb-8" style="border-color: var(--yellow);">
+          <div class="section-label">▎YOUR TENANT LETTERS</div>
+          <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-2">
+            ${p.label}
+          </h2>
+          <p class="text-sm text-[var(--text-dim)]">
+            ${state.propertyName} · ${TONE_LABELS[state.tone]} tone · ${formatDate(state.startDate)}
+          </p>
+          <p class="text-xs text-[var(--text-faint)] mono uppercase tracking-widest mt-4">
+            // BOTH LETTERS GENERATED. COPY OR PRINT INDIVIDUALLY.
+          </p>
+        </div>
+
+        <div class="letter-container">
+          <div class="letter-label">📄 LETTER 1 / SEND 14 DAYS BEFORE</div>
+          <div class="letter-paper" id="letter-advance">${letters.advance}</div>
+          <div class="letter-actions no-print">
+            <button class="letter-action-btn" onclick="copyLetter('advance', this)" data-content="${letters.advance.replace(/"/g, '&quot;').replace(/\n/g, '\\n')}">⎘ Copy text</button>
+            <button class="letter-action-btn" onclick="printLetter('letter-advance', this)">⎙ Print letter</button>
+            <button class="letter-action-btn" onclick="emailLetter('advance')">✉ Email me</button>
+          </div>
+        </div>
+
+        <div class="letter-container">
+          <div class="letter-label">📄 LETTER 2 / SEND 3 DAYS BEFORE</div>
+          <div class="letter-paper" id="letter-reminder">${letters.reminder}</div>
+          <div class="letter-actions no-print">
+            <button class="letter-action-btn" onclick="copyLetter('reminder', this)" data-content="${letters.reminder.replace(/"/g, '&quot;').replace(/\n/g, '\\n')}">⎘ Copy text</button>
+            <button class="letter-action-btn" onclick="printLetter('letter-reminder', this)">⎙ Print letter</button>
+            <button class="letter-action-btn" onclick="emailLetter('reminder')">✉ Email me</button>
+          </div>
+        </div>
+
+        <div class="question-card mb-8 mt-8 no-print" style="border-color: var(--yellow);">
+          <div class="section-label">▎Get the branded PDF version</div>
+          <h3 class="display text-2xl uppercase mb-2">Send to your inbox</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Both letters formatted as a branded PDF — ready to print on your letterhead, attach to email, or post on a bulletin. Plus: Surface Intelligence newsletter (462 property managers).
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send The Letters →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox in the next 5 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 no-print mb-8">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print both letters</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share this tool</button>
+        </div>
+
+        <div class="text-center no-print">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Generate different letters</button>
+        </div>
+
+      </div>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyLetter(which, btn) {
+    const id = which === 'advance' ? 'letter-advance' : 'letter-reminder';
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => alert('Copy failed — please select and copy manually.'));
+  }
+
+  function printLetter(id, btn) {
+    const content = document.getElementById(id).textContent;
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html><head><title>Tenant Notification Letter</title>
+      <style>
+        body { font-family: Georgia, serif; font-size: 13pt; line-height: 1.7; padding: 0.75in; max-width: 8in; margin: 0 auto; color: #000; white-space: pre-wrap; }
+        @media print { body { padding: 0.5in; } }
+      </style></head><body>${content.replace(/</g, '&lt;')}</body></html>
+    `);
+    win.document.close();
+    setTimeout(() => win.print(), 500);
+  }
+
+  function emailLetter(which) {
+    document.querySelector('.question-card[style*="border-color: var(--yellow)"] input[type=email]').focus();
+    window.scrollBy({ top: 200, behavior: 'smooth' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email');
+      return;
+    }
+    const submission = {
+      tool: 'tenant-notification-letter-generator',
+      email, name,
+      inputs: { ...state },
+      timestamp: new Date().toISOString()
+    };
+    console.log('LEAD CAPTURED:', submission);
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const text = `I just used the Surface Intelligence Tenant Notification Letter Generator to write my resident notice in 90 seconds. Free: ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Tenant Notification Letter Generator', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied');
+    }
+  }
+</script>
+
+</body>
+</html>

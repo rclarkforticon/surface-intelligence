@@ -1,70 +1,892 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HOA Pavement Reserve Estimator — Surface Intelligence</title>
-  <meta name="description" content="Estimate rough HOA pavement reserve funding ranges for seal coat, overlay, and replacement planning using square footage, timeline, condition, and inflation assumptions.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HOA Pavement Reserve Estimator — Surface Intelligence</title>
+<meta name="description" content="Free 2-minute tool. Get the annual pavement reserve contribution your HOA actually needs. Board-ready memo with the math." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+  }
+  html { background-color: #0a0a0a !important; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background-color: #0a0a0a !important;
+    color: #FAFAFA;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(250,204,21,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(74,222,128,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+  .page-shell {
+    background-color: #0a0a0a;
+    color: #FAFAFA;
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
+  .question-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .option-btn {
+    background: transparent; border: 2px solid var(--border); color: var(--text);
+    padding: 12px 14px; border-radius: 4px; text-align: left; transition: all 0.15s ease;
+    cursor: pointer; font-size: 13px; width: 100%; font-family: inherit;
+  }
+  .option-btn:hover { border-color: var(--yellow); background: rgba(250,204,21,0.06); }
+  .option-btn.selected { border-color: var(--yellow); background: var(--yellow); color: #000; font-weight: 600; }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+  .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+  .primary-btn {
+    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
+    border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  .ghost-btn {
+    background: transparent; color: var(--text-dim); border: 1px solid var(--border);
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace; transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  input[type="number"], input[type="text"], input[type="email"] {
+    background: var(--bg); border: 2px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 4px; width: 100%; font-size: 16px;
+    font-family: 'JetBrains Mono', monospace; transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-color: var(--yellow); }
+  .progress-bar { background: var(--border); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 100%; background: var(--yellow); transition: width 0.3s ease; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-tab {
+    flex: 1; text-align: center; padding: 8px 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+  .step-tab.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .step-tab.done { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+
+  /* Timeline */
+  .timeline-container {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 20px;
+    overflow-x: auto;
+  }
+  .timeline-svg { width: 100%; min-width: 600px; }
+
+  .hero-contribution {
+    background: linear-gradient(135deg, var(--yellow) 0%, #EAB308 100%);
+    color: #000;
+    padding: 32px 24px; border-radius: 4px;
+    position: relative; overflow: hidden;
+  }
+  .hero-contribution::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(45deg, transparent 48%, rgba(0,0,0,0.05) 48%, rgba(0,0,0,0.05) 52%, transparent 52%);
+    background-size: 16px 16px; pointer-events: none;
+  }
+
+  .funding-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 16px;
+    color: var(--text);
+  }
+  .funding-card.healthy {
+    border-color: var(--green);
+    background: linear-gradient(135deg, rgba(74,222,128,0.18) 0%, var(--bg-card) 65%);
+    border-left: 3px solid var(--green);
+  }
+  .funding-card.shortfall {
+    border-color: var(--red);
+    background: linear-gradient(135deg, rgba(248,113,113,0.18) 0%, var(--bg-card) 65%);
+    border-left: 3px solid var(--red);
+  }
+  .funding-card.unknown {
+    border-color: var(--yellow);
+    background: linear-gradient(135deg, rgba(250,204,21,0.14) 0%, var(--bg-card) 65%);
+    border-left: 3px solid var(--yellow);
+  }
+  .funding-card h3, .funding-card p { color: var(--text); }
+  .funding-card p.text-\[var\(--text-dim\)\] { color: var(--text-dim); }
+
+  .math-row {
+    display: flex; justify-content: space-between;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .math-row:last-child { border-bottom: none; }
+  .math-row span:last-child { font-family: 'JetBrains Mono', monospace; }
+  .math-row.total { font-weight: 600; color: var(--yellow); padding-top: 10px; border-top: 1px solid var(--yellow); border-bottom: none; }
+
+  .milestone-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .milestone-year {
+    background: var(--yellow); color: #000;
+    min-width: 60px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Anton', sans-serif; font-size: 18px;
+    border-radius: 4px; flex-shrink: 0;
+    padding: 8px;
+  }
+  .milestone-year.major { background: var(--red); color: white; }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white; color: black; }
+    .question-card, .funding-card, .milestone-card, .hero-contribution { border: 1px solid #ccc; background: white !important; color: black !important; }
+    .hero-contribution { background: #FACC15 !important; }
+  }
+</style>
 </head>
-<body><script src="/assets/nav.js"></script>
-<main class="wrap tool-page">
-  <section class="page-title">
-    <div class="eyebrow">// Free tool · HOA reserve planning</div>
-    <h1 class="display">HOA Pavement Reserve Estimator</h1>
-    <p>Build a rough planning range for pavement reserves before your next budget meeting, reserve study update, or board discussion.</p>
-  </section>
+<body>
+<div class="page-shell">
 
-  <section class="section" style="padding-top:0">
-    <div class="grid2">
-      <form class="card tool-form" id="reserveForm">
-        <span class="tag">Planning range</span>
-        <h2 class="display">Reserve assumptions</h2>
-        <div class="field"><label for="sqft">Pavement area square feet</label><input class="input" id="sqft" type="number" min="1000" step="500" placeholder="e.g. 45000" required></div>
-        <div class="field"><label for="scope">Likely scope</label><select id="scope"><option value="0.45">Seal coat / crack fill maintenance</option><option value="3.75">Mill and overlay</option><option value="7.5">Full-depth replacement allowance</option><option value="11">Heavy-duty / high-risk replacement allowance</option></select></div>
-        <div class="field"><label for="condition">Current condition</label><select id="condition"><option value="0.9">Good — mostly preventive</option><option value="1">Fair — visible aging and cracking</option><option value="1.18">Poor — failures and patching likely</option><option value="1.35">Critical — base issues likely</option></select></div>
-        <div class="field"><label for="years">Years until work is expected</label><input class="input" id="years" type="number" min="0" max="30" value="5" required></div>
-        <div class="field"><label for="inflation">Annual paving cost inflation</label><select id="inflation"><option value="0.03">3% conservative</option><option value="0.05" selected>5% planning assumption</option><option value="0.07">7% volatile market</option></select></div>
-        <div class="field"><label for="units">HOA units / doors</label><input class="input" id="units" type="number" min="1" step="1" placeholder="e.g. 86" required></div>
-        <button class="btn" type="submit">Estimate reserve need</button>
-      </form>
+<div class="stripe-bg h-2 w-full"></div>
 
-      <aside class="card tool-output" aria-live="polite">
-        <span class="tag">Reserve output</span>
-        <h2 class="display">Planning result</h2>
-        <div id="reserveOutput" class="notice">Enter the assumptions to see a rough total future cost, annual reserve target, and monthly per-door equivalent.</div>
-        <div class="actions"><a class="btn" href="/contact/">Email Ryan for your board</a><a class="btn ghost" href="/articles/#issue-06">Read market article</a></div>
-      </aside>
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">HOA Reserve Estimator</h1>
     </div>
-  </section>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎FREE TOOL · 2 MINUTES</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    What should your<br/><span class="text-[var(--yellow)]">pavement reserve</span><br/>actually be?
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    Pavement is usually the #2 line item in any HOA reserve study.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-lg mx-auto mb-8 text-sm">
+    Most communities underfund it by 30-60%. Get your required annual contribution + a board-ready memo defending the number.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Calculate My Reserve →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    No login · Private · Printable result
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-3 gap-3 text-left">
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">CA §5550</div>
+      <h3 class="display text-sm uppercase mt-2">Reserve study required</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">California HOAs must complete a reserve study every 3 years.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">5%</div>
+      <h3 class="display text-sm uppercase mt-2">Construction inflation</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Today's cost × 1.63 in 10 years. Underfunding compounds.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">15-20yr</div>
+      <h3 class="display text-sm uppercase mt-2">Typical overlay cycle</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">The major capital event your reserve has to fund.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div class="flex gap-1 mb-6 no-print">
+    <div class="step-tab" data-step="0">Community</div>
+    <div class="step-tab" data-step="1">Pavement</div>
+    <div class="step-tab" data-step="2">Use</div>
+    <div class="step-tab" data-step="3">Funding</div>
+  </div>
+
+  <div id="stepContainer"></div>
+
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevStep()" style="visibility: hidden;">← Back</button>
+    <div class="flex gap-2">
+      <button class="ghost-btn no-print" id="skipBtn" onclick="skipFunding()" style="display: none;">Skip — show result</button>
+      <button class="primary-btn" id="nextBtn" onclick="nextStep()" disabled>Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
 </main>
+
+<div class="stripe-bg h-2 w-full mt-12 no-print"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest no-print">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a><br/>
+  Estimates only — not a formal reserve study. Consult a Reserve Specialist (RS) for compliance with CA Civil Code §5550.
+</footer>
+
 <script>
-const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-document.getElementById('reserveForm').addEventListener('submit', (event) => {
-  event.preventDefault();
-  const sqft = Number(document.getElementById('sqft').value || 0);
-  const unitCost = Number(document.getElementById('scope').value);
-  const condition = Number(document.getElementById('condition').value);
-  const years = Number(document.getElementById('years').value || 0);
-  const inflation = Number(document.getElementById('inflation').value);
-  const units = Math.max(1, Number(document.getElementById('units').value || 1));
-  const today = sqft * unitCost * condition;
-  const future = today * Math.pow(1 + inflation, years);
-  const annual = years > 0 ? future / years : future;
-  const monthlyPerDoor = annual / 12 / units;
-  const low = future * 0.85;
-  const high = future * 1.2;
-  document.getElementById('reserveOutput').innerHTML = `
-    <div class="tool-result-grid">
-      <div class="metric"><strong>${money.format(future)}</strong><span>Projected future budget</span></div>
-      <div class="metric"><strong>${money.format(annual)}</strong><span>Annual reserve target</span></div>
-      <div class="metric"><strong>${money.format(monthlyPerDoor)}</strong><span>Monthly per door</span></div>
-    </div>
-    <p>This is a rough planning range of <strong>${money.format(low)}–${money.format(high)}</strong>, not a bid or reserve study. Confirm quantities, pavement section, drainage, ADA impacts, phasing, and local pricing before setting dues or approving scope.</p>`;
-});
+  // ========== STATE ==========
+  let currentStep = 0;
+  const TOTAL_STEPS = 4;
+  const state = {
+    propType: null,          // hoa-sf, townhome, condo, apartment
+    units: null,
+    sqft: null,
+    climate: null,           // coastal, hot, freeze, mixed
+    material: null,          // asphalt, concrete, mixed
+    age: null,               // years
+    condition: null,         // 1-5
+    traffic: null,           // light, medium, heavy
+    lastWork: null,          // none, sealcoat, overlay, repave
+    issues: null,            // none, minor, major
+    currentReserve: null,    // optional
+    monthlyContribPerUnit: null  // optional
+  };
+
+  // ========== CONSTANTS ==========
+  const INFLATION_RATE = 0.05; // 5% construction inflation (conservative for 2026 Bay Area)
+
+  // ========== STEP FLOW ==========
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderStep();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active', 'done');
+      if (i < currentStep) tab.classList.add('done');
+      else if (i === currentStep) tab.classList.add('active');
+    });
+    document.getElementById('progressFill').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+    document.getElementById('skipBtn').style.display = currentStep === 3 ? '' : 'none';
+  }
+
+  function renderStep() {
+    updateTabs();
+    const c = document.getElementById('stepContainer');
+    const renderers = [renderCommunityStep, renderPavementStep, renderUseStep, renderFundingStep];
+    c.innerHTML = renderers[currentStep]();
+    updateNextBtn();
+  }
+
+  function pickBtn(field, options) {
+    return options.map(opt => `
+      <button class="option-btn ${state[field] === opt.tag ? 'selected' : ''}" onclick="state.${field} = '${opt.tag}'; renderStep();">
+        <span class="option-label">${opt.label}</span>
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
+      </button>
+    `).join('');
+  }
+
+  function renderCommunityStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Your community</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Basic facts. Used to compute per-unit math.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Property type</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${pickBtn('propType', [
+              { label: 'Single-family HOA', sub: 'Residential streets', tag: 'hoa-sf' },
+              { label: 'Townhome / PUD', sub: 'Common drive aisles', tag: 'townhome' },
+              { label: 'Condo / HOA', sub: 'Common parking lot', tag: 'condo' },
+              { label: 'Apartment / Multifamily', sub: 'Single-owner property', tag: 'apartment' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Number of units</label>
+          <input type="number" placeholder="e.g. 120" value="${state.units || ''}" oninput="state.units = parseInt(this.value) || null; updateNextBtn();" min="1" max="9999" />
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Total drivable square footage</label>
+          <input type="number" placeholder="e.g. 50000" value="${state.sqft || ''}" oninput="state.sqft = parseInt(this.value) || null; updateNextBtn();" min="500" step="500" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">DRIVE AISLES + PARKING SPACES. APPROXIMATE IS FINE.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Climate</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            ${pickBtn('climate', [
+              { label: 'Mild coastal', sub: 'Bay Area, coastal CA', tag: 'coastal' },
+              { label: 'Hot inland', sub: 'Central Valley, SoCal', tag: 'hot' },
+              { label: 'Cold / freeze-thaw', sub: 'Sierra, mountain states', tag: 'freeze' },
+              { label: 'Mixed four-season', sub: 'Sacramento, foothills', tag: 'mixed' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPavementStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Pavement</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Drives the lifecycle math.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Material type</label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+            ${pickBtn('material', [
+              { label: 'Asphalt', sub: 'Standard for most HOAs', tag: 'asphalt' },
+              { label: 'Concrete', sub: 'Longer cycle, higher cost', tag: 'concrete' },
+              { label: 'Mixed', sub: 'Asphalt drives + concrete aprons', tag: 'mixed' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Years since install or last major overlay</label>
+          <input type="number" placeholder="e.g. 12" value="${state.age !== null ? state.age : ''}" oninput="state.age = this.value === '' ? null : parseInt(this.value); updateNextBtn();" min="0" max="60" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">IF UNSURE, AVERAGE GUESS IS FINE. SEALCOATS DON'T COUNT AS "MAJOR".</p>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Current condition</label>
+          <div class="space-y-2">
+            ${pickBtn('condition', [
+              { label: '1 — Excellent', sub: 'Looks new, no visible cracks or wear', tag: '1' },
+              { label: '2 — Good', sub: 'Light surface wear, no functional issues', tag: '2' },
+              { label: '3 — Fair', sub: 'Visible cracking, some patches, fading', tag: '3' },
+              { label: '4 — Poor', sub: 'Widespread cracking, alligatoring, depressions', tag: '4' },
+              { label: '5 — Failing', sub: 'Potholes, base failures, drainage problems', tag: '5' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderUseStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Use & history</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Calibrates the lifecycle expectations.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Traffic load</label>
+          <div class="space-y-2">
+            ${pickBtn('traffic', [
+              { label: 'Light residential', sub: 'Mostly cars + occasional delivery', tag: 'light' },
+              { label: 'Mixed residential', sub: 'Frequent deliveries, moving trucks, garbage', tag: 'medium' },
+              { label: 'Heavy / commercial-style', sub: 'Daily trucks, construction, equipment', tag: 'heavy' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Last major maintenance work</label>
+          <div class="space-y-2">
+            ${pickBtn('lastWork', [
+              { label: 'Never / unknown', sub: 'No documented major work', tag: 'none' },
+              { label: 'Sealcoat (within 5 yrs)', sub: 'Surface treatment only', tag: 'sealcoat' },
+              { label: 'Overlay (within 10 yrs)', sub: '2-3" new asphalt over existing', tag: 'overlay' },
+              { label: 'Full repave (within 15 yrs)', sub: 'Mill + replace', tag: 'repave' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Recurring problems (drainage, cracking, etc.)</label>
+          <div class="space-y-2">
+            ${pickBtn('issues', [
+              { label: 'No recurring issues', sub: 'Pavement performs as expected', tag: 'none' },
+              { label: 'Minor issues', sub: 'Some patching needed, small drainage spots', tag: 'minor' },
+              { label: 'Major recurring issues', sub: 'Persistent drainage, frequent repairs, settlement', tag: 'major' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFundingStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Current funding <span class="mono text-xs text-[var(--text-dim)]">(OPTIONAL)</span></h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Enter what you know. Skip if you don't — we'll still show what your contribution should be.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Current pavement reserve balance ($)</label>
+          <input type="number" placeholder="e.g. 85000" value="${state.currentReserve !== null ? state.currentReserve : ''}" oninput="state.currentReserve = this.value === '' ? null : parseInt(this.value); updateNextBtn();" min="0" step="1000" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">PAVEMENT COMPONENT OF RESERVE STUDY · LEAVE BLANK IF UNKNOWN</p>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Current monthly contribution per unit ($)</label>
+          <input type="number" placeholder="e.g. 18" value="${state.monthlyContribPerUnit !== null ? state.monthlyContribPerUnit : ''}" oninput="state.monthlyContribPerUnit = this.value === '' ? null : parseFloat(this.value); updateNextBtn();" min="0" step="0.5" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">PAVEMENT-SPECIFIC PORTION OF DUES · APPROXIMATE IS FINE</p>
+        </div>
+
+        <div class="mt-6 p-3 bg-black/40 border border-[var(--border)] rounded-sm">
+          <p class="text-xs text-[var(--text-dim)]">
+            <span class="text-[var(--yellow)] mono">// </span>If you don't know these numbers, tap "Skip — show result" below. You'll still get the required contribution.
+          </p>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateNextBtn() {
+    let valid = false;
+    switch (currentStep) {
+      case 0: valid = !!(state.propType && state.units > 0 && state.sqft > 0 && state.climate); break;
+      case 1: valid = !!(state.material && state.age !== null && state.condition); break;
+      case 2: valid = !!(state.traffic && state.lastWork && state.issues); break;
+      case 3: valid = true; break;
+    }
+    document.getElementById('nextBtn').disabled = !valid;
+    document.getElementById('nextBtn').textContent = currentStep === TOTAL_STEPS - 1 ? 'Calculate Reserve →' : 'Next →';
+  }
+
+  function nextStep() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function skipFunding() {
+    state.currentReserve = null;
+    state.monthlyContribPerUnit = null;
+    showResult();
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentStep = 0;
+    Object.keys(state).forEach(k => state[k] = null);
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // ========== CORE CALC ==========
+  function calculateReserve() {
+    // 1. Determine base useful life by material
+    const baseLifeMap = { asphalt: 18, concrete: 35, mixed: 22 };
+    let baseLife = baseLifeMap[state.material];
+
+    // 2. Climate adjustment
+    const climateMod = { coastal: 0, hot: -2, freeze: -3, mixed: -1 };
+    baseLife += climateMod[state.climate];
+
+    // 3. Traffic adjustment
+    const trafficMod = { light: 2, medium: 0, heavy: -4 };
+    baseLife += trafficMod[state.traffic];
+
+    // 4. Last work bonus (recent overlay extends life)
+    const workMod = { none: 0, sealcoat: 1, overlay: 3, repave: 5 };
+    baseLife += workMod[state.lastWork];
+
+    // 5. Issues penalty
+    const issuesMod = { none: 0, minor: -2, major: -5 };
+    baseLife += issuesMod[state.issues];
+
+    // 6. Condition cap — if pavement is failing, remaining life is short regardless of age
+    const conditionCap = { '1': 99, '2': 99, '3': 12, '4': 6, '5': 2 };
+    const capByCondition = conditionCap[state.condition];
+
+    // 7. Compute remaining life
+    let remainingLife = Math.max(0, baseLife - state.age);
+    remainingLife = Math.min(remainingLife, capByCondition);
+    remainingLife = Math.max(1, remainingLife); // floor at 1 year
+
+    // 8. Determine the type of next major expense
+    // If pavement is old AND in poor condition → full repave next
+    // Otherwise the next major event is a mill+overlay
+    const ageOrConditionFail = state.age >= baseLife || parseInt(state.condition) >= 4;
+    const nextEventType = ageOrConditionFail ? 'repave' : 'overlay';
+
+    // 9. Cost per sqft (Bay Area / NorCal 2026 rates)
+    let costPerSqft;
+    if (state.material === 'concrete') {
+      costPerSqft = nextEventType === 'repave' ? 16 : 4; // concrete replacement vs panel/joint repair
+    } else if (state.material === 'mixed') {
+      costPerSqft = nextEventType === 'repave' ? 12 : 6; // weighted
+    } else {
+      costPerSqft = nextEventType === 'repave' ? 9 : 5; // asphalt
+    }
+
+    // 10. Today's cost in dollars
+    const todayCost = state.sqft * costPerSqft;
+
+    // 11. Future cost at expense year (inflation)
+    const futureCost = todayCost * Math.pow(1 + INFLATION_RATE, remainingLife);
+
+    // 12. Annual contribution required
+    const currentReserve = state.currentReserve || 0;
+    const fundingGap = Math.max(0, futureCost - currentReserve);
+    const annualContribution = fundingGap / remainingLife;
+
+    // 13. Per-unit monthly
+    const perUnitMonthly = annualContribution / 12 / state.units;
+
+    // 14. Funding status (if user entered current data)
+    let fundingStatus = null;
+    if (state.monthlyContribPerUnit !== null) {
+      const currentAnnual = state.monthlyContribPerUnit * 12 * state.units;
+      const ratio = currentAnnual / Math.max(1, annualContribution);
+      fundingStatus = {
+        currentAnnual,
+        ratio,
+        shortfallMonthly: Math.max(0, perUnitMonthly - state.monthlyContribPerUnit),
+        surplusMonthly: Math.max(0, state.monthlyContribPerUnit - perUnitMonthly),
+        cumulativeShortfall: Math.max(0, (annualContribution - currentAnnual) * remainingLife)
+      };
+    }
+
+    // 15. Build milestone timeline
+    const milestones = buildMilestones(remainingLife, nextEventType, futureCost, todayCost);
+
+    return {
+      baseLife, remainingLife, nextEventType,
+      todayCost, futureCost, fundingGap,
+      annualContribution, perUnitMonthly,
+      fundingStatus, milestones,
+      costPerSqft
+    };
+  }
+
+  function buildMilestones(remainingLife, nextEventType, futureCost, todayCost) {
+    const milestones = [];
+    const now = new Date().getFullYear();
+    const sqft = state.sqft;
+
+    // Sealcoats every 4-5 years (asphalt only, until major event)
+    if (state.material !== 'concrete') {
+      let nextSealYear = Math.max(0, 4 - (state.age % 4));
+      while (nextSealYear < remainingLife) {
+        const yearsOut = nextSealYear;
+        const cost = sqft * 0.30 * Math.pow(1 + INFLATION_RATE, yearsOut);
+        milestones.push({
+          year: now + yearsOut,
+          yearsOut,
+          label: 'Sealcoat + crack-fill',
+          cost,
+          major: false,
+          desc: 'Routine surface protection. Operating expense, typically not from reserves.'
+        });
+        nextSealYear += 4;
+      }
+    }
+
+    // The major event
+    milestones.push({
+      year: now + remainingLife,
+      yearsOut: remainingLife,
+      label: nextEventType === 'repave' ? 'Full mill + repave' : 'Mill + 2-3" overlay',
+      cost: futureCost,
+      todayCost,
+      major: true,
+      desc: nextEventType === 'repave'
+        ? 'Capital replacement event. Reserve-funded. Inflation-adjusted from today\'s rate.'
+        : 'Major capital event. Reserve-funded. Extends useful life by 12-15 years.'
+    });
+
+    return milestones.sort((a, b) => a.yearsOut - b.yearsOut);
+  }
+
+  // ========== RESULT ==========
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('progressFill').style.width = '100%';
+
+    const calc = calculateReserve();
+    const fmt = (n) => '$' + Math.round(n).toLocaleString();
+    const fmtK = (n) => n >= 1000 ? '$' + (Math.round(n/100)/10) + 'K' : '$' + Math.round(n);
+    const fmtM = (n) => n >= 1000000 ? '$' + (Math.round(n/10000)/100) + 'M' : fmtK(n);
+
+    // Build timeline SVG
+    const timelineSvg = buildTimelineSvg(calc.milestones, calc.remainingLife);
+
+    let fundingHtml = '';
+    if (calc.fundingStatus) {
+      const fs = calc.fundingStatus;
+      if (fs.ratio >= 0.95) {
+        fundingHtml = `
+          <div class="funding-card healthy">
+            <div class="mono text-[10px] text-[var(--green)] uppercase tracking-widest mb-2">// FUNDING STATUS: ON TRACK</div>
+            <h3 class="display text-xl uppercase mb-2">You're funded at ${Math.round(fs.ratio * 100)}% of requirement</h3>
+            <p class="text-sm text-[var(--text-dim)]">Current contribution of ${fmt(state.monthlyContribPerUnit)}/unit/month vs ${fmt(calc.perUnitMonthly)} required. Maintain or modest increases for inflation.</p>
+          </div>
+        `;
+      } else if (fs.ratio >= 0.6) {
+        fundingHtml = `
+          <div class="funding-card unknown">
+            <div class="mono text-[10px] text-[var(--yellow)] uppercase tracking-widest mb-2">// FUNDING STATUS: UNDER-FUNDED</div>
+            <h3 class="display text-xl uppercase mb-2">${Math.round(fs.ratio * 100)}% funded — moderate shortfall</h3>
+            <p class="text-sm text-[var(--text-dim)] mb-3">Current: ${fmt(state.monthlyContribPerUnit)}/unit/month. Required: ${fmt(calc.perUnitMonthly)}/unit/month.</p>
+            <p class="text-sm">Increase contribution by <strong class="text-[var(--yellow)]">${fmt(fs.shortfallMonthly)}/unit/month</strong> OR plan for a special assessment of <strong class="text-[var(--yellow)]">${fmtK(fs.cumulativeShortfall)}</strong> when the capital event arrives.</p>
+          </div>
+        `;
+      } else {
+        fundingHtml = `
+          <div class="funding-card shortfall">
+            <div class="mono text-[10px] text-[var(--red)] uppercase tracking-widest mb-2">// FUNDING STATUS: SEVERELY UNDER-FUNDED</div>
+            <h3 class="display text-xl uppercase mb-2">${Math.round(fs.ratio * 100)}% funded — critical gap</h3>
+            <p class="text-sm text-[var(--text-dim)] mb-3">Current: ${fmt(state.monthlyContribPerUnit)}/unit/month. Required: ${fmt(calc.perUnitMonthly)}/unit/month.</p>
+            <p class="text-sm">At current pace, projected shortfall when work is needed: <strong class="text-[var(--red)]">${fmtK(fs.cumulativeShortfall)}</strong>. Either raise contribution to <strong class="text-[var(--text)]">${fmt(calc.perUnitMonthly)}/unit/month</strong> or plan for a major special assessment.</p>
+          </div>
+        `;
+      }
+    } else {
+      fundingHtml = `
+        <div class="funding-card unknown">
+          <div class="mono text-[10px] text-[var(--yellow)] uppercase tracking-widest mb-2">// FUNDING STATUS UNKNOWN</div>
+          <h3 class="display text-xl uppercase mb-2">Compare against your current contribution</h3>
+          <p class="text-sm text-[var(--text-dim)]">Look up your current pavement reserve balance and per-unit pavement contribution, then compare to the required ${fmt(calc.perUnitMonthly)}/unit/month above. The gap (if any) is your underfunding rate.</p>
+        </div>
+      `;
+    }
+
+    document.getElementById('result').innerHTML = `
+      <div class="fade-in">
+
+        <!-- HERO -->
+        <div class="hero-contribution mb-6">
+          <div class="mono text-[10px] uppercase tracking-widest mb-2 opacity-80">// REQUIRED ANNUAL PAVEMENT RESERVE CONTRIBUTION</div>
+          <div class="display text-5xl md:text-7xl uppercase leading-none">${fmt(calc.annualContribution)}</div>
+          <div class="display text-2xl md:text-3xl uppercase leading-tight mt-2">${fmt(calc.perUnitMonthly)}/unit/month</div>
+          <p class="text-sm opacity-90 mt-4">
+            To fully fund the next ${calc.nextEventType === 'repave' ? 'full repave' : 'overlay'} in ${calc.remainingLife} years.
+          </p>
+          <div class="mt-4 mono text-[10px] uppercase tracking-widest opacity-70">
+            ${state.units} UNITS · ${state.sqft.toLocaleString()} SQFT · ${state.material.toUpperCase()} · ${state.climate.toUpperCase()}
+          </div>
+        </div>
+
+        <!-- THE NEXT EVENT -->
+        <div class="question-card mb-6">
+          <div class="section-label">▎The next capital event</div>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div>
+              <div class="mono text-[10px] text-[var(--text-dim)] uppercase tracking-widest mb-1">Years from now</div>
+              <div class="display text-3xl text-[var(--yellow)]">${calc.remainingLife}</div>
+            </div>
+            <div>
+              <div class="mono text-[10px] text-[var(--text-dim)] uppercase tracking-widest mb-1">Today's cost</div>
+              <div class="display text-3xl">${fmtK(calc.todayCost)}</div>
+            </div>
+            <div>
+              <div class="mono text-[10px] text-[var(--text-dim)] uppercase tracking-widest mb-1">Inflation-adjusted cost</div>
+              <div class="display text-3xl text-[var(--red)]">${fmtK(calc.futureCost)}</div>
+            </div>
+          </div>
+          <p class="text-xs text-[var(--text-faint)] mt-4 mono uppercase tracking-widest">
+            ${calc.nextEventType === 'repave' ? 'FULL MILL + REPAVE' : 'MILL + 2-3" OVERLAY'} · ${state.sqft.toLocaleString()} SQFT × ${fmt(calc.costPerSqft)}/SQFT (TODAY) · ${(INFLATION_RATE * 100).toFixed(0)}% ANNUAL INFLATION
+          </p>
+        </div>
+
+        <!-- FUNDING STATUS -->
+        <div class="mb-8">
+          ${fundingHtml}
+        </div>
+
+        <!-- MILESTONE TIMELINE -->
+        <div class="mb-8">
+          <div class="section-label">▎Pavement lifecycle forecast</div>
+          <div class="timeline-container">
+            ${timelineSvg}
+          </div>
+          <div class="mt-4 space-y-2">
+            ${calc.milestones.map(m => `
+              <div class="milestone-card">
+                <div class="milestone-year ${m.major ? 'major' : ''}">${m.year}</div>
+                <div class="flex-1">
+                  <div class="display text-base uppercase">${m.label}</div>
+                  <div class="mono text-xs text-[var(--text-dim)] mt-1">${fmtK(m.cost)} ${m.major ? '· reserve-funded' : '· operating expense'}</div>
+                  <p class="text-xs text-[var(--text-dim)] mt-1">${m.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- METHODOLOGY -->
+        <div class="question-card mb-8">
+          <div class="section-label">▎Methodology — show your work</div>
+          <p class="text-xs text-[var(--text-dim)] mb-3">For your board:</p>
+          <div class="space-y-1">
+            <div class="math-row"><span>Total drivable area</span><span>${state.sqft.toLocaleString()} sqft</span></div>
+            <div class="math-row"><span>Material × condition × climate adjusted remaining life</span><span>${calc.remainingLife} years</span></div>
+            <div class="math-row"><span>Replacement cost (today's dollars, ${fmt(calc.costPerSqft)}/sqft)</span><span>${fmt(calc.todayCost)}</span></div>
+            <div class="math-row"><span>Compound inflation at 5%/year × ${calc.remainingLife} years</span><span>×${Math.pow(1 + INFLATION_RATE, calc.remainingLife).toFixed(2)}</span></div>
+            <div class="math-row"><span>Future cost when event occurs</span><span>${fmt(calc.futureCost)}</span></div>
+            ${state.currentReserve !== null ? `<div class="math-row"><span>Less: current reserve balance</span><span>−${fmt(state.currentReserve)}</span></div>` : ''}
+            <div class="math-row"><span>Funding gap to close</span><span>${fmt(calc.fundingGap)}</span></div>
+            <div class="math-row total"><span>÷ ${calc.remainingLife} years = required annual contribution</span><span>${fmt(calc.annualContribution)}</span></div>
+          </div>
+        </div>
+
+        <!-- EMAIL CAPTURE -->
+        <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
+          <div class="section-label">▎Get the board-ready memo</div>
+          <h3 class="display text-2xl uppercase mb-2">Email me the printable analysis</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Branded PDF: your full reserve calculation + methodology + 10-year forecast + recommended next steps. Send directly to your board, treasurer, or reserve specialist. Plus: Surface Intelligence newsletter (462 property managers).
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name" style="margin-top: 10px;" />
+            <input type="text" id="communityInput" placeholder="Community / property name (optional)" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send Me The Memo →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox in the next 5 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 no-print mb-8">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print this report</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share with your team</button>
+        </div>
+
+        <div class="text-center no-print">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Run for a different property</button>
+        </div>
+
+      </div>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildTimelineSvg(milestones, totalYears) {
+    const width = 600;
+    const height = 140;
+    const padX = 30;
+    const baselineY = 80;
+    const maxYears = Math.max(totalYears, 1);
+
+    // X position for each year
+    const xPos = (years) => padX + (years / maxYears) * (width - padX * 2);
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" class="timeline-svg" xmlns="http://www.w3.org/2000/svg">`;
+
+    // Baseline
+    svg += `<line x1="${padX}" y1="${baselineY}" x2="${width - padX}" y2="${baselineY}" stroke="var(--border)" stroke-width="2" />`;
+
+    // Year ticks every 5 years
+    for (let y = 0; y <= maxYears; y += 5) {
+      const x = xPos(y);
+      svg += `<line x1="${x}" y1="${baselineY - 4}" x2="${x}" y2="${baselineY + 4}" stroke="var(--text-faint)" stroke-width="1" />`;
+      svg += `<text x="${x}" y="${baselineY + 20}" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-faint)">+${y}y</text>`;
+    }
+
+    // "Now" marker
+    svg += `<circle cx="${padX}" cy="${baselineY}" r="5" fill="var(--yellow)" stroke="#000" stroke-width="2" />`;
+    svg += `<text x="${padX}" y="${baselineY - 15}" text-anchor="middle" font-family="Anton" font-size="11" fill="var(--yellow)">NOW</text>`;
+
+    // Milestones
+    milestones.forEach(m => {
+      const x = xPos(m.yearsOut);
+      const color = m.major ? 'var(--red)' : 'var(--yellow)';
+      const size = m.major ? 8 : 5;
+      svg += `<circle cx="${x}" cy="${baselineY}" r="${size}" fill="${color}" stroke="#000" stroke-width="2" />`;
+      if (m.major) {
+        // Tall vertical with label
+        svg += `<line x1="${x}" y1="${baselineY - size}" x2="${x}" y2="30" stroke="${color}" stroke-width="1" stroke-dasharray="3,2" />`;
+        svg += `<text x="${x}" y="22" text-anchor="middle" font-family="Anton" font-size="11" fill="${color}">CAPITAL EVENT</text>`;
+      } else {
+        // Short label
+        svg += `<text x="${x}" y="${baselineY - 14}" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--text-dim)">SEAL</text>`;
+      }
+    });
+
+    svg += '</svg>';
+    return svg;
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const community = document.getElementById('communityInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email');
+      return;
+    }
+    const submission = {
+      tool: 'hoa-reserve-estimator',
+      email, name, community,
+      inputs: { ...state },
+      result: calculateReserve(),
+      timestamp: new Date().toISOString()
+    };
+    console.log('LEAD CAPTURED:', submission);
+    // TODO: hook to Netlify Forms / Supabase
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const calc = calculateReserve();
+    const text = `Our community needs ${Math.round(calc.perUnitMonthly)}/unit/month in pavement reserves. Surface Intelligence Reserve Estimator (free): ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'HOA Reserve Estimator', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied');
+    }
+  }
 </script>
+
+</div>
 </body>
 </html>

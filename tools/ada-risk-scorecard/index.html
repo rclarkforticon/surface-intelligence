@@ -1,5 +1,999 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADA Parking Lot Risk Scorecard — Surface Intelligence</title><meta name="description" content="Free ADA parking lot risk scorecard for property managers, HOA boards, facility teams, and commercial owners."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/site.css"><style>.q{margin-bottom:14px}.check{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);background:rgba(255,255,255,.04);border-radius:var(--radius-md);cursor:pointer}.check:hover{border-color:var(--border-strong);background:rgba(250,204,21,.06)}.check input{margin-top:3px;min-width:18px;min-height:18px}.result{margin-top:26px;padding:24px;border:2px solid var(--yellow);border-radius:var(--radius-lg);background:rgba(250,204,21,.06)}.risk-high{color:var(--red)}.risk-med{color:#FB923C}.risk-low{color:var(--green)}</style></head><body><script src="/assets/nav.js"></script><main class="wrap"><section class="page-title"><div class="eyebrow">// Free tool · ADA exposure check</div><h1 class="display">ADA Parking Lot Risk Scorecard</h1><p>Check common parking lot and path-of-travel red flags. This does not certify ADA compliance, but it can help you identify issues worth reviewing before they become expensive.</p></section><section class="section" style="padding-top:0"><div class="grid2"><div class="card"><h3 class="display">Select every red flag that applies</h3><div id="checks"></div><button class="btn" type="button" onclick="score()">Calculate Risk →</button></div><div class="card"><h3 class="display">What this checks</h3><p>Accessible stalls, access aisles, signs, striping visibility, slope uncertainty, path-of-travel defects, recent paving changes, and complaint history.</p><div class="notice">Educational only. Not a CASp inspection, engineering report, or legal opinion. Field measurements and local requirements should be verified by a qualified professional.</div><div id="out"></div></div></div></section></main><script>
-const flags=[['ca','Property is in California'],['complaint','Tenant, visitor, or homeowner complaint has been made'],['slopes','Accessible stall/access aisle slopes are unknown'],['markings','Striping, signs, van markings, or access aisle markings are faded or missing'],['route','Cracks, lips, potholes, ponding water, or drainage cross the accessible route'],['recent','Recent paving, concrete, or striping changed grades or paths'],['dimensions','Accessible stall or access aisle dimensions are unknown'],['signage','Tow-away, van accessible, or required signage is missing/unclear']];
-document.getElementById('checks').innerHTML=flags.map(([id,label])=>`<label class="check q"><input type="checkbox" id="${id}"><span>${label}</span></label>`).join('');
-function score(){let s=flags.reduce((n,[id])=>n+(document.getElementById(id).checked?1:0),0);let level=s>=5?'High':s>=3?'Moderate':'Lower';let cls=s>=5?'risk-high':s>=3?'risk-med':'risk-low';document.getElementById('out').innerHTML=`<div class="result"><div class="eyebrow">// Your result</div><h2 class="display ${cls}" style="font-size:48px;margin:8px 0;text-transform:uppercase">${level} Risk</h2><p>You selected ${s} red flag${s===1?'':'s'}.</p><ul><li>Document current conditions with dated photos.</li><li>Confirm slopes with proper field measurements.</li><li>Review stalls, aisles, signs, routes, transitions, and drainage together.</li><li>If risk is moderate or high, schedule an onsite ADA review before the next paving or striping project.</li></ul><form name="ada-scorecard" method="POST" data-netlify="true"><input type="hidden" name="form-name" value="ada-scorecard"><input type="hidden" name="score" value="${s}"><label class="field"><span>Share your scorecard with Ryan for analysis</span><input class="input" name="email" type="email" autocomplete="email" placeholder="you@example.com"></label><button class="btn" style="margin-top:10px" type="submit">Send to Ryan →</button><p style="font-size:10px; color:var(--text-faint); text-align:center; margin-top:8px; text-transform:uppercase; letter-spacing:0.1em">Ryan responds within 24 hours</p></form></div>`;}
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ADA Lawsuit Risk Scorecard — Surface Intelligence</title>
+<meta name="description" content="Free 90-second tool. Score your parking lot's ADA lawsuit exposure. Get the dollar risk range, the top findings, and the immediate action plan." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+  }
+  html { background-color: #0a0a0a !important; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background-color: #0a0a0a !important;
+    color: #FAFAFA;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(248,113,113,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(250,204,21,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+  .page-shell {
+    background-color: #0a0a0a;
+    color: #FAFAFA;
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
+  .question-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .option-btn {
+    background: transparent; border: 2px solid var(--border); color: var(--text);
+    padding: 12px 14px; border-radius: 4px; text-align: left; transition: all 0.15s ease;
+    cursor: pointer; font-size: 13px; width: 100%; font-family: inherit;
+  }
+  .option-btn:hover { border-color: var(--yellow); background: rgba(250,204,21,0.06); }
+  .option-btn.selected { border-color: var(--yellow); background: var(--yellow); color: #000; font-weight: 600; }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+  .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+  .primary-btn {
+    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
+    border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  .ghost-btn {
+    background: transparent; color: var(--text-dim); border: 1px solid var(--border);
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace; transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  input[type="number"], input[type="text"], input[type="email"] {
+    background: var(--bg); border: 2px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 4px; width: 100%; font-size: 16px;
+    font-family: 'JetBrains Mono', monospace; transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-color: var(--yellow); }
+  .progress-bar { background: var(--border); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 100%; background: var(--yellow); transition: width 0.3s ease; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-tab {
+    flex: 1; text-align: center; padding: 8px 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+  .step-tab.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .step-tab.done { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+
+  /* Risk gauge */
+  .gauge-container {
+    position: relative;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .gauge-svg { width: 100%; height: auto; }
+  .gauge-arc-bg { stroke: var(--border); }
+  .gauge-arc-fill { transition: stroke-dashoffset 1.2s ease; }
+  .score-display {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    text-align: center;
+  }
+  .score-number {
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .risk-low { color: var(--green); }
+  .risk-elevated { color: var(--yellow); }
+  .risk-high { color: var(--orange); }
+  .risk-critical { color: var(--red); }
+
+  .finding {
+    background: var(--bg-card);
+    border-left: 3px solid var(--orange);
+    padding: 12px 16px;
+    font-size: 13px; margin-bottom: 8px; border-radius: 0 4px 4px 0;
+    color: var(--text);
+  }
+  .finding.critical { border-color: var(--red); background: linear-gradient(135deg, rgba(248,113,113,0.16) 0%, var(--bg-card) 70%); border-left-color: var(--red); }
+  .finding { background: linear-gradient(135deg, rgba(251,146,60,0.14) 0%, var(--bg-card) 70%); }
+  .finding.elevated { border-left-color: var(--yellow); background: linear-gradient(135deg, rgba(250,204,21,0.12) 0%, var(--bg-card) 70%); }
+  .finding.good { border-left-color: var(--green); background: linear-gradient(135deg, rgba(74,222,128,0.12) 0%, var(--bg-card) 70%); }
+  .finding p { color: var(--text); }
+  .finding-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .finding.critical .finding-header { color: var(--red); }
+  .finding .finding-header { color: var(--orange); }
+  .finding.elevated .finding-header { color: var(--yellow); }
+  .finding.good .finding-header { color: var(--green); }
+
+  .action-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .action-num {
+    background: var(--yellow); color: #000;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Anton', sans-serif; font-size: 16px;
+    border-radius: 4px; flex-shrink: 0;
+  }
+
+  .exposure-card {
+    background: linear-gradient(135deg, rgba(248,113,113,0.08) 0%, transparent 100%);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-left: 3px solid var(--red);
+    padding: 20px; border-radius: 4px;
+  }
+
+  .math-row {
+    display: flex; justify-content: space-between;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .math-row:last-child { border-bottom: none; font-weight: 600; color: var(--yellow); }
+  .math-row span:last-child { font-family: 'JetBrains Mono', monospace; }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white; color: black; }
+    .question-card, .exposure-card, .action-card, .finding { border: 1px solid #ccc; background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+<div class="page-shell">
+
+<div class="stripe-bg h-2 w-full"></div>
+
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">ADA Lawsuit Risk Scorecard</h1>
+    </div>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎FREE TOOL · 90 SECONDS</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    How exposed is<br/><span class="text-[var(--red)]">your parking lot?</span>
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    California Unruh Act minimum: <span class="text-[var(--yellow)] mono">$4,000 per violation</span> + plaintiff attorney fees.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-lg mx-auto mb-8 text-sm">
+    Most property managers don't know what their actual exposure is. Answer 9 quick questions. Get your risk score, dollar range, top findings, and prioritized action plan.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Score My Lot →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    No login · Private · Shareable result
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-3 gap-3 text-left">
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--red)]">$4K</div>
+      <h3 class="display text-sm uppercase mt-2">Per violation, minimum</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">California Unruh Act statutory damages floor.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--red)]">$50K+</div>
+      <h3 class="display text-sm uppercase mt-2">Typical attorney fees</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Plaintiff's fees are recoverable against you.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--red)]">3,800+</div>
+      <h3 class="display text-sm uppercase mt-2">CA ADA suits filed annually</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Serial plaintiffs file in clusters of 50-200 properties at a time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div class="flex gap-1 mb-6 no-print">
+    <div class="step-tab" data-step="0">Property</div>
+    <div class="step-tab" data-step="1">Stalls</div>
+    <div class="step-tab" data-step="2">Signage</div>
+    <div class="step-tab" data-step="3">Surface</div>
+    <div class="step-tab" data-step="4">Path</div>
+    <div class="step-tab" data-step="5">History</div>
+  </div>
+
+  <div id="stepContainer"></div>
+
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevStep()" style="visibility: hidden;">← Back</button>
+    <button class="primary-btn" id="nextBtn" onclick="nextStep()" disabled>Next →</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
+</main>
+
+<div class="stripe-bg h-2 w-full mt-12 no-print"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest no-print">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a><br/>
+  Estimates only — not legal advice. Consult an ADA specialist or attorney for site-specific guidance.
+</footer>
+
+<script>
+  // ========== STATE ==========
+  let currentStep = 0;
+  const TOTAL_STEPS = 6;
+  const state = {
+    state: null,            // CA / OTHER
+    propType: null,         // hoa / commercial / multifamily / retail / medical
+    totalStalls: null,      // int
+    accessibleStalls: null, // int
+    vanAccessible: null,    // int
+    signage: null,          // good / faded / missing
+    striping: null,         // good / faded / missing
+    recentOverlay: null,    // no / yes-verified / yes-unverified / unsure
+    drainage: null,         // none / minor / pooling
+    cracks: null,           // none / minor / heaves
+    pathContinuous: null,   // yes / partial / no
+    obstacles: null,        // none / minor / blocking
+    pastComplaint: null,    // no / yes / unsure
+    lastAudit: null         // recent / old / never
+  };
+
+  // ========== ADA REQUIRED STALL CALC ==========
+  // ADA 2010 Standards 208.2 + CA Title 24 (CA is stricter on some)
+  function requiredAccessible(total) {
+    if (!total || total < 1) return 0;
+    if (total <= 25) return 1;
+    if (total <= 50) return 2;
+    if (total <= 75) return 3;
+    if (total <= 100) return 4;
+    if (total <= 150) return 5;
+    if (total <= 200) return 6;
+    if (total <= 300) return 7;
+    if (total <= 400) return 8;
+    if (total <= 500) return 9;
+    if (total <= 1000) return Math.ceil(total * 0.02);
+    return 20 + Math.ceil((total - 1000) / 100);
+  }
+
+  function requiredVanAccessible(accessibleCount) {
+    if (!accessibleCount || accessibleCount < 1) return 0;
+    return Math.max(1, Math.ceil(accessibleCount / 6));
+  }
+
+  // ========== STEPS ==========
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderStep();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active', 'done');
+      if (i < currentStep) tab.classList.add('done');
+      else if (i === currentStep) tab.classList.add('active');
+    });
+    document.getElementById('progressFill').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+  }
+
+  function renderStep() {
+    updateTabs();
+    const c = document.getElementById('stepContainer');
+    const renderers = [renderPropertyStep, renderStallsStep, renderSignageStep, renderSurfaceStep, renderPathStep, renderHistoryStep];
+    c.innerHTML = renderers[currentStep]();
+    updateNextBtn();
+  }
+
+  function pickBtn(field, options) {
+    return options.map(opt => `
+      <button class="option-btn ${state[field] === opt.tag ? 'selected' : ''}" onclick="state.${field} = '${opt.tag}'; renderStep();">
+        <span class="option-label">${opt.label}</span>
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
+      </button>
+    `).join('');
+  }
+
+  function renderPropertyStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Property basics</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Sets the legal baseline. California exposure is significantly higher.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">State</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${pickBtn('state', [
+              { label: 'California', sub: 'Unruh Act + ADA + Title 24', tag: 'CA' },
+              { label: 'Other state', sub: 'Federal ADA only', tag: 'OTHER' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Property type</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${pickBtn('propType', [
+              { label: 'HOA / Condo', sub: 'Resident parking', tag: 'hoa' },
+              { label: 'Multifamily', sub: 'Apartment community', tag: 'multifamily' },
+              { label: 'Commercial / Office', sub: 'Mixed tenant use', tag: 'commercial' },
+              { label: 'Retail / Shopping', sub: 'Public access · higher target', tag: 'retail' },
+              { label: 'Medical / Public', sub: 'Highest target risk', tag: 'medical' },
+              { label: 'Industrial', sub: 'Limited public access', tag: 'industrial' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStallsStep() {
+    const req = requiredAccessible(state.totalStalls);
+    const reqVan = requiredVanAccessible(state.accessibleStalls || req);
+    const shortAccessible = state.accessibleStalls !== null && state.totalStalls && state.accessibleStalls < req;
+    const shortVan = state.vanAccessible !== null && state.accessibleStalls && state.vanAccessible < reqVan;
+
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Stall counts</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">The most-litigated parking compliance category. We'll calculate what's required.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Total parking stalls</label>
+          <input type="number" placeholder="e.g. 80" value="${state.totalStalls || ''}" oninput="state.totalStalls = parseInt(this.value) || null; renderStep();" min="1" max="9999" />
+        </div>
+
+        ${state.totalStalls ? `
+          <div class="mb-2 p-3 rounded-sm" style="background: linear-gradient(135deg, rgba(250,204,21,0.14) 0%, var(--bg-card) 70%); border-left: 3px solid var(--yellow);">
+            <div class="mono text-[10px] text-[var(--yellow)] uppercase tracking-widest">// ADA REQUIREMENT</div>
+            <p class="text-sm text-[var(--text)]">${state.totalStalls} total stalls = <span class="text-[var(--yellow)] font-bold">${req} accessible stalls required</span> (minimum ${requiredVanAccessible(req)} van-accessible)</p>
+          </div>
+        ` : ''}
+
+        <div class="mb-5 mt-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Current accessible stalls</label>
+          <input type="number" placeholder="how many do you have" value="${state.accessibleStalls !== null ? state.accessibleStalls : ''}" oninput="state.accessibleStalls = this.value === '' ? null : parseInt(this.value); renderStep();" min="0" max="999" />
+          ${shortAccessible ? `<p class="text-xs text-[var(--red)] mt-2 mono">⚠ SHORT BY ${req - state.accessibleStalls} STALL(S)</p>` : ''}
+        </div>
+
+        <div class="mb-2">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Van-accessible stalls</label>
+          <input type="number" placeholder="how many" value="${state.vanAccessible !== null ? state.vanAccessible : ''}" oninput="state.vanAccessible = this.value === '' ? null : parseInt(this.value); renderStep();" min="0" max="999" />
+          ${shortVan ? `<p class="text-xs text-[var(--red)] mt-2 mono">⚠ SHORT BY ${reqVan - state.vanAccessible}</p>` : ''}
+          <p class="text-[10px] text-[var(--text-faint)] mt-2">Van-accessible has wider access aisle (96" CA / 96" combined federal). 1 required per 6 accessible.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSignageStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Signage & striping</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Second most-litigated category. Faded paint is a documented finding.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Signage condition for accessible stalls</label>
+          <div class="space-y-2">
+            ${pickBtn('signage', [
+              { label: 'All compliant', sub: 'Sign 60"+ off ground, readable, tow-away notice present', tag: 'good' },
+              { label: 'Faded or partial', sub: 'Sign present but damaged/old', tag: 'faded' },
+              { label: 'Missing or non-compliant', sub: 'No sign, wrong height, or missing tow-away', tag: 'missing' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Striping condition (stall lines + accessible symbol)</label>
+          <div class="space-y-2">
+            ${pickBtn('striping', [
+              { label: 'Crisp + visible', sub: 'Clear lines, painted ISA symbol clearly visible', tag: 'good' },
+              { label: 'Faded but visible', sub: 'Lines and symbol still readable but worn', tag: 'faded' },
+              { label: 'Worn / barely visible', sub: 'Faded to the point a plaintiff would document it', tag: 'missing' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSurfaceStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Surface & grades</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">The hidden trap. Overlays without grade verification create new violations.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Recent overlay or resurfacing</label>
+          <div class="space-y-2">
+            ${pickBtn('recentOverlay', [
+              { label: 'No work in last 5 years', sub: 'Surface aging but stable', tag: 'no' },
+              { label: 'Yes — grades verified after', sub: 'Digital level data confirmed compliance', tag: 'yes-verified' },
+              { label: 'Yes — grades NOT verified', sub: '⚠ Most common ADA blind spot', tag: 'yes-unverified' },
+              { label: 'Not sure', sub: 'Treat as unverified', tag: 'unsure' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Drainage near accessible stalls or path</label>
+          <div class="space-y-2">
+            ${pickBtn('drainage', [
+              { label: 'No pooling observed', sub: 'Water drains freely after rain', tag: 'none' },
+              { label: 'Minor pooling', sub: 'Some standing water but clears', tag: 'minor' },
+              { label: 'Persistent pooling', sub: 'Water sits for days · documented hazard', tag: 'pooling' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Cracks or heaves in accessible path</label>
+          <div class="space-y-2">
+            ${pickBtn('cracks', [
+              { label: 'None visible', sub: 'Smooth surface', tag: 'none' },
+              { label: 'Minor cracking', sub: 'Hairline or sealed cracks', tag: 'minor' },
+              { label: 'Heaves or vertical changes', sub: '>1/4" lip = trip + ADA violation', tag: 'heaves' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPathStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Path of travel</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Federal ADA requires a continuous accessible route from accessible stalls to building entrance.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Continuous accessible route to building entrance</label>
+          <div class="space-y-2">
+            ${pickBtn('pathContinuous', [
+              { label: 'Yes — verified continuous', sub: 'Curb ramps + level surfaces + no obstructions', tag: 'yes' },
+              { label: 'Partial — has issues', sub: 'Missing curb ramp or rough section', tag: 'partial' },
+              { label: 'No or unsure', sub: 'Never been formally checked', tag: 'no' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Obstacles in the accessible path</label>
+          <div class="space-y-2">
+            ${pickBtn('obstacles', [
+              { label: 'None', sub: 'Clear path', tag: 'none' },
+              { label: 'Minor', sub: 'Signs, planters, posts in path edge', tag: 'minor' },
+              { label: 'Blocking obstacles', sub: 'Forces wheelchair user out of path', tag: 'blocking' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderHistoryStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">History & documentation</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Final two questions. These shape your risk multiplier.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Past ADA complaints, notices, or demand letters</label>
+          <div class="space-y-2">
+            ${pickBtn('pastComplaint', [
+              { label: 'Never', sub: 'No history', tag: 'no' },
+              { label: 'Yes — resolved', sub: 'Issue fixed but on file', tag: 'yes' },
+              { label: 'Yes — unresolved or unsure', sub: 'Active or unknown status', tag: 'unresolved' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Last professional ADA audit</label>
+          <div class="space-y-2">
+            ${pickBtn('lastAudit', [
+              { label: 'Within last 3 years', sub: 'Recent professional review', tag: 'recent' },
+              { label: '3+ years ago', sub: 'Conditions may have changed', tag: 'old' },
+              { label: 'Never had one', sub: 'No documented audit on file', tag: 'never' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateNextBtn() {
+    let valid = false;
+    switch (currentStep) {
+      case 0: valid = !!(state.state && state.propType); break;
+      case 1: valid = state.totalStalls > 0 && state.accessibleStalls !== null && state.vanAccessible !== null; break;
+      case 2: valid = !!(state.signage && state.striping); break;
+      case 3: valid = !!(state.recentOverlay && state.drainage && state.cracks); break;
+      case 4: valid = !!(state.pathContinuous && state.obstacles); break;
+      case 5: valid = !!(state.pastComplaint && state.lastAudit); break;
+    }
+    document.getElementById('nextBtn').disabled = !valid;
+    document.getElementById('nextBtn').textContent = currentStep === TOTAL_STEPS - 1 ? 'See My Risk Score →' : 'Next →';
+  }
+
+  function nextStep() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentStep = 0;
+    Object.keys(state).forEach(k => state[k] = null);
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // ========== SCORING ==========
+  function calculateRisk() {
+    let score = 0;
+    const findings = [];
+    const actions = [];
+
+    const required = requiredAccessible(state.totalStalls);
+    const requiredVan = requiredVanAccessible(state.accessibleStalls || required);
+    const missingStalls = Math.max(0, required - state.accessibleStalls);
+    const missingVan = Math.max(0, requiredVan - state.vanAccessible);
+
+    // === STALL COUNT (highest weight) ===
+    if (missingStalls > 0) {
+      score += Math.min(25, missingStalls * 8);
+      findings.push({
+        severity: 'critical',
+        header: 'STALL COUNT VIOLATION',
+        text: `Your lot has ${state.accessibleStalls} accessible stall${state.accessibleStalls === 1 ? '' : 's'} but ADA requires ${required} for ${state.totalStalls} total stalls. Each missing accessible stall is a separately actionable violation under both federal ADA and California Unruh Act.`
+      });
+      actions.push({
+        priority: 1,
+        text: `Stripe ${missingStalls} additional accessible stall${missingStalls === 1 ? '' : 's'} immediately. Re-stripe + signage = $400-$800 per stall. This is the fastest, cheapest exposure reduction available.`
+      });
+    } else if (state.accessibleStalls === required) {
+      findings.push({ severity: 'good', header: 'STALL COUNT', text: `${state.accessibleStalls} accessible stalls meets ADA minimum for ${state.totalStalls} total stalls.` });
+    }
+
+    if (missingVan > 0) {
+      score += 12;
+      findings.push({
+        severity: 'critical',
+        header: 'VAN-ACCESSIBLE SHORTAGE',
+        text: `${requiredVan} van-accessible stall${requiredVan === 1 ? '' : 's'} required, you have ${state.vanAccessible}. The wider access aisle is the most-litigated single feature in CA cases.`
+      });
+      actions.push({ priority: 1, text: `Convert ${missingVan} standard accessible stall${missingVan === 1 ? '' : 's'} into van-accessible. Requires re-striping access aisle to 96" + updated signage.` });
+    }
+
+    // === SIGNAGE ===
+    if (state.signage === 'missing') {
+      score += 12;
+      findings.push({ severity: 'critical', header: 'SIGNAGE VIOLATION', text: 'Missing or non-compliant signage on accessible stalls. Sign must be 60"+ off ground, include International Symbol of Accessibility, and (in CA) tow-away language. Single most common citation.' });
+      actions.push({ priority: 1, text: 'Install compliant signage on every accessible stall. $150-$300 per sign installed.' });
+    } else if (state.signage === 'faded') {
+      score += 6;
+      findings.push({ severity: 'elevated', header: 'SIGNAGE DETERIORATION', text: 'Faded signage is documented by plaintiffs even when technically still present. Replace before it becomes a finding.' });
+      actions.push({ priority: 2, text: 'Replace any faded or damaged accessibility signs. Photograph the new signs for your compliance file.' });
+    }
+
+    // === STRIPING ===
+    if (state.striping === 'missing') {
+      score += 8;
+      findings.push({ severity: 'critical', header: 'STRIPING VIOLATION', text: 'Worn striping + faded ISA symbol = visible documented finding for any plaintiff walking the lot.' });
+      actions.push({ priority: 1, text: 'Re-stripe all accessible stalls and repaint ISA symbol. $300-$600 per stall.' });
+    } else if (state.striping === 'faded') {
+      score += 4;
+      findings.push({ severity: 'elevated', header: 'STRIPING DETERIORATION', text: 'Faded striping. Schedule re-stripe within 90 days to reset the documentation clock.' });
+    }
+
+    // === OVERLAY TRAP (the big one) ===
+    if (state.recentOverlay === 'yes-unverified' || state.recentOverlay === 'unsure') {
+      score += 18;
+      findings.push({
+        severity: 'critical',
+        header: 'OVERLAY GRADE TRAP',
+        text: 'Recent overlay without grade verification. A 2" asphalt overlay can push a previously compliant 1.9% cross-slope to 2.4% — non-compliant — without anyone noticing. This is the #1 hidden ADA exposure for commercial property.'
+      });
+      actions.push({ priority: 1, text: 'Schedule a digital level (rotary or smart level) survey of every accessible stall + access aisle + path. $1,500-$4,000 depending on lot size.' });
+    } else if (state.recentOverlay === 'yes-verified') {
+      score -= 3;
+      findings.push({ severity: 'good', header: 'OVERLAY VERIFIED', text: 'Post-overlay grade verification on file. This is exactly what plaintiffs and their experts cannot disprove.' });
+    }
+
+    // === DRAINAGE ===
+    if (state.drainage === 'pooling') {
+      score += 8;
+      findings.push({ severity: 'critical', header: 'DRAINAGE FAILURE', text: 'Persistent pooling near accessible features = both a slip hazard and a grade indicator. Plaintiffs often photograph this on rainy days.' });
+      actions.push({ priority: 2, text: 'Address drainage at accessible stalls before next major rainfall. May require sectional milling + re-paving to correct grade.' });
+    } else if (state.drainage === 'minor') {
+      score += 3;
+    }
+
+    // === CRACKS/HEAVES ===
+    if (state.cracks === 'heaves') {
+      score += 10;
+      findings.push({ severity: 'critical', header: 'VERTICAL DISCONTINUITY', text: 'ADA limits vertical changes in accessible path to 1/4" without bevel. Heaves above this threshold are documented findings.' });
+      actions.push({ priority: 1, text: 'Grind down or patch all vertical lips greater than 1/4" in the accessible path within 30 days.' });
+    } else if (state.cracks === 'minor') {
+      score += 3;
+    }
+
+    // === PATH OF TRAVEL ===
+    if (state.pathContinuous === 'no') {
+      score += 12;
+      findings.push({ severity: 'critical', header: 'NO ACCESSIBLE ROUTE', text: 'A continuous accessible path from accessible stalls to a building entrance is required by federal ADA. Absence of one is an immediate, documented violation.' });
+      actions.push({ priority: 1, text: 'Map the accessible route. Install curb ramps where needed. Remove or relocate obstructions. A site survey identifies the cheapest compliant route.' });
+    } else if (state.pathContinuous === 'partial') {
+      score += 6;
+      findings.push({ severity: 'elevated', header: 'PATH GAPS', text: 'Partial or interrupted accessible route. Each gap is a separately actionable item.' });
+      actions.push({ priority: 2, text: 'Document each gap, prioritize curb ramps (highest ROI). Most curb ramp installs run $1,200-$3,500.' });
+    }
+
+    if (state.obstacles === 'blocking') {
+      score += 8;
+      findings.push({ severity: 'critical', header: 'BLOCKING OBSTACLES', text: 'Obstructions forcing accessible path detours are independently actionable.' });
+      actions.push({ priority: 2, text: 'Relocate planters, signposts, bollards, and storage out of the accessible route.' });
+    } else if (state.obstacles === 'minor') {
+      score += 2;
+    }
+
+    // === HISTORY ===
+    if (state.pastComplaint === 'unresolved') {
+      score += 12;
+      findings.push({ severity: 'critical', header: 'UNRESOLVED COMPLAINT', text: 'Unresolved past complaint compounds future exposure — plaintiff attorneys check for "willful" patterns to push for treble damages.' });
+      actions.push({ priority: 1, text: 'Get the complaint documented as resolved or actively being remediated. Talk to counsel about closing the loop in writing.' });
+    } else if (state.pastComplaint === 'yes') {
+      score += 4;
+    }
+
+    if (state.lastAudit === 'never') {
+      score += 6;
+      findings.push({ severity: 'elevated', header: 'NO AUDIT ON FILE', text: 'No professional ADA audit history. A documented good-faith effort to assess compliance is a meaningful defense factor.' });
+      actions.push({ priority: 3, text: 'Commission a professional ADA audit. CASp (Certified Access Specialist) inspections in California provide statutory protection: limited damages + 90-day cure period.' });
+    } else if (state.lastAudit === 'old') {
+      score += 3;
+    }
+
+    // === PROPERTY TYPE MULTIPLIER ===
+    let typeMultiplier = 1;
+    if (state.propType === 'retail' || state.propType === 'medical') typeMultiplier = 1.2;
+    if (state.propType === 'industrial') typeMultiplier = 0.85;
+    score = Math.round(score * typeMultiplier);
+
+    // === STATE MULTIPLIER (CA Unruh Act = stricter) ===
+    if (state.state === 'CA') score = Math.round(score * 1.15);
+
+    score = Math.min(100, Math.max(0, score));
+
+    return {
+      score,
+      findings,
+      actions,
+      missingStalls,
+      missingVan,
+      required,
+      requiredVan
+    };
+  }
+
+  function calculateExposure(score, findings, missingStalls, missingVan) {
+    // Count violations that map to statutory damages
+    const violationFindings = findings.filter(f => f.severity === 'critical').length;
+    const isCA = state.state === 'CA';
+
+    // California Unruh Act: $4,000 statutory minimum per violation
+    // Federal ADA: typically injunctive + attorney fees but no statutory damages
+    let basePerViolation = isCA ? 4000 : 0;
+    let baseDamages = violationFindings * basePerViolation;
+
+    // Each missing accessible stall counted as a separate violation
+    if (missingStalls > 0) baseDamages += (missingStalls - 1) * basePerViolation; // already counted once in findings
+    if (missingVan > 0) baseDamages += (missingVan - 1) * basePerViolation;
+
+    // Attorney fees (recoverable by plaintiff)
+    const attorneyFeesLow = score >= 60 ? 35000 : score >= 30 ? 20000 : 12000;
+    const attorneyFeesHigh = score >= 60 ? 75000 : score >= 30 ? 40000 : 25000;
+
+    // Settlement defense costs (your own attorney)
+    const defenseLow = score >= 60 ? 15000 : 8000;
+    const defenseHigh = score >= 60 ? 45000 : 20000;
+
+    // Remediation costs
+    const remediationLow = (missingStalls * 800) + (violationFindings * 500);
+    const remediationHigh = (missingStalls * 1500) + (violationFindings * 3000);
+
+    const low = baseDamages + attorneyFeesLow + defenseLow + remediationLow;
+    const high = baseDamages + attorneyFeesHigh + defenseHigh + remediationHigh;
+
+    return { low, high, baseDamages, attorneyFeesLow, attorneyFeesHigh, defenseLow, defenseHigh, remediationLow, remediationHigh, violationFindings, isCA };
+  }
+
+  function getRiskLevel(score) {
+    if (score <= 30) return { level: 'LOW', color: 'var(--green)', class: 'risk-low', label: 'Low Risk', description: 'Below typical litigation threshold, but no California lot is fully insulated.' };
+    if (score <= 60) return { level: 'ELEVATED', color: 'var(--yellow)', class: 'risk-elevated', label: 'Elevated Risk', description: 'Multiple findings present. Active risk that warrants near-term remediation.' };
+    if (score <= 85) return { level: 'HIGH', color: 'var(--orange)', class: 'risk-high', label: 'High Risk', description: 'Concentrated exposure. Active target profile for serial plaintiffs.' };
+    return { level: 'CRITICAL', color: 'var(--red)', class: 'risk-critical', label: 'Critical Risk', description: 'Severe compounded exposure. Multiple actionable violations + history factors.' };
+  }
+
+  function gaugeArc(score) {
+    // SVG semi-circle gauge from score 0-100
+    const cx = 160, cy = 140, r = 110;
+    const angle = (score / 100) * 180;
+    const angleRad = (180 - angle) * Math.PI / 180;
+    const endX = cx + r * Math.cos(angleRad);
+    const endY = cy - r * Math.sin(angleRad);
+    const largeArc = 0;
+    const sweep = 1;
+    const dashArray = Math.PI * r; // semi-circle circumference
+    const dashOffset = dashArray - (dashArray * (score / 100));
+    return { dashArray, dashOffset };
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('progressFill').style.width = '100%';
+
+    const calc = calculateRisk();
+    const risk = getRiskLevel(calc.score);
+    const exposure = calculateExposure(calc.score, calc.findings, calc.missingStalls, calc.missingVan);
+    const gauge = gaugeArc(calc.score);
+
+    const fmt = (n) => '$' + Math.round(n).toLocaleString();
+    const fmtK = (n) => n >= 1000 ? '$' + (Math.round(n/100)/10) + 'K' : '$' + n;
+
+    // Sort actions by priority
+    calc.actions.sort((a, b) => a.priority - b.priority);
+
+    let html = `
+      <div class="fade-in">
+
+        <!-- HERO SCORE -->
+        <div class="question-card text-center mb-6" style="border-color: ${risk.color}; border-width: 2px;">
+          <div class="section-label" style="color: ${risk.color}">▎YOUR ADA LAWSUIT RISK SCORE</div>
+
+          <div class="gauge-container mt-4">
+            <svg viewBox="0 0 320 180" class="gauge-svg">
+              <!-- Background semi-circle -->
+              <path d="M 50 140 A 110 110 0 0 1 270 140"
+                fill="none"
+                class="gauge-arc-bg"
+                stroke-width="22"
+                stroke-linecap="round" />
+              <!-- Foreground filled arc -->
+              <path d="M 50 140 A 110 110 0 0 1 270 140"
+                fill="none"
+                stroke="${risk.color}"
+                stroke-width="22"
+                stroke-linecap="round"
+                class="gauge-arc-fill"
+                style="stroke-dasharray: ${gauge.dashArray}; stroke-dashoffset: ${gauge.dashArray};"
+                id="gaugeFill" />
+              <!-- Tick markers -->
+              <line x1="50" y1="140" x2="50" y2="150" stroke="var(--text-faint)" stroke-width="1" />
+              <line x1="160" y1="30" x2="160" y2="40" stroke="var(--text-faint)" stroke-width="1" />
+              <line x1="270" y1="140" x2="270" y2="150" stroke="var(--text-faint)" stroke-width="1" />
+              <text x="50" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-faint)">0</text>
+              <text x="160" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-faint)">50</text>
+              <text x="270" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-faint)">100</text>
+            </svg>
+            <div class="score-display">
+              <div class="score-number ${risk.class}">${calc.score}</div>
+              <div class="score-label" style="color: ${risk.color}">${risk.label}</div>
+            </div>
+          </div>
+
+          <p class="text-sm text-[var(--text-dim)] mt-4 max-w-md mx-auto">${risk.description}</p>
+
+          <div class="mt-4 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest">
+            ${state.totalStalls} STALLS · ${state.accessibleStalls} ACCESSIBLE · ${state.propType.toUpperCase()} · ${state.state}
+          </div>
+        </div>
+
+        <!-- DOLLAR EXPOSURE -->
+        <div class="exposure-card mb-8">
+          <div class="section-label" style="color: var(--red)">▎ESTIMATED LAWSUIT EXPOSURE IF TARGETED</div>
+          <h3 class="display text-3xl md:text-4xl uppercase leading-tight mb-3">${fmtK(exposure.low)} – ${fmtK(exposure.high)}</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">If a single qualified plaintiff files an ADA suit against this property. Multiple plaintiffs or class actions can multiply this further.</p>
+
+          <div class="space-y-1 mt-4 p-3 bg-black/40 border border-[var(--border)] rounded-sm">
+            <div class="mono text-[10px] text-[var(--yellow)] uppercase tracking-widest mb-2">// SHOWN MATH</div>
+            ${exposure.isCA && exposure.violationFindings > 0 ? `
+              <div class="math-row"><span>Unruh Act statutory damages (${exposure.violationFindings} critical findings × $4K)</span><span>${fmt(exposure.violationFindings * 4000)}</span></div>
+            ` : ''}
+            <div class="math-row"><span>Plaintiff attorney fees (recoverable)</span><span>${fmtK(exposure.attorneyFeesLow)} – ${fmtK(exposure.attorneyFeesHigh)}</span></div>
+            <div class="math-row"><span>Your defense costs</span><span>${fmtK(exposure.defenseLow)} – ${fmtK(exposure.defenseHigh)}</span></div>
+            <div class="math-row"><span>Required remediation</span><span>${fmtK(exposure.remediationLow)} – ${fmtK(exposure.remediationHigh)}</span></div>
+            <div class="math-row"><span>TOTAL EXPOSURE</span><span>${fmtK(exposure.low)} – ${fmtK(exposure.high)}</span></div>
+          </div>
+        </div>
+
+        <!-- FINDINGS -->
+        <div class="mb-8">
+          <div class="section-label">▎Findings (${calc.findings.length})</div>
+          ${calc.findings.length === 0 ? '<p class="text-sm text-[var(--text-dim)]">No findings — but inputs may have missed conditions. Consider a professional audit for definitive clearance.</p>' : ''}
+          ${calc.findings.map(f => `
+            <div class="finding ${f.severity}">
+              <div class="finding-header">${f.header}</div>
+              <p>${f.text}</p>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- ACTION PLAN -->
+        ${calc.actions.length > 0 ? `
+          <div class="mb-8">
+            <div class="section-label">▎Prioritized action plan</div>
+            <p class="text-xs text-[var(--text-dim)] mb-3">Top ${Math.min(5, calc.actions.length)} immediate moves — ordered by exposure reduction per dollar spent.</p>
+            ${calc.actions.slice(0, 5).map((a, i) => `
+              <div class="action-card">
+                <div class="action-num">${i + 1}</div>
+                <div class="flex-1 text-sm">${a.text}</div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- CASp PROTECTION CALLOUT (CA only) -->
+        ${state.state === 'CA' ? `
+          <div class="question-card mb-8" style="border-color: var(--green); background: linear-gradient(135deg, rgba(74,222,128,0.16) 0%, var(--bg-card) 70%); border-left: 3px solid var(--green);">
+            <div class="section-label" style="color: var(--green)">▎California-specific protection</div>
+            <h3 class="display text-xl uppercase mb-2">Get a CASp Inspection</h3>
+            <p class="text-sm text-[var(--text-dim)]">
+              California Certified Access Specialist (CASp) inspections grant <strong class="text-[var(--text)]">statutory protection</strong>: capped damages + a 90-day cure period before suit can be filed. This is the single highest-leverage move available to CA property owners. Cost typically $1,500-$4,000 for a typical commercial lot.
+            </p>
+          </div>
+        ` : ''}
+
+        <!-- EMAIL CAPTURE -->
+        <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
+          <div class="section-label">▎Get the full 14-point checklist</div>
+          <h3 class="display text-2xl uppercase mb-2">Email me the audit PDF</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Branded PDF: your risk score + the full 14-point ADA audit checklist + the prioritized 3-step compliance roadmap. Send to your owner, board, or insurance broker. Plus: Surface Intelligence newsletter (462 property managers, free, weekly).
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name" style="margin-top: 10px;" />
+            <input type="text" id="propertyInput" placeholder="Property name (optional)" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send Me The Checklist →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox in the next 5 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 no-print mb-8">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print this report</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share with your team</button>
+        </div>
+
+        <div class="text-center no-print">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Score a different property</button>
+        </div>
+
+      </div>
+    `;
+
+    document.getElementById('result').innerHTML = html;
+
+    // Animate gauge
+    setTimeout(() => {
+      const arc = document.getElementById('gaugeFill');
+      if (arc) arc.style.strokeDashoffset = gauge.dashOffset;
+    }, 100);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const property = document.getElementById('propertyInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email');
+      return;
+    }
+    const submission = {
+      tool: 'ada-risk-scorecard',
+      email, name, property,
+      inputs: { ...state },
+      score: calculateRisk().score,
+      timestamp: new Date().toISOString()
+    };
+    console.log('LEAD CAPTURED:', submission);
+    // TODO: hook to Netlify Forms / Supabase endpoint
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const score = calculateRisk().score;
+    const text = `I scored my parking lot's ADA lawsuit exposure: ${score}/100. Surface Intelligence Risk Scorecard — free 90-second tool: ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'ADA Risk Scorecard', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied');
+    }
+  }
+</script>
+
+</div>
+</body>
+</html>

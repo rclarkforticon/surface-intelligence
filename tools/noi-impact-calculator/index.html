@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NOI Impact Calculator — Surface Intelligence</title>
+<meta name="description" content="Free 90-second tool. Translate a paving project cost into NOI impact, valuation hit, and the math owners actually care about. Built for commercial property owners and asset managers." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+    --blue: #60A5FA;
+  }
+  html { background-color: #0a0a0a !important; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background-color: #0a0a0a !important;
+    color: #FAFAFA;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(96,165,250,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(250,204,21,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+  .page-shell {
+    background-color: #0a0a0a;
+    color: #FAFAFA;
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
+  .question-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .option-btn {
+    background: transparent; border: 2px solid var(--border); color: var(--text);
+    padding: 12px 14px; border-radius: 4px; text-align: left; transition: all 0.15s ease;
+    cursor: pointer; font-size: 13px; width: 100%; font-family: inherit;
+  }
+  .option-btn:hover { border-color: var(--yellow); background: rgba(250,204,21,0.06); }
+  .option-btn.selected { border-color: var(--yellow); background: var(--yellow); color: #000; font-weight: 600; }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+  .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+  .primary-btn {
+    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
+    border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  .ghost-btn {
+    background: transparent; color: var(--text-dim); border: 1px solid var(--border);
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace; transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  input[type="number"], input[type="text"], input[type="email"] {
+    background: var(--bg); border: 2px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 4px; width: 100%; font-size: 16px;
+    font-family: 'JetBrains Mono', monospace; transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-color: var(--yellow); }
+  .progress-bar { background: var(--border); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 100%; background: var(--yellow); transition: width 0.3s ease; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-tab {
+    flex: 1; text-align: center; padding: 8px 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+  .step-tab.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .step-tab.done { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+
+  /* Hero metric cards */
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    text-align: center;
+  }
+  .metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .metric-value {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--yellow);
+  }
+  .metric-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Comparison cards */
+  .scenario-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+  }
+  .scenario-card.good {
+    border-left: 4px solid var(--green);
+    background: linear-gradient(135deg, rgba(74,222,128,0.10) 0%, var(--bg-card) 60%);
+  }
+  .scenario-card.bad {
+    border-left: 4px solid var(--red);
+    background: linear-gradient(135deg, rgba(248,113,113,0.10) 0%, var(--bg-card) 60%);
+  }
+  .scenario-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .scenario-card.good .scenario-card-label { color: var(--green); }
+  .scenario-card.bad .scenario-card-label { color: var(--red); }
+  .scenario-card-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .scenario-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 13px;
+  }
+  .scenario-line:last-child { border-bottom: none; }
+  .scenario-line .label { color: var(--text-dim); }
+  .scenario-line .val { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text); }
+  .scenario-total {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid var(--border-bright);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .scenario-total .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .scenario-total .val { font-family: 'Anton', sans-serif; font-size: 26px; }
+  .scenario-card.good .scenario-total .val { color: var(--green); }
+  .scenario-card.bad .scenario-total .val { color: var(--red); }
+
+  /* Treatment table */
+  .treatment-row {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .treatment-row.recommended { border-left: 3px solid var(--green); }
+  .treatment-row strong { font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: 0.04em; }
+  .treatment-detail { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
+  /* Owner script box */
+  .script-box {
+    background: linear-gradient(135deg, rgba(96,165,250,0.12) 0%, var(--bg-card) 70%);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+    padding: 22px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    body, .page-shell { background: white !important; color: black !important; }
+    .question-card, .metric-card, .scenario-card, .treatment-row, .script-box { border: 1px solid #ccc !important; background: white !important; color: black !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page-shell">
+
+<div class="stripe-bg h-2 w-full"></div>
+
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">NOI Impact Calculator</h1>
+    </div>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎FREE TOOL · 90 SECONDS</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    What does the paving<br/><span class="text-[var(--yellow)]">cost the asset?</span>
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    Property managers think in dollars. Owners think in NOI and cap rates. Speak their language.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-lg mx-auto mb-8 text-sm">
+    Translate a paving project into the metrics ownership actually cares about: $/sqft, % of NOI, valuation impact via cap rate, and the math that explains why deferring costs more than doing it now.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Run The Analysis →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    No login · Private · Printable for ownership
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-3 gap-3 text-left">
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">$/sqft</div>
+      <h3 class="display text-sm uppercase mt-2">Cost Per Square Foot</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Benchmarked against the entire asset, not just the lot.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">% NOI</div>
+      <h3 class="display text-sm uppercase mt-2">Net Operating Income Hit</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">As a percentage of one year's NOI — expensed and capitalized.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">Cap Δ</div>
+      <h3 class="display text-sm uppercase mt-2">Valuation Impact</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">The cap-rate multiplier on annual NOI changes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div class="flex gap-1 mb-6 no-print">
+    <div class="step-tab" data-step="0">Property</div>
+    <div class="step-tab" data-step="1">Financials</div>
+    <div class="step-tab" data-step="2">Project</div>
+  </div>
+
+  <div id="stepContainer"></div>
+
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevStep()" style="visibility: hidden;">← Back</button>
+    <button class="primary-btn" id="nextBtn" onclick="nextStep()" disabled>Next →</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
+</main>
+
+<div class="stripe-bg h-2 w-full mt-12 no-print"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest no-print">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a><br/>
+  Estimates only — not investment, tax, or accounting advice. Confirm treatment with your CPA.
+</footer>
+
+</div>
+
+<script>
+  // ========== STATE ==========
+  let currentStep = 0;
+  const TOTAL_STEPS = 3;
+  const state = {
+    propertyType: null,
+    propertyName: '',
+    rentableSqft: null,
+    pavementSqft: null,
+    annualNOI: null,
+    capRate: null,
+    treatment: null,
+    usefulLife: 15,
+    projectType: null,
+    projectCost: null
+  };
+
+  // Property type benchmarks (typical cap rate ranges, 2025-2026)
+  const PROP_TYPES = {
+    office: { label: 'Office', capRange: '5.5–7.5%', defaultCap: 6.5 },
+    industrial: { label: 'Industrial / Warehouse', capRange: '5.0–6.5%', defaultCap: 5.75 },
+    retail: { label: 'Retail / Strip Center', capRange: '6.0–8.0%', defaultCap: 7.0 },
+    multifamily: { label: 'Multifamily', capRange: '4.5–6.0%', defaultCap: 5.25 },
+    mixed: { label: 'Mixed-use', capRange: '5.5–7.0%', defaultCap: 6.25 }
+  };
+
+  // ========== STEP FLOW ==========
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderStep();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active', 'done');
+      if (i < currentStep) tab.classList.add('done');
+      else if (i === currentStep) tab.classList.add('active');
+    });
+    document.getElementById('progressFill').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+  }
+
+  function renderStep() {
+    updateTabs();
+    const c = document.getElementById('stepContainer');
+    const renderers = [renderPropertyStep, renderFinancialsStep, renderProjectStep];
+    c.innerHTML = renderers[currentStep]();
+    updateNextBtn();
+  }
+
+  function pickBtn(field, options) {
+    return options.map(opt => `
+      <button class="option-btn ${state[field] === opt.tag ? 'selected' : ''}" onclick="state.${field} = '${opt.tag}'; renderStep();">
+        <span class="option-label">${opt.label}</span>
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
+      </button>
+    `).join('');
+  }
+
+  function renderPropertyStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">The property</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Asset type and footprint.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Property type</label>
+          <div class="space-y-2">
+            ${pickBtn('propertyType', Object.entries(PROP_TYPES).map(([tag, p]) => ({
+              label: p.label, sub: `Typical cap rate: ${p.capRange}`, tag
+            })))}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Property name (optional)</label>
+          <input type="text" placeholder="e.g. 1450 Park Plaza" value="${state.propertyName}" oninput="state.propertyName = this.value;" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Total rentable SF</label>
+            <input type="number" placeholder="e.g. 50000" value="${state.rentableSqft || ''}" oninput="state.rentableSqft = parseInt(this.value) || null; updateNextBtn();" min="1000" step="1000" />
+          </div>
+          <div>
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Pavement SF</label>
+            <input type="number" placeholder="e.g. 35000" value="${state.pavementSqft || ''}" oninput="state.pavementSqft = parseInt(this.value) || null; updateNextBtn();" min="1000" step="500" />
+          </div>
+        </div>
+        <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">RENTABLE SF = INTERIOR LEASED AREA. PAVEMENT SF = PARKING + DRIVE AISLES.</p>
+      </div>
+    `;
+  }
+
+  function renderFinancialsStep() {
+    const propData = PROP_TYPES[state.propertyType];
+    const capHint = propData ? `Typical for ${propData.label.toLowerCase()}: ${propData.capRange}` : '';
+
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Asset financials</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">NOI and cap rate. These drive the valuation math.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Annual NOI ($)</label>
+          <input type="number" placeholder="e.g. 1500000" value="${state.annualNOI || ''}" oninput="state.annualNOI = parseInt(this.value) || null; updateNextBtn();" min="1000" step="1000" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">REVENUE LESS OPERATING EXPENSES, BEFORE DEBT SERVICE</p>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Cap rate (%)</label>
+          <input type="number" placeholder="${propData ? propData.defaultCap : '6.5'}" value="${state.capRate || ''}" oninput="state.capRate = parseFloat(this.value) || null; updateNextBtn();" min="2" max="15" step="0.25" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">${capHint ? capHint.toUpperCase() : 'YOUR MARKET\'S CAP RATE FOR COMPARABLE ASSETS'}</p>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Cost treatment</label>
+          <div class="space-y-2">
+            ${pickBtn('treatment', [
+              { label: 'Capitalize over useful life', sub: 'Depreciate the project across X years (standard for repave/overlay)', tag: 'capitalize' },
+              { label: 'Expense in current year', sub: 'Hits NOI in one shot (typical for sealcoat/striping/maintenance)', tag: 'expense' }
+            ])}
+          </div>
+        </div>
+
+        ${state.treatment === 'capitalize' ? `
+          <div class="fade-in">
+            <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Useful life (years)</label>
+            <input type="number" placeholder="15" value="${state.usefulLife}" oninput="state.usefulLife = parseInt(this.value) || 15; updateNextBtn();" min="3" max="25" step="1" />
+            <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">TYPICAL: REPAVE 15–20YR · OVERLAY 8–12YR · SEALCOAT 3–5YR</p>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  function renderProjectStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">The project</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">What you're considering, and what it costs.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Project type</label>
+          <div class="space-y-2">
+            ${pickBtn('projectType', [
+              { label: 'Full repave / mill + pave', sub: 'Capital event · 15-20yr asset', tag: 'repave' },
+              { label: 'Asphalt overlay', sub: 'Mid-cycle · 8-12yr asset', tag: 'overlay' },
+              { label: 'Sealcoat + crack-fill', sub: 'Maintenance · 3-5yr protection', tag: 'sealcoat' },
+              { label: 'Patch program', sub: 'Targeted repairs · 2-4yr life', tag: 'patch' },
+              { label: 'ADA / striping work', sub: 'Compliance · regulatory', tag: 'ada' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Project cost ($)</label>
+          <input type="number" placeholder="e.g. 285000" value="${state.projectCost || ''}" oninput="state.projectCost = parseInt(this.value) || null; updateNextBtn();" min="500" step="500" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">CONTRACTOR'S BID — OR YOUR BUDGET ESTIMATE</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateNextBtn() {
+    let valid = false;
+    if (currentStep === 0) {
+      valid = !!(state.propertyType && state.rentableSqft > 0 && state.pavementSqft > 0);
+    } else if (currentStep === 1) {
+      valid = !!(state.annualNOI > 0 && state.capRate > 0 && state.treatment);
+    } else {
+      valid = !!(state.projectType && state.projectCost > 0);
+    }
+    document.getElementById('nextBtn').disabled = !valid;
+    document.getElementById('nextBtn').textContent = currentStep === TOTAL_STEPS - 1 ? 'Run Analysis →' : 'Next →';
+  }
+
+  function nextStep() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentStep = 0;
+    Object.keys(state).forEach(k => {
+      if (k === 'usefulLife') state[k] = 15;
+      else if (typeof state[k] === 'string') state[k] = '';
+      else state[k] = null;
+    });
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // ========== FORMATTERS ==========
+  const fmt = (n) => '$' + Math.round(n).toLocaleString();
+  const fmtK = (n) => Math.abs(n) >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : Math.abs(n) >= 1000 ? '$' + Math.round(n/1000) + 'K' : '$' + Math.round(n);
+  const fmtPct = (n) => n.toFixed(2) + '%';
+
+  // ========== CALCULATIONS ==========
+  function calculate() {
+    const cost = state.projectCost;
+    const noi = state.annualNOI;
+    const cap = state.capRate / 100;
+    const rentSF = state.rentableSqft;
+    const paveSF = state.pavementSqft;
+    const useful = state.usefulLife || 15;
+
+    // Property valuation
+    const valuation = noi / cap;
+
+    // Cost framing
+    const costPerRentableSF = cost / rentSF;
+    const costPerPavementSF = cost / paveSF;
+    const pctOfNOI = (cost / noi) * 100;
+    const pctOfValuation = (cost / valuation) * 100;
+
+    // Annual NOI hit by treatment
+    const annualHit = state.treatment === 'capitalize' ? cost / useful : cost;
+    const valuationHitFromAnnualNOI = annualHit / cap;
+    const pctValuationHit = (valuationHitFromAnnualNOI / valuation) * 100;
+
+    // DEFER scenario (24 months)
+    // Project cost inflation: 5%/yr × 2 = ~10%, plus 5-10% scope expansion = +15% conservative
+    const deferredProjectCost = cost * 1.15;
+    // Conservative rent/NOI impact: 1.5% NOI reduction from deteriorating curb appeal & tenant friction
+    const deferredAnnualNOILoss = noi * 0.015;
+    // 2 years of lost NOI before doing the (more expensive) project
+    const deferredCumNOILoss = deferredAnnualNOILoss * 2;
+    // Permanent valuation impact if NOI never fully recovers (conservative: half permanent)
+    const permanentNOIImpact = deferredAnnualNOILoss * 0.5; // half is sticky
+    const permanentValuationHit = permanentNOIImpact / cap;
+    // Total defer cost
+    const totalDeferCost = deferredProjectCost + deferredCumNOILoss + permanentValuationHit;
+
+    // DO NOW total impact
+    const totalDoNowCost = cost;
+
+    // Difference
+    const savingsByDoingNow = totalDeferCost - totalDoNowCost;
+
+    return {
+      valuation, costPerRentableSF, costPerPavementSF, pctOfNOI, pctOfValuation,
+      annualHit, valuationHitFromAnnualNOI, pctValuationHit,
+      deferredProjectCost, deferredAnnualNOILoss, deferredCumNOILoss,
+      permanentNOIImpact, permanentValuationHit, totalDeferCost, totalDoNowCost,
+      savingsByDoingNow
+    };
+  }
+
+  // Treatment recommendation by project type
+  function recommendedTreatment(projectType) {
+    return ['repave', 'overlay'].includes(projectType) ? 'capitalize' : 'expense';
+  }
+
+  // Owner conversation script
+  function generateOwnerScript(calc) {
+    const propData = PROP_TYPES[state.propertyType];
+    const propName = state.propertyName || `the ${propData.label.toLowerCase()} asset`;
+    const projectTypeLabel = {
+      repave: 'full repave',
+      overlay: 'asphalt overlay',
+      sealcoat: 'sealcoat program',
+      patch: 'patch program',
+      ada: 'ADA/striping work'
+    }[state.projectType];
+
+    if (state.treatment === 'capitalize') {
+      return `"The proposed ${projectTypeLabel} on ${propName} is ${fmt(state.projectCost)}. Capitalized over ${state.usefulLife} years, that's an annual NOI impact of ${fmtK(calc.annualHit)} — roughly ${fmtPct(calc.annualHit/state.annualNOI*100)} of current NOI. At our ${state.capRate}% cap rate, the valuation impact per year is ${fmtK(calc.valuationHitFromAnnualNOI)}, or ${fmtPct(calc.pctValuationHit)} of asset value annually during the depreciation window.
+
+If we defer this 24 months, conservative modeling shows ~${fmtK(calc.totalDeferCost)} in total combined cost — ${fmtK(calc.savingsByDoingNow)} more than doing it now. That includes ${fmtK(calc.deferredProjectCost - state.projectCost)} in construction inflation and scope expansion, plus ~${fmtPct(1.5)} NOI compression from deteriorating tenant experience before the work happens.
+
+I'm requesting authorization to proceed in the current construction window."`;
+    } else {
+      return `"The proposed ${projectTypeLabel} on ${propName} is ${fmt(state.projectCost)}, expensed in the current period. That's ${fmtPct(calc.pctOfNOI)} of one year's NOI — ${fmtK(state.projectCost)} flowing through as opex. At our ${state.capRate}% cap rate, the in-year valuation effect is ${fmtK(calc.valuationHitFromAnnualNOI)} (NOI ÷ cap), recovering once the project completes and the next year's NOI normalizes.
+
+The deferral case looks worse than the in-year hit. If we defer 24 months, total combined cost is ~${fmtK(calc.totalDeferCost)} — ${fmtK(calc.savingsByDoingNow)} more than doing it now. That's inflation, scope expansion, and ~${fmtPct(1.5)} NOI compression from the deteriorating asset during the wait.
+
+Recommending approval to proceed this period."`;
+    }
+  }
+
+  // ========== RESULT ==========
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('progressFill').style.width = '100%';
+
+    const calc = calculate();
+    const propData = PROP_TYPES[state.propertyType];
+    const propName = state.propertyName || propData.label;
+    const recommended = recommendedTreatment(state.projectType);
+    const treatmentMatch = state.treatment === recommended;
+
+    const projectLabel = {
+      repave: 'Full repave',
+      overlay: 'Asphalt overlay',
+      sealcoat: 'Sealcoat program',
+      patch: 'Patch program',
+      ada: 'ADA / striping work'
+    }[state.projectType];
+
+    document.getElementById('result').innerHTML = `
+      <div class="fade-in">
+
+        <!-- SUMMARY HEADER -->
+        <div class="question-card mb-6" style="border-color: var(--yellow);">
+          <div class="section-label">▎NOI IMPACT ANALYSIS</div>
+          <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-2">
+            ${projectLabel} · ${fmt(state.projectCost)}
+          </h2>
+          <p class="text-sm text-[var(--text-dim)]">
+            ${propName} · ${propData.label} · ${state.rentableSqft.toLocaleString()} SF rentable · ${fmtPct(state.capRate)} cap · ${fmt(state.annualNOI)} NOI
+          </p>
+          <p class="text-xs text-[var(--text-faint)] mono uppercase tracking-widest mt-4">
+            // ASSET VALUATION (IMPLIED): ${fmtK(calc.valuation)}
+          </p>
+        </div>
+
+        <!-- HERO METRICS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+          <div class="metric-card">
+            <div class="metric-label">▎Cost per rentable SF</div>
+            <div class="metric-value">$${calc.costPerRentableSF.toFixed(2)}</div>
+            <div class="metric-sub">$${calc.costPerPavementSF.toFixed(2)}/SF of pavement</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">▎% of annual NOI</div>
+            <div class="metric-value">${fmtPct(calc.pctOfNOI)}</div>
+            <div class="metric-sub">${fmt(state.projectCost)} ÷ ${fmt(state.annualNOI)}</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">▎% of asset value</div>
+            <div class="metric-value">${fmtPct(calc.pctOfValuation)}</div>
+            <div class="metric-sub">vs ${fmtK(calc.valuation)} valuation</div>
+          </div>
+        </div>
+
+        <!-- TREATMENT ANALYSIS -->
+        <div class="mb-8">
+          <div class="section-label">▎Treatment analysis · ${state.treatment === 'capitalize' ? 'capitalized' : 'expensed'}</div>
+          <div class="treatment-row ${state.treatment === 'capitalize' ? 'recommended' : ''}">
+            <div>
+              <strong>Capitalize</strong>
+              <div class="treatment-detail">Depreciate over ${state.usefulLife} years</div>
+            </div>
+            <div class="text-right">
+              <div class="mono text-sm font-bold">${fmtK(state.projectCost / state.usefulLife)}/yr</div>
+              <div class="treatment-detail">${fmtPct((state.projectCost / state.usefulLife) / state.annualNOI * 100)} of NOI annually</div>
+            </div>
+          </div>
+          <div class="treatment-row ${state.treatment === 'expense' ? 'recommended' : ''}">
+            <div>
+              <strong>Expense in Year 1</strong>
+              <div class="treatment-detail">One-time hit, recovers next period</div>
+            </div>
+            <div class="text-right">
+              <div class="mono text-sm font-bold">${fmtK(state.projectCost)} Y1</div>
+              <div class="treatment-detail">${fmtPct(calc.pctOfNOI)} of NOI in Y1</div>
+            </div>
+          </div>
+          ${!treatmentMatch ? `
+            <div class="verify-item mt-3" style="background: linear-gradient(135deg, rgba(251,146,60,0.12) 0%, var(--bg-card) 70%); border-left-color: var(--orange);">
+              <div class="text-xs mono uppercase tracking-widest" style="color: var(--orange);">▎NOTE</div>
+              <div class="mt-1 text-sm">${state.projectType === 'repave' || state.projectType === 'overlay'
+                ? 'Repaves and overlays are typically capitalized over their useful life — that\'s the standard treatment per GAAP for material improvements that extend asset life. Confirm with your CPA.'
+                : 'Sealcoat, striping, and patch programs are typically expensed in the current period as maintenance, not capitalized. Confirm with your CPA.'}</div>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- THE KILLER MATH: DO NOW vs DEFER -->
+        <div class="mb-8">
+          <div class="section-label">▎The defer math · 24-month deferral analysis</div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="scenario-card good">
+              <div class="scenario-card-label">DO NOW</div>
+              <div class="scenario-card-title">Approve this period</div>
+              <div class="scenario-line">
+                <span class="label">Project cost</span>
+                <span class="val">${fmt(state.projectCost)}</span>
+              </div>
+              <div class="scenario-line">
+                <span class="label">NOI compression</span>
+                <span class="val">$0</span>
+              </div>
+              <div class="scenario-line">
+                <span class="label">Permanent valuation hit</span>
+                <span class="val">$0</span>
+              </div>
+              <div class="scenario-total">
+                <span class="label">▎Total impact</span>
+                <span class="val">${fmtK(calc.totalDoNowCost)}</span>
+              </div>
+            </div>
+
+            <div class="scenario-card bad">
+              <div class="scenario-card-label">DEFER 24 MO</div>
+              <div class="scenario-card-title">Wait and see</div>
+              <div class="scenario-line">
+                <span class="label">Inflated project cost</span>
+                <span class="val">${fmt(calc.deferredProjectCost)}</span>
+              </div>
+              <div class="scenario-line">
+                <span class="label">NOI loss (2yr wait)</span>
+                <span class="val">${fmtK(calc.deferredCumNOILoss)}</span>
+              </div>
+              <div class="scenario-line">
+                <span class="label">Permanent valuation drag</span>
+                <span class="val">${fmtK(calc.permanentValuationHit)}</span>
+              </div>
+              <div class="scenario-total">
+                <span class="label">▎Total impact</span>
+                <span class="val">${fmtK(calc.totalDeferCost)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <div class="mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest mb-1">▎Doing it now saves</div>
+            <div class="display text-4xl text-[var(--green)]">${fmtK(calc.savingsByDoingNow)}</div>
+            <div class="mono text-[10px] text-[var(--text-faint)] mt-1">VS DEFERRING 24 MONTHS · ${fmtPct((calc.savingsByDoingNow/state.projectCost)*100)} OF PROJECT COST</div>
+          </div>
+
+          <p class="text-xs text-[var(--text-dim)] mt-4 text-center max-w-xl mx-auto">
+            Defer model assumes: 5%/yr construction inflation + 5% scope expansion from continued deterioration + 1.5% annual NOI compression from tenant friction and curb-appeal degradation, with half of NOI loss becoming permanent.
+          </p>
+        </div>
+
+        <!-- OWNER CONVERSATION SCRIPT -->
+        <div class="mb-8">
+          <div class="section-label">▎Ownership conversation · plain-language script</div>
+          <div class="script-box">${generateOwnerScript(calc)}</div>
+          <p class="text-xs text-[var(--text-faint)] mono uppercase tracking-widest mt-3 text-center">
+            // ADAPT TO YOUR OWNERSHIP\'S CADENCE AND TERMINOLOGY
+          </p>
+        </div>
+
+        <!-- EMAIL CAPTURE -->
+        <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
+          <div class="section-label">▎Send to ownership</div>
+          <h3 class="display text-2xl uppercase mb-2">Email me the NOI analysis</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Branded PDF: full asset impact analysis, defer-cost math, treatment guidance, and ownership conversation script. Send straight to your owner, asset manager, or board. Plus: Surface Intelligence newsletter (462 commercial property professionals).
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name" style="margin-top: 10px;" />
+            <input type="text" id="companyInput" placeholder="Company / ownership entity (optional)" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send Me The Analysis →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox in the next 5 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 no-print mb-8">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print this analysis</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share with ownership</button>
+        </div>
+
+        <div class="text-center no-print">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Run a different scenario</button>
+        </div>
+
+      </div>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const company = document.getElementById('companyInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email');
+      return;
+    }
+    const calc = calculate();
+    const submission = {
+      tool: 'noi-impact-calculator',
+      email, name, company,
+      inputs: { ...state },
+      analysis: {
+        valuation: calc.valuation,
+        pctOfNOI: calc.pctOfNOI,
+        savingsByDoingNow: calc.savingsByDoingNow
+      },
+      timestamp: new Date().toISOString()
+    };
+    console.log('LEAD CAPTURED:', submission);
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const calc = calculate();
+    const text = `Pavement project as % of NOI: ${fmtPct(calc.pctOfNOI)}. Doing it now saves ${fmtK(calc.savingsByDoingNow)} vs deferring 24 months. Run yours: ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'NOI Impact Calculator', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied');
+    }
+  }
+</script>
+
+</body>
+</html>

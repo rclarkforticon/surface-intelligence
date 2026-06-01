@@ -6,9 +6,13 @@ Static MVP for surface-intelligence.com. The site now lives at the repository ro
 - `/` homepage
 - `/tools/` free tools landing page
 - `/tools/material-picker/`
-- `/tools/bid-decoder/`
+- `/tools/three-bid-decoder/`
+- `/tools/contractor-vetting-scorecard/`
 - `/tools/ada-risk-scorecard/`
+- `/tools/pavement-insurance-claim-estimator/`
+- `/tools/tenant-notification-letter-generator/`
 - `/tools/hoa-reserve-estimator/`
+- `/tools/noi-impact-calculator/`
 - `/tools/board-meeting-language-generator/`
 - `/projects/`
 - `/articles/`

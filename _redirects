@@ -1,6 +1,11 @@
-/tools/bid-decoder /tools/bid-decoder/index.html 200
 /tools/material-picker /tools/material-picker/index.html 200
+/tools/three-bid-decoder /tools/three-bid-decoder/index.html 200
+/tools/bid-decoder /tools/three-bid-decoder/ 301
+/tools/contractor-vetting-scorecard /tools/contractor-vetting-scorecard/index.html 200
 /tools/ada-risk-scorecard /tools/ada-risk-scorecard/index.html 200
+/tools/pavement-insurance-claim-estimator /tools/pavement-insurance-claim-estimator/index.html 200
+/tools/tenant-notification-letter-generator /tools/tenant-notification-letter-generator/index.html 200
+/tools/noi-impact-calculator /tools/noi-impact-calculator/index.html 200
 
 /tools/board-meeting-language-generator /tools/board-meeting-language-generator/index.html 200
 /tools/hoa-reserve-estimator /tools/hoa-reserve-estimator/index.html 200
