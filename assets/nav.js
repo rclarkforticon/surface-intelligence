@@ -2,7 +2,6 @@
   const navItems = [
     { label: 'Home', href: '/', section: 'home' },
     { label: 'Tools', href: '/tools/', section: 'tools' },
-    { label: 'Projects', href: '/projects/', section: 'projects' },
     { label: 'Articles', href: '/articles/', section: 'articles' },
     { label: 'Contact', href: '/contact/', section: 'contact' },
   ];
@@ -61,7 +60,6 @@
             <h3>Explore</h3>
             <a href="/tools/">Free Tools</a>
             <a href="/articles/">Articles</a>
-            <a href="/projects/">Projects</a>
             <a href="/contact/">Contact</a>
           </nav>
           <nav aria-label="Tool navigation">
@@ -108,7 +106,7 @@
     });
 
     if (isHome && 'IntersectionObserver' in window) {
-      const observed = ['home', 'tools', 'projects', 'articles', 'contact']
+      const observed = ['home', 'tools', 'articles', 'contact']
         .map((id) => document.getElementById(id))
         .filter(Boolean);
       const setActive = (id) => {

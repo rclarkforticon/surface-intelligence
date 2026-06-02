@@ -4,149 +4,415 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ryan Clark — Free Pavement, ADA & Bid Decision Tools</title>
-  <meta name="description" content="Free tools and field notes on pavement, concrete, ADA, and bid decisions from Ryan Clark. For property managers, HOA boards, facility teams, and commercial owners.">
+  <meta name="description" content="Free tools and field notes on pavement, concrete, ADA, and bid decisions. For property managers, HOA boards, facility teams, and commercial owners. No login. No pitch.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
+  <style>
+
+    /* ── HERO ─────────────────────────────────────── */
+    .hero-full {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(5,5,4,0.92) 0%, rgba(5,5,4,0.6) 60%, rgba(5,5,4,0.3) 100%),
+        linear-gradient(to bottom, transparent 50%, rgba(5,5,4,0.95) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 140px 0 100px;
+      max-width: 680px;
+    }
+    .hero-content h1 {
+      font-size: clamp(46px, 6.5vw, 82px);
+      line-height: 1.02;
+      margin: 16px 0 26px;
+      letter-spacing: -0.03em;
+    }
+    .hero-content p {
+      font-size: clamp(17px, 1.8vw, 21px);
+      line-height: 1.6;
+      color: rgba(212,212,216,0.9);
+      margin: 0 0 36px;
+      max-width: 560px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .hero-badge {
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(212,212,216,0.6);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 8px 14px;
+    }
+
+    /* ── TOOL TEASER ──────────────────────────────── */
+    .teaser-section {
+      padding: 96px 0;
+    }
+    .teaser-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .teaser-header h2 {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.05;
+      margin: 10px 0 0;
+    }
+    .teaser-header p { max-width: 480px; margin: 10px 0 0; }
+
+    .teaser-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .teaser-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    }
+    .teaser-card:hover {
+      border-color: rgba(250,204,21,0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.44), 0 0 0 1px rgba(250,204,21,0.12);
+    }
+    .teaser-card-img {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      background: #0d0d0a;
+    }
+    .teaser-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 300ms ease;
+    }
+    .teaser-card:hover .teaser-card-img img { transform: scale(1.04); }
+    .teaser-card-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(13,13,12,0.7) 100%);
+    }
+    .teaser-card-body {
+      padding: 20px 22px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .teaser-card-body .tag { align-self: flex-start; margin-bottom: 12px; }
+    .teaser-card-body h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .teaser-card-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+    }
+    .teaser-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      transition: gap 120ms ease;
+    }
+    .teaser-card:hover .teaser-card-cta { gap: 10px; }
+
+    .all-tools-bar {
+      margin-top: 32px;
+      padding: 22px 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(255,255,255,0.02);
+    }
+    .all-tools-bar p {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+    }
+    .all-tools-bar strong { color: #fff; }
+
+    /* ── PHOTO DIVIDER ────────────────────────────── */
+    .photo-divider {
+      position: relative;
+      height: 340px;
+      overflow: hidden;
+    }
+    .photo-divider img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+    .photo-divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(5,5,4,1) 0%, transparent 20%, transparent 80%, rgba(5,5,4,1) 100%);
+      z-index: 1;
+    }
+    .photo-divider-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .photo-divider-text blockquote {
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #fff;
+      max-width: 700px;
+      margin: 0;
+      padding: 0 20px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+    }
+    .photo-divider-text blockquote span { color: var(--yellow); }
+
+    /* ── ARTICLES TEASER ──────────────────────────── */
+    .articles-section { padding: 96px 0; }
+    .articles-section .section-header { margin-bottom: 36px; }
+
+    /* ── NEWSLETTER ───────────────────────────────── */
+    .newsletter-section { padding: 0 0 96px; }
+
+    /* ── RESPONSIVE ───────────────────────────────── */
+    @media (max-width: 900px) {
+      .teaser-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .teaser-header { grid-template-columns: 1fr; }
+      .hero-full { min-height: 80vh; }
+    }
+    @media (max-width: 600px) {
+      .teaser-grid { grid-template-columns: 1fr; }
+      .hero-content { padding: 120px 0 80px; }
+      .hero-content h1 { font-size: 42px; }
+      .all-tools-bar { flex-direction: column; align-items: flex-start; }
+      .photo-divider { height: 240px; }
+    }
+  </style>
 </head>
 <body>
 <script src="/assets/nav.js"></script>
-<main>
-  <section class="wrap hero" id="home">
-    <div class="hero-copy">
-      <div class="eyebrow">// Field intelligence for property teams</div>
-      <h1 class="display hero-title">Better pavement decisions <span>before the work starts.</span></h1>
-      <p>I help property managers, HOA boards, facility teams, and commercial owners decode asphalt, concrete, ADA, and bid decisions before capital dollars are committed. Use these free tools, then send me your project details.</p>
-      <div class="actions" aria-label="Primary calls to action">
-        <a class="btn" href="/tools/">Use the free tools</a>
-        <a class="btn ghost" href="/contact/">Email me about your project</a>
+<main id="main-content">
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section class="hero-full" id="home">
+    <div class="hero-bg">
+      <img src="/assets/images/hero-paving.jpg" alt="Fresh asphalt paving job" fetchpriority="high">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="wrap hero-content">
+      <div class="eyebrow">// Ryan Clark · Surface Intelligence</div>
+      <h1 class="display">Free pavement tools for property managers.</h1>
+      <p>11 free decision tools to help you make smarter calls on asphalt, concrete, ADA, and bids — before capital dollars are committed. No login. No pitch.</p>
+      <div class="actions">
+        <a class="btn" href="/tools/">Browse the free tools</a>
+        <a class="btn ghost" href="/articles/">Read the field notes</a>
       </div>
-      <div class="hero-proof" aria-label="Surface Intelligence focus areas">
-        <span class="proof-pill">Bid clarity</span>
-        <span class="proof-pill">ADA risk checks</span>
-        <span class="proof-pill">Board-ready language</span>
+      <div class="hero-badges">
+        <span class="hero-badge">11 free tools</span>
+        <span class="hero-badge">ADA risk checks</span>
+        <span class="hero-badge">Bid strategy</span>
+        <span class="hero-badge">Board-ready language</span>
+        <span class="hero-badge">No login required</span>
       </div>
     </div>
-    <aside class="panel hero-panel" aria-labelledby="tools-card-title">
-      <div class="panel-header">
+  </section>
+
+  <!-- ── TOOL TEASER ────────────────────────────────────── -->
+  <section class="teaser-section" id="tools">
+    <div class="wrap">
+      <div class="teaser-header">
         <div>
-          <div class="eyebrow">// Free tools by Ryan Clark</div>
-          <h2 class="display" id="tools-card-title">Decision support in minutes</h2>
+          <div class="eyebrow">// Free tools</div>
+          <h2 class="display">Decisions that used to take days. Now take minutes.</h2>
+          <p>Use these before a contractor call, board meeting, or budget request. Every tool is free, private, and built for how property teams actually work.</p>
         </div>
-        <div class="panel-stat">Free<br>+ no login</div>
+        <a class="btn ghost" href="/tools/">See all 11 tools</a>
       </div>
-      <div class="tool-list">
-        <a class="tool-mini" href="/tools/material-picker/"><b>Material Picker</b><span>Choose asphalt, concrete, hybrid, overlay, or replacement with a practical first-pass recommendation.</span></a>
-        <a class="tool-mini" href="/tools/bid-decoder/"><b>Three-Bid Decoder</b><span>Compare three bids by useful life, scope quality, and cost per year — not just sticker price.</span></a>
-        <a class="tool-mini" href="/tools/contractor-vetting-scorecard/"><b>Contractor Vetting Scorecard</b><span>Check license, insurance, warranty, scope, and operational risk before signing.</span></a>
-        <a class="tool-mini" href="/tools/ada-risk-scorecard/"><b>ADA Lawsuit Risk Scorecard</b><span>Check common accessible parking and path-of-travel red flags before they escalate.</span></a>
-        <a class="tool-mini" href="/tools/pavement-insurance-claim-estimator/"><b>Pavement Insurance Claim Estimator</b><span>Assemble claim logic, documentation needs, and adjuster prep for storm or utility damage.</span></a>
-        <a class="tool-mini" href="/tools/tenant-notification-letter-generator/"><b>Tenant Notification Letter Generator</b><span>Create clear resident or tenant notices for closures, phasing, and access impacts.</span></a>
-        <a class="tool-mini" href="/tools/hoa-reserve-estimator/"><b>HOA Reserve Estimator</b><span>Build a rough pavement reserve range before budget season.</span></a>
-        <a class="tool-mini" href="/tools/noi-impact-calculator/"><b>NOI Impact Calculator</b><span>Translate pavement decisions into asset-value and deferred-maintenance consequences.</span></a>
-        <a class="tool-mini" href="/tools/board-meeting-language-generator/"><b>Board Meeting Language Generator</b><span>Turn scope, risk, and lifecycle concerns into board-ready language.</span></a>
-      </div>
-    </aside>
-  </section>
 
-  <section class="wrap section" id="tools">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">// Free tools</div>
-        <h2 class="display">Practical answers for expensive property decisions.</h2>
-      </div>
-      <p>Use these before a board meeting, contractor call, budget request, or ADA concern. Each tool turns confusing field conditions into clearer next steps.</p>
-    </div>
-    <div class="grid3">
-      <a class="card card-link" href="/tools/material-picker/"><span class="tag">60 seconds</span><h3 class="display">Material Picker</h3><p>Get a starting recommendation for asphalt, concrete, hybrid design, overlay, or replacement.</p></a>
-      <a class="card card-link" href="/tools/bid-decoder/"><span class="tag">Bid strategy</span><h3 class="display">Three-Bid Decoder</h3><p>Rank competing paving bids by useful life, scope risk, and long-term value.</p></a>
-      <a class="card card-link" href="/tools/contractor-vetting-scorecard/"><span class="tag">Contractor risk</span><h3 class="display">Contractor Vetting Scorecard</h3><p>Pressure-test a contractor before signing by license, insurance, warranty, and scope clarity.</p></a>
-      <a class="card card-link" href="/tools/ada-risk-scorecard/"><span class="tag">Risk check</span><h3 class="display">ADA Risk Scorecard</h3><p>Spot common accessible parking, slope, signage, route, and drainage red flags.</p></a>
-      <a class="card card-link" href="/tools/pavement-insurance-claim-estimator/"><span class="tag">Insurance</span><h3 class="display">Pavement Insurance Claim Estimator</h3><p>Build a pavement claim pack with damage logic, cost ranges, and documentation next steps.</p></a>
-      <a class="card card-link" href="/tools/tenant-notification-letter-generator/"><span class="tag">Notice writing</span><h3 class="display">Tenant Notification Letter Generator</h3><p>Create clear tenant or resident notices for paving work, closures, parking changes, and phasing.</p></a>
-      <a class="card card-link" href="/tools/hoa-reserve-estimator/"><span class="tag">Reserve planning</span><h3 class="display">HOA Reserve Estimator</h3><p>Estimate rough annual and monthly pavement reserve targets using area, condition, and timeline.</p></a>
-      <a class="card card-link" href="/tools/noi-impact-calculator/"><span class="tag">Asset value</span><h3 class="display">NOI Impact Calculator</h3><p>Model how pavement decisions affect NOI, cap-rate value, and deferred-maintenance exposure.</p></a>
-      <a class="card card-link" href="/tools/board-meeting-language-generator/"><span class="tag">Board packet</span><h3 class="display">Board Meeting Language Generator</h3><p>Create plain-English meeting language that explains scope, risk, useful life, and next steps.</p></a>
-    </div>
-  </section>
+      <div class="teaser-grid">
 
-  <section class="wrap section" aria-labelledby="trust-title">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">// Why property teams use it</div>
-        <h2 class="display" id="trust-title">Most mistakes happen before a contractor mobilizes.</h2>
+        <a class="teaser-card" href="/tools/material-picker/">
+          <div class="teaser-card-img">
+            <img src="/tools/tool-card-images/material-picker.png" alt="Material Picker" loading="lazy">
+          </div>
+          <div class="teaser-card-body">
+            <span class="tag">60 seconds</span>
+            <h3>Material Picker</h3>
+            <p>Asphalt, concrete, or hybrid? Answer 7 questions and get a recommendation with a 20-year lifecycle cost estimate.</p>
+            <span class="teaser-card-cta">Use tool →</span>
+          </div>
+        </a>
+
+        <a class="teaser-card" href="/tools/bid-decoder/">
+          <div class="teaser-card-img">
+            <img src="/tools/tool-card-images/bid-decoder.png" alt="Three-Bid Decoder" loading="lazy">
+          </div>
+          <div class="teaser-card-body">
+            <span class="tag">Bid strategy</span>
+            <h3>Three-Bid Decoder</h3>
+            <p>Stop comparing sticker prices. Get cost-per-year-of-useful-life and scope risk across all three bids side by side.</p>
+            <span class="teaser-card-cta">Use tool →</span>
+          </div>
+        </a>
+
+        <a class="teaser-card" href="/tools/ada-risk-scorecard/">
+          <div class="teaser-card-img">
+            <img src="/tools/tool-card-images/ada-risk-scorecard.png" alt="ADA Risk Scorecard" loading="lazy">
+          </div>
+          <div class="teaser-card-body">
+            <span class="tag">Risk check</span>
+            <h3>ADA Risk Scorecard</h3>
+            <p>Walk through 8 common accessible parking red flags. Know your risk level before a complaint — or a lawsuit — arrives.</p>
+            <span class="teaser-card-cta">Use tool →</span>
+          </div>
+        </a>
+
       </div>
-    </div>
-    <div class="grid3">
-      <div class="card"><span class="tag">Scope</span><h3 class="display">Make bids comparable</h3><p>Identify missing prep, vague base repair language, ADA exclusions, and unrealistic lifecycle assumptions before approval.</p></div>
-      <div class="card"><span class="tag">ADA</span><h3 class="display">Think beyond striping</h3><p>Accessible parking issues often start with slope, drainage, transitions, signage, and path-of-travel geometry.</p></div>
-      <div class="card"><span class="tag">Boards</span><h3 class="display">Explain the why</h3><p>Turn technical pavement concerns into simple, defensible language owners and boards can understand.</p></div>
-    </div>
-    <div class="metric-row" aria-label="Surface Intelligence benefits">
-      <div class="metric"><strong>9</strong><span>Free decision tools</span></div>
-      <div class="metric"><strong>5 min</strong><span>Typical first-pass review</span></div>
-      <div class="metric"><strong>0</strong><span>Generic sales pitch</span></div>
+
+      <div class="all-tools-bar">
+        <p><strong>8 more tools</strong> — sealcoat timing, HOA reserves, NOI impact, contractor vetting, insurance claims, board language, condition rating, and tenant notices.</p>
+        <a class="btn" href="/tools/">See all 11 free tools</a>
+      </div>
     </div>
   </section>
 
-  <section class="wrap section" id="projects">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">// Project intelligence</div>
-        <h2 class="display">Real scenarios. Better maintenance strategy.</h2>
-      </div>
-      <a class="btn ghost" href="/projects/">View project lessons</a>
+  <!-- ── PHOTO DIVIDER ──────────────────────────────────── -->
+  <div class="photo-divider">
+    <img src="/assets/images/paving-job-2.jpg" alt="Paving work in progress" loading="lazy">
+    <div class="photo-divider-text">
+      <blockquote>"Most pavement mistakes happen <span>before a contractor mobilizes.</span>"</blockquote>
     </div>
-    <div class="grid3">
-      <article class="card"><span class="tag">HOA</span><h3 class="display">Phasing without chaos</h3><p>How better sequencing can reduce resident disruption and make board approvals easier.</p></article>
-      <article class="card"><span class="tag">Commercial</span><h3 class="display">ADA before paint</h3><p>Why slopes, drainage, and path transitions need review before restriping accessible stalls.</p></article>
-      <article class="card"><span class="tag">Industrial</span><h3 class="display">Heavy-load thinking</h3><p>Why truck courts need different repair assumptions than normal passenger parking lots.</p></article>
-    </div>
-  </section>
+  </div>
 
-  <section class="wrap section" id="articles">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">// Articles and newsletter</div>
-        <h2 class="display">Thirteen field notes for smarter property planning.</h2>
-      </div>
-      <a class="btn ghost" href="/articles/">Read all 13 editions</a>
-    </div>
-    <div class="grid3">
-      <article class="card article-card">
-        <a class="article-image-link" href="/articles/#issue-13"><img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D4E12AQGq-7S5QMxjUQ/article-cover_image-shrink_720_1280/B4EZ5jwgDqIAAU-/0/1779790121969?e=2147483647&t=2yiK4RWA_7P2dpSLej_ey25LBqJ9FIofOwiaoLrWrn0&v=beta" data-fallback="/assets/article-thumbnails/issue-13.svg" referrerpolicy="no-referrer" alt="Editorial thumbnail for the Board Meeting Language newsletter edition" loading="lazy" width="960" height="540"></a>
-        <div class="article-body"><span class="tag">Board Strategy</span><h3 class="display"><a href="/articles/#issue-13">The Board Meeting Language That Gets Pavement Projects Approved</a></h3><p>Frame pavement work as risk, lifecycle, safety, and asset protection instead of cosmetic maintenance.</p></div>
-      </article>
-      <article class="card article-card">
-        <a class="article-image-link" href="/articles/#issue-12"><img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D5612AQEXlN9lJvr-Gg/article-cover_image-shrink_720_1280/B56Z5QWyRZIQAQ-/0/1779464613551?e=2147483647&t=MHp1gh1BJE7On8SrTL95C4l_HNBQ6v7NfdVoXGF-1us&v=beta" data-fallback="/assets/article-thumbnails/issue-12.svg" referrerpolicy="no-referrer" alt="Editorial thumbnail for the ADA compliance honey pot newsletter edition" loading="lazy" width="960" height="540"></a>
-        <div class="article-body"><span class="tag">ADA Risk</span><h3 class="display"><a href="/articles/#issue-12">At What Point Did ADA Compliance Become a Lawyer’s Honey Pot?</a></h3><p>A timely perspective on California ADA lawsuit pressure and what property owners should understand.</p></div>
-      </article>
-      <article class="card article-card">
-        <a class="article-image-link" href="/articles/#issue-11"><img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D5612AQFTcl8FBYhPBg/article-cover_image-shrink_720_1280/B56Z5HJ3qNKwAQ-/0/1779310232878?e=2147483647&t=Y2_P40p_jGmappgW_OhrPZC2z7LE5YEpUIzcznORSLE&v=beta" data-fallback="/assets/article-thumbnails/issue-11.svg" referrerpolicy="no-referrer" alt="Editorial thumbnail for the ADA lawsuit survival guide newsletter edition" loading="lazy" width="960" height="540"></a>
-        <div class="article-body"><span class="tag">ADA Risk</span><h3 class="display"><a href="/articles/#issue-11">The ADA Lawsuit Survival Guide Property Managers Need in 2026</a></h3><p>Documentation, deferred repairs, contractor communication, and defensible risk-management systems.</p></div>
-      </article>
-    </div>
-  </section>
-
-  <section class="wrap section" id="contact">
-    <div class="newsletter">
+  <!-- ── ARTICLES ───────────────────────────────────────── -->
+  <section class="articles-section" id="articles">
+    <div class="wrap">
       <div class="section-header">
         <div>
-          <div class="eyebrow" style="color:#111">// Ryan Clark's Field Notes</div>
-          <h2 class="display">Get one practical pavement decision brief each week.</h2>
-          <p>Bid review language, ADA red flags, maintenance planning ideas, and pavement strategy from someone doing the work. Delivered to your inbox every week.</p>
+          <div class="eyebrow">// Field notes</div>
+          <h2 class="display">Real-world pavement intel, free every week.</h2>
+          <p>ADA red flags, bid strategy, board communication, and maintenance decisions — from someone doing the work.</p>
         </div>
-        <a class="btn ghost" style="background:#111;color:#fff;border-color:#111" href="/contact/">Email Ryan</a>
+        <a class="btn ghost" href="/articles/">Read all 13 issues</a>
       </div>
-      <form class="form" name="newsletter" method="POST" data-netlify="true">
-        <input type="hidden" name="form-name" value="newsletter">
-        <label><span class="sr-only">First name</span><input class="input" name="name" autocomplete="given-name" placeholder="First name"></label>
-        <label><span class="sr-only">Email address</span><input class="input" name="email" type="email" autocomplete="email" placeholder="Email address" required></label>
-        <button class="btn" type="submit" style="background:#111;color:#fff;border-color:#111">Subscribe</button>
-      </form>
+
+      <div class="grid3">
+        <article class="card article-card">
+          <a class="article-image-link" href="/articles/#issue-13">
+            <img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D4E12AQGq-7S5QMxjUQ/article-cover_image-shrink_720_1280/B4EZ5jwgDqIAAU-/0/1779790121969?e=2147483647&t=2yiK4RWA_7P2dpSLej_ey25LBqJ9FIofOwiaoLrWrn0&v=beta" data-fallback="/assets/article-thumbnails/issue-13.svg" referrerpolicy="no-referrer" alt="Board Meeting Language" loading="lazy" width="960" height="540">
+          </a>
+          <div class="article-body">
+            <span class="tag">Board Strategy</span>
+            <h3 class="display"><a href="/articles/#issue-13">The Board Meeting Language That Gets Pavement Projects Approved</a></h3>
+            <p>Frame pavement work as risk, lifecycle, and asset protection — not cosmetic maintenance.</p>
+          </div>
+        </article>
+
+        <article class="card article-card">
+          <a class="article-image-link" href="/articles/#issue-12">
+            <img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D5612AQEXlN9lJvr-Gg/article-cover_image-shrink_720_1280/B56Z5QWyRZIQAQ-/0/1779464613551?e=2147483647&t=MHp1gh1BJE7On8SrTL95C4l_HNBQ6v7NfdVoXGF-1us&v=beta" data-fallback="/assets/article-thumbnails/issue-12.svg" referrerpolicy="no-referrer" alt="ADA Compliance" loading="lazy" width="960" height="540">
+          </a>
+          <div class="article-body">
+            <span class="tag">ADA Risk</span>
+            <h3 class="display"><a href="/articles/#issue-12">At What Point Did ADA Compliance Become a Lawyer's Honey Pot?</a></h3>
+            <p>A straight take on California ADA lawsuit pressure and what property owners need to understand.</p>
+          </div>
+        </article>
+
+        <article class="card article-card">
+          <a class="article-image-link" href="/articles/#issue-11">
+            <img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D5612AQFTcl8FBYhPBg/article-cover_image-shrink_720_1280/B56Z5HJ3qNKwAQ-/0/1779310232878?e=2147483647&t=Y2_P40p_jGmappgW_OhrPZC2z7LE5YEpUIzcznORSLE&v=beta" data-fallback="/assets/article-thumbnails/issue-11.svg" referrerpolicy="no-referrer" alt="ADA Lawsuit Survival Guide" loading="lazy" width="960" height="540">
+          </a>
+          <div class="article-body">
+            <span class="tag">ADA Risk</span>
+            <h3 class="display"><a href="/articles/#issue-11">The ADA Lawsuit Survival Guide Property Managers Need in 2026</a></h3>
+            <p>Documentation, deferred repairs, contractor communication, and defensible risk-management systems.</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
+
+  <!-- ── NEWSLETTER ─────────────────────────────────────── -->
+  <section class="newsletter-section" id="contact">
+    <div class="wrap">
+      <div class="newsletter">
+        <div class="section-header">
+          <div>
+            <div class="eyebrow" style="color:#111">// Weekly field notes</div>
+            <h2 class="display">One practical pavement brief every week.</h2>
+            <p style="color:rgba(0,0,0,0.65)">Bid review language, ADA red flags, maintenance strategy, and field intel from someone doing the work. Delivered free to your inbox.</p>
+          </div>
+          <a class="btn" style="background:#111;color:#fff;border-color:#111;flex-shrink:0" href="/contact/">Email Ryan directly</a>
+        </div>
+        <form class="form" name="newsletter" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="newsletter">
+          <label><span class="sr-only">First name</span><input class="input" name="name" autocomplete="given-name" placeholder="First name"></label>
+          <label><span class="sr-only">Email address</span><input class="input" name="email" type="email" autocomplete="email" placeholder="Email address" required></label>
+          <button class="btn" type="submit" style="background:#111;color:#fff;border-color:#111">Subscribe free</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
 </main>
 </body>
 </html>

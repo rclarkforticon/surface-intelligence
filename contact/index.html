@@ -3,40 +3,181 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact Forticon / Surface Intelligence</title>
-  <meta name="description" content="Ask a pavement, concrete, ADA, bid, or property maintenance question through Surface Intelligence.">
+  <title>Contact Ryan Clark — Surface Intelligence</title>
+  <meta name="description" content="Send Ryan your pavement, ADA, concrete, or bid question. Free analysis from 15+ years of field experience. Backed by Forticon.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+
+    .forticon-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .forticon-card-header {
+      background: linear-gradient(135deg, var(--yellow), #f59e0b);
+      padding: 22px 24px 18px;
+    }
+    .forticon-card-header .mono {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(0,0,0,0.6);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .forticon-card-header h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .forticon-card-body {
+      padding: 22px 24px;
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+    }
+    .forticon-card-body p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--dim);
+      margin: 0 0 18px;
+    }
+    .forticon-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 13px/1 'JetBrains Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      border: 1px solid rgba(250,204,21,0.3);
+      border-radius: 999px;
+      padding: 10px 16px;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+    .forticon-link:hover {
+      background: rgba(250,204,21,0.08);
+      border-color: rgba(250,204,21,0.6);
+    }
+
+    .contact-card {
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .contact-email-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .contact-email-row span {
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .contact-email-row a {
+      font: 600 15px/1 'JetBrains Mono', monospace;
+      color: var(--yellow);
+    }
+    .contact-email-row a:hover { text-decoration: underline; }
+
+    .form-card {
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    @media (max-width: 820px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<body><script src="/assets/nav.js"></script>
-<main class="wrap">
-  <section class="page-title">
-    <div class="eyebrow">// Let's talk about your project</div>
-    <h1 class="display">Send Ryan your pavement, concrete, ADA, or bid question.</h1>
-    <p>Include your property type, what you're trying to decide, and any deadlines or board constraints. Ryan will review your details and respond within 24 hours with next steps.</p>
-  </section>
-  <section class="section" style="padding-top:0">
-    <div class="grid2">
-      <div class="card">
-        <span class="tag">Ryan Clark • Forticon</span>
-        <h2 class="display">Get clearer next steps before you approve scope.</h2>
-        <p>After 15+ years helping property managers, HOA boards, and facility teams make better pavement decisions, I built these free tools to share what I've learned. Use the tools, then send me your specific project for my analysis.</p>
-        <p class="mono" style="color:var(--yellow)">rclark@forticon.com</p>
-        <div class="notice">For urgent site-specific ADA, engineering, or legal questions, verify conditions with the appropriate qualified professional before making decisions.</div>
+<body>
+<script src="/assets/nav.js"></script>
+<main>
+  <div class="wrap">
+    <section class="page-title">
+      <div class="eyebrow">// Let's talk about your project</div>
+      <h1 class="display">Send Ryan your pavement, ADA, or bid question.</h1>
+      <p>Include your property type, what you're trying to decide, and any deadlines or board constraints. Ryan will review your details and respond within 24 hours with next steps.</p>
+    </section>
+
+    <div class="contact-layout" style="padding-bottom: 80px;">
+
+      <!-- LEFT: Info + Forticon -->
+      <div class="contact-info">
+
+        <div class="contact-card">
+          <div class="eyebrow" style="margin-bottom:12px">// Direct contact</div>
+          <div class="contact-email-row">
+            <span>Email</span>
+            <a href="mailto:rclark@forticon.com">rclark@forticon.com</a>
+          </div>
+          <p style="font-size:14px; color:var(--muted); margin:0 0 12px">Use the tools first — they'll give you a first-pass answer in minutes. Then send me your project details and I'll give you a straight read on your specific situation.</p>
+          <div class="notice">For urgent site-specific ADA, engineering, or legal questions, verify conditions with a qualified professional before acting.</div>
+        </div>
+
+        <!-- Forticon card -->
+        <div class="forticon-card">
+          <div class="forticon-card-header">
+            <div class="mono">// The company behind the work</div>
+            <h3>Ryan Clark · Forticon</h3>
+          </div>
+          <div class="forticon-card-body">
+            <p>These free tools are built on 15+ years of field experience. I'm a Forticon sales professional specializing in pavement, concrete, and ADA compliance for commercial property owners across California.</p>
+            <p>Forticon is a full-service paving contractor serving the Bay Area and Northern California with a proven track record on HOA, commercial, and industrial properties. When you're ready to move from analysis to action, that's who gets the call.</p>
+            <a class="forticon-link" href="https://www.forticon.com" target="_blank" rel="noopener noreferrer">
+              Visit Forticon.com ↗
+            </a>
+          </div>
+        </div>
+
       </div>
-      <form class="card" name="contact" method="POST" data-netlify="true">
+
+      <!-- RIGHT: Contact form -->
+      <form class="form-card" name="contact" method="POST" data-netlify="true">
         <input type="hidden" name="form-name" value="contact">
+        <div class="eyebrow" style="margin-bottom:20px">// Send your question</div>
         <div class="field"><label for="name">Name</label><input id="name" class="input" name="name" autocomplete="name" required></div>
         <div class="field"><label for="email">Email</label><input id="email" class="input" name="email" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="company">Company / Property</label><input id="company" class="input" name="company" autocomplete="organization"></div>
-        <div class="field"><label for="property_type">Property type</label><select id="property_type" name="property_type"><option value="">Select property type</option><option>Commercial</option><option>HOA</option><option>Industrial</option><option>Owner-operated</option></select></div>
-        <div class="field"><label for="message">What do you need help with?</label><textarea id="message" name="message" rows="7" required></textarea></div>
-        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px"><input type="checkbox" name="newsletter"> <span>Yes, send me Ryan's weekly field notes.</span></label>
-        <button class="btn" type="submit">Send my question</button>
+        <div class="field"><label for="company">Company / Property name</label><input id="company" class="input" name="company" autocomplete="organization"></div>
+        <div class="field">
+          <label for="property_type">Property type</label>
+          <select id="property_type" name="property_type">
+            <option value="">Select property type</option>
+            <option>Commercial office / retail</option>
+            <option>HOA / condo community</option>
+            <option>Apartment / multifamily</option>
+            <option>Industrial / warehouse</option>
+            <option>Shopping center</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="message">What do you need help with?</label><textarea id="message" name="message" rows="6" required placeholder="Describe your project, the decision you're trying to make, and any bids or scope you already have."></textarea></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:20px;cursor:pointer">
+          <input type="checkbox" name="newsletter" style="margin-top:3px;accent-color:var(--yellow)">
+          <span style="font-size:14px;color:var(--muted)">Yes — send me Ryan's weekly field notes on pavement, ADA, and bid strategy.</span>
+        </label>
+        <button class="btn" type="submit" style="width:100%">Send my question →</button>
       </form>
+
     </div>
-  </section>
-</main></body>
+  </div>
+</main>
+</body>
 </html>
