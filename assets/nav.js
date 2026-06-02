@@ -67,14 +67,16 @@
           <nav aria-label="Tool navigation">
             <h3>Tools</h3>
             <a href="/tools/material-picker/">Material Picker</a>
-            <a href="/tools/three-bid-decoder/">Three-Bid Decoder</a>
+            <a href="/tools/bid-decoder/">Three-Bid Decoder</a>
             <a href="/tools/contractor-vetting-scorecard/">Contractor Vetting Scorecard</a>
             <a href="/tools/ada-risk-scorecard/">ADA Risk Scorecard</a>
+            <a href="/tools/pavement-condition-rating/">Pavement Condition Rating</a>
             <a href="/tools/pavement-insurance-claim-estimator/">Insurance Claim Estimator</a>
             <a href="/tools/tenant-notification-letter-generator/">Tenant Letter Generator</a>
             <a href="/tools/hoa-reserve-estimator/">HOA Reserve Estimator</a>
             <a href="/tools/noi-impact-calculator/">NOI Impact Calculator</a>
             <a href="/tools/board-meeting-language-generator/">Board Language Generator</a>
+            <a href="/tools/sealcoat-timing-calculator/">Sealcoat Timing Calculator</a>
           </nav>
         </div>
       </footer>`;

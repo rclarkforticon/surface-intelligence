@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Desktop_Commander__list_directory",
+      "mcp__Desktop_Commander__read_file",
+      "Bash(find \"/c/Users/rclark/Desktop\" -maxdepth 4 -name \"*board*\" -o -name \"*tenant*\" -o -name \"*ada*\" -o -name \"*noi*\" -o -name \"*insurance*\" -o -name \"*sealcoat*\" 2>/dev/null | head -20)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git fetch *)",
+      "Bash(git reset *)"
+    ]
+  }
+}

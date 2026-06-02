@@ -3,118 +3,325 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Free Pavement Tools — Surface Intelligence</title>
-  <meta name="description" content="Nine free Surface Intelligence tools for pavement material decisions, bid comparison, ADA risk, insurance claims, reserve planning, tenant notices, contractor vetting, NOI impact, and board language.">
+  <title>Free Pavement Decision Tools — Surface Intelligence</title>
+  <meta name="description" content="11 free tools for property managers, HOA boards, facility teams, and commercial owners. Material selection, ADA risk checks, bid comparison, reserve planning, sealcoat timing, and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
   <style>
-    .tools-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: 28px; align-items: stretch; padding-top: 56px; }
-    .tools-hero h1 { font-size: clamp(46px, 8vw, 96px); line-height: .9; margin: 10px 0 18px; }
-    .tools-hero p { color: var(--dim); font-size: 18px; max-width: 760px; }
-    .tool-count { border: 1px solid var(--border); background: rgba(255,255,255,.035); padding: 28px; border-radius: var(--radius-md); display: grid; align-content: center; }
-    .tool-count strong { color: var(--yellow); font-family: Anton, sans-serif; font-size: clamp(72px, 12vw, 132px); line-height: .85; }
-    .tool-count span { color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-    .tool-band { margin-top: 42px; }
-    .tool-band-header { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
-    .tool-band-header h2 { margin: 0; font-size: clamp(24px, 3vw, 38px); }
-    .tool-band-header p { color: var(--dim); margin: 0; max-width: 560px; }
-    .tool-catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .tool-card { min-height: 260px; display: flex; flex-direction: column; justify-content: space-between; gap: 22px; }
-    .tool-card h3 { margin: 10px 0 8px; font-size: 28px; line-height: 1; }
-    .tool-card p { color: var(--dim); margin: 0; }
-    .tool-meta { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tool-link { color: var(--yellow); font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
-    .workflow-strip { margin: 56px 0 14px; padding: 22px; border: 1px solid var(--border); background: rgba(250,204,21,.045); border-radius: var(--radius-md); display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .workflow-step { border-left: 2px solid var(--yellow); padding-left: 12px; }
-    .workflow-step b { display: block; color: #fff; margin-bottom: 4px; }
-    .workflow-step span { color: var(--dim); font-size: 14px; }
-    @media (max-width: 980px) {
-      .tools-hero { grid-template-columns: 1fr; padding-top: 34px; }
-      .tool-catalog { grid-template-columns: 1fr; }
-      .tool-band-header { display: block; }
-      .tool-band-header p { margin-top: 8px; }
-      .workflow-strip { grid-template-columns: 1fr; }
+    .tools-hero { padding: 72px 0 48px; }
+    .tools-hero h1 { font-size: clamp(42px, 5.5vw, 68px); line-height: 1.03; margin: 12px 0 20px; }
+    .tools-hero p { font-size: clamp(16px, 1.6vw, 19px); max-width: 680px; margin: 0; }
+
+    .category-label {
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      color: var(--yellow);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 52px 0 18px;
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .category-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    }
+    .tool-card:hover {
+      border-color: rgba(250,204,21,0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.44), 0 0 0 1px rgba(250,204,21,0.12);
+    }
+
+    .tool-card-art {
+      height: 180px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: #0d0d0a;
+    }
+    .tool-card-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 300ms ease;
+    }
+    .tool-card:hover .tool-card-art img {
+      transform: scale(1.04);
+    }
+    /* Subtle gradient overlay blending image into card */
+    .tool-card-art::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(13,13,12,0.75) 100%);
+      pointer-events: none;
+    }
+
+    .tool-card-body {
+      padding: 18px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .tool-card-body .tag { align-self: flex-start; margin-bottom: 12px; }
+    .tool-card-body h3 {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .tool-card-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+    }
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font: 700 11px/1 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      transition: gap 120ms ease;
+    }
+    .tool-card:hover .card-cta { gap: 10px; }
+
+    .cta-bar {
+      margin: 64px 0;
+      padding: 36px;
+      background: linear-gradient(135deg, var(--yellow), #f59e0b);
+      border-radius: var(--radius-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+    .cta-bar h2 { font-size: clamp(22px, 2.5vw, 32px); color: #111; margin: 0 0 6px; line-height: 1.1; }
+    .cta-bar p { color: rgba(0,0,0,0.65); margin: 0; font-size: 15px; }
+    .cta-bar .btn { background: #111; color: #fff; border-color: #111; box-shadow: none; white-space: nowrap; flex-shrink: 0; }
+    .cta-bar .btn:hover { background: #222; }
+
+    @media (max-width: 900px) {
+      .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .tool-grid { grid-template-columns: 1fr; }
+      .tool-card-art { height: 200px; }
+      .cta-bar { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
-<body><script src="/assets/nav.js"></script>
-<main class="wrap">
-  <section class="tools-hero">
-    <div>
-      <div class="eyebrow">// Surface Intelligence free tools</div>
-      <h1 class="display">Pavement decisions without the guesswork.</h1>
-      <p>Use these tools before budget season, contractor calls, board meetings, insurance claims, resident notices, and capital approvals. Each one turns a messy pavement decision into a clearer next step.</p>
-      <div class="actions">
-        <a class="btn" href="#tool-catalog">Browse all tools</a>
-        <a class="btn ghost" href="/contact/">Ask Ryan</a>
-      </div>
+<body>
+<script src="/assets/nav.js"></script>
+<main>
+
+  <div class="wrap tools-hero">
+    <div class="eyebrow">// Free tools · No login required</div>
+    <h1 class="display">Every tool you need before capital dollars move.</h1>
+    <p>11 free decision tools for property managers, HOA boards, facility teams, and commercial owners. Use them before a board meeting, contractor call, budget request, or ADA concern.</p>
+  </div>
+
+  <!-- ── MATERIAL & PLANNING ─────────────────────────────── -->
+  <div class="wrap">
+    <div class="category-label">Material &amp; Planning</div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="/tools/material-picker/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/material-picker.png" alt="Material Picker tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">60 seconds</span>
+          <h3>Material Picker</h3>
+          <p>Answer 7 questions about your property, traffic, climate, and goals. Get an asphalt, concrete, or hybrid recommendation with a 20-year lifecycle cost estimate.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/pavement-condition-rating/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/pavement-condition-rating.png" alt="Pavement Condition Rating tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Condition check</span>
+          <h3>Pavement Condition Rating</h3>
+          <p>Answer 5 quick questions about your pavement's visible distress, drainage, and age. Get a condition score and a first-pass maintenance recommendation.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/hoa-reserve-estimator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/hoa-reserve-estimator.png" alt="HOA Reserve Estimator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Reserve planning</span>
+          <h3>HOA Reserve Estimator</h3>
+          <p>Estimate rough annual and monthly pavement reserve targets using area, condition, and timeline. Build a number before budget season starts.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/sealcoat-timing-calculator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/sealcoat-timing-calculator.png" alt="Sealcoat Timing Calculator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">90 seconds</span>
+          <h3>Sealcoat Timing Calculator</h3>
+          <p>Tell us about your pavement and we'll tell you when to sealcoat — or when to do something else first. With cost estimate, optimal weather window, and prep checklist.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
     </div>
-    <aside class="tool-count" aria-label="Tool count">
-      <strong>9</strong>
-      <span>Free tools live now</span>
-      <p>No login, no gate, built for property managers, HOA boards, commercial owners, and facility teams.</p>
-    </aside>
-  </section>
 
-  <section class="workflow-strip" aria-label="Suggested workflow">
-    <div class="workflow-step"><b>Scope</b><span>Pick materials, compare bids, vet contractors.</span></div>
-    <div class="workflow-step"><b>Risk</b><span>Check ADA exposure and claim documentation.</span></div>
-    <div class="workflow-step"><b>Money</b><span>Estimate reserves and NOI consequences.</span></div>
-    <div class="workflow-step"><b>Approval</b><span>Generate notices and board-ready language.</span></div>
-  </section>
+    <!-- ── BID & CONTRACTOR ───────────────────────────────── -->
+    <div class="category-label">Bid &amp; Contractor</div>
+    <div class="tool-grid">
 
-  <section class="tool-band" id="tool-catalog">
-    <div class="tool-band-header">
+      <a class="tool-card" href="/tools/bid-decoder/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/bid-decoder.png" alt="Three-Bid Decoder tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Bid strategy</span>
+          <h3>Three-Bid Decoder</h3>
+          <p>Paste three competing bids. Get cost-per-year-of-useful-life, scope gap analysis, and a ranked comparison that contractors don't show you.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/contractor-vetting-scorecard/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/contractor-vetting-scorecard.png" alt="Contractor Vetting Scorecard tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Contractor risk</span>
+          <h3>Contractor Vetting Scorecard</h3>
+          <p>Pressure-test a contractor before signing. Check license, insurance, warranty language, scope clarity, and operational risk in under 3 minutes.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/noi-impact-calculator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/noi-impact-calculator.png" alt="NOI Impact Calculator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Asset value</span>
+          <h3>NOI Impact Calculator</h3>
+          <p>Translate pavement decisions into asset-value and deferred-maintenance consequences. Model how deferral or capital spend changes cap-rate value.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── RISK & COMPLIANCE ──────────────────────────────── -->
+    <div class="category-label">Risk &amp; Compliance</div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="/tools/ada-risk-scorecard/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/ada-risk-scorecard.png" alt="ADA Risk Scorecard tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Risk check</span>
+          <h3>ADA Risk Scorecard</h3>
+          <p>Walk through 8 common accessible parking and path-of-travel red flags. Get a High / Moderate / Lower risk rating and know where to focus first.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/pavement-insurance-claim-estimator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/pavement-insurance-claim-estimator.png" alt="Pavement Insurance Claim Estimator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Insurance</span>
+          <h3>Pavement Insurance Claim Estimator</h3>
+          <p>Build a pavement claim pack with damage logic, cost ranges, and adjuster documentation needs for storm or utility-cut damage.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── COMMUNICATION & REPORTING ─────────────────────── -->
+    <div class="category-label">Communication &amp; Reporting</div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="/tools/tenant-notification-letter-generator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/tenant-notification-letter-generator.png" alt="Tenant Notification Letter Generator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Notice writing</span>
+          <h3>Tenant Notification Letter Generator</h3>
+          <p>Create clear tenant or resident notices for paving work, closures, parking changes, and phasing. Covers apartments, HOAs, and commercial tenants.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+      <a class="tool-card" href="/tools/board-meeting-language-generator/">
+        <div class="tool-card-art">
+          <img src="/tools/tool-card-images/board-meeting-language-generator.png" alt="Board Meeting Language Generator tool" loading="lazy">
+        </div>
+        <div class="tool-card-body">
+          <span class="tag">Board packet</span>
+          <h3>Board Meeting Language Generator</h3>
+          <p>Turn scope, risk, and lifecycle concerns into plain-English board-ready language. Explain pavement decisions without sounding like a contractor.</p>
+          <span class="card-cta">Use tool →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── CTA BAR ────────────────────────────────────────── -->
+    <div class="cta-bar">
       <div>
-        <div class="eyebrow">// Planning and scope</div>
-        <h2 class="display">Start with the right work.</h2>
+        <h2 class="display">Have a specific project?</h2>
+        <p>Send me the details — scope, bids, site conditions, or ADA concerns. I'll give you a straight read.</p>
       </div>
-      <p>Use these when the question is what to build, who to hire, and whether the bids actually compare.</p>
+      <a class="btn" href="/contact/">Email Ryan</a>
     </div>
-    <div class="tool-catalog">
-      <a class="card card-link tool-card" href="/tools/material-picker/"><div><span class="tag">Material choice</span><h3 class="display">Asphalt vs Concrete Picker</h3><p>Choose asphalt, concrete, hybrid, overlay, or replacement with practical lifecycle guidance.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/three-bid-decoder/"><div><span class="tag">Bid strategy</span><h3 class="display">Three-Bid Decoder</h3><p>Rank competing paving bids by useful life, scope quality, and cost per year.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/contractor-vetting-scorecard/"><div><span class="tag">Contractor risk</span><h3 class="display">Contractor Vetting Scorecard</h3><p>Score a paving contractor before signing by license, insurance, scope, warranty, and operations risk.</p></div><span class="tool-link">Open tool -></span></a>
-    </div>
-  </section>
 
-  <section class="tool-band">
-    <div class="tool-band-header">
-      <div>
-        <div class="eyebrow">// Risk and documentation</div>
-        <h2 class="display">Know the exposure before it gets expensive.</h2>
-      </div>
-      <p>Use these when ADA, insurance, documentation, or tenant disruption could change the decision.</p>
-    </div>
-    <div class="tool-catalog">
-      <a class="card card-link tool-card" href="/tools/ada-risk-scorecard/"><div><span class="tag">ADA risk</span><h3 class="display">ADA Lawsuit Risk Scorecard</h3><p>Check accessible parking and path-of-travel red flags before they become claims or lawsuits.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/pavement-insurance-claim-estimator/"><div><span class="tag">Insurance</span><h3 class="display">Pavement Insurance Claim Estimator</h3><p>Build a claim pack with damage logic, documentation needs, cost ranges, and adjuster prep.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/tenant-notification-letter-generator/"><div><span class="tag">Resident notice</span><h3 class="display">Tenant Notification Letter Generator</h3><p>Create clear tenant or resident notices for paving work, closures, access changes, and phasing.</p></div><span class="tool-link">Open tool -></span></a>
-    </div>
-  </section>
+  </div>
 
-  <section class="tool-band">
-    <div class="tool-band-header">
-      <div>
-        <div class="eyebrow">// Budget and approval</div>
-        <h2 class="display">Turn the decision into numbers and language.</h2>
-      </div>
-      <p>Use these when ownership, a board, or an asset manager needs a defensible story behind the spend.</p>
-    </div>
-    <div class="tool-catalog">
-      <a class="card card-link tool-card" href="/tools/hoa-reserve-estimator/"><div><span class="tag">Reserve planning</span><h3 class="display">HOA Pavement Reserve Estimator</h3><p>Estimate annual and monthly pavement reserve targets using area, condition, timeline, and unit count.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/noi-impact-calculator/"><div><span class="tag">Asset value</span><h3 class="display">NOI Impact Calculator</h3><p>Translate pavement decisions into NOI, cap-rate, asset value, and deferred-maintenance consequences.</p></div><span class="tool-link">Open tool -></span></a>
-      <a class="card card-link tool-card" href="/tools/board-meeting-language-generator/"><div><span class="tag">Board packet</span><h3 class="display">Board Meeting Language Generator</h3><p>Generate the opening, math, close, counter-objections, and warnings for pavement approval meetings.</p></div><span class="tool-link">Open tool -></span></a>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="notice">
-      <strong>Recommended path:</strong> Start with Material Picker, decode your bids, vet the contractor, then use the ADA, reserve, NOI, tenant notice, and board language tools to pressure-test the decision before anyone signs.
-    </div>
-  </section>
 </main>
 </body>
 </html>

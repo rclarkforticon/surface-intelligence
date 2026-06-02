@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sealcoat Timing Calculator — Surface Intelligence</title>
+<meta name="description" content="Free 90-second tool. Tells you when (or whether) to sealcoat your parking lot — with cost estimate, optimal weather window, and what to do first." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --yellow: #FACC15;
+    --yellow-bright: #FDE047;
+    --text: #FAFAFA;
+    --text-dim: #A1A1AA;
+    --text-faint: #525252;
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+    --blue: #60A5FA;
+  }
+  html { background-color: #0a0a0a !important; }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  body {
+    background-color: #0a0a0a !important;
+    color: #FAFAFA;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(250,204,21,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(74,222,128,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+  .page-shell {
+    background-color: #0a0a0a;
+    color: #FAFAFA;
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .stripe-bg { background-image: repeating-linear-gradient(45deg, var(--yellow) 0px, var(--yellow) 12px, #000 12px, #000 24px); }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--yellow); text-transform: uppercase; margin-bottom: 8px; }
+  .question-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .option-btn {
+    background: transparent; border: 2px solid var(--border); color: var(--text);
+    padding: 12px 14px; border-radius: 4px; text-align: left; transition: all 0.15s ease;
+    cursor: pointer; font-size: 13px; width: 100%; font-family: inherit;
+  }
+  .option-btn:hover { border-color: var(--yellow); background: rgba(250,204,21,0.06); }
+  .option-btn.selected { border-color: var(--yellow); background: var(--yellow); color: #000; font-weight: 600; }
+  .option-btn .option-label { display: block; font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+  .option-btn .option-sub { display: block; font-size: 10px; opacity: 0.7; font-family: 'JetBrains Mono', monospace; }
+  .primary-btn {
+    background: var(--yellow); color: #000; font-family: 'Anton', sans-serif;
+    font-size: 18px; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 4px;
+    border: none; cursor: pointer; transition: all 0.15s ease; text-transform: uppercase;
+  }
+  .primary-btn:hover { background: var(--yellow-bright); }
+  .primary-btn:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  .ghost-btn {
+    background: transparent; color: var(--text-dim); border: 1px solid var(--border);
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-family: 'JetBrains Mono', monospace; transition: all 0.15s ease;
+  }
+  .ghost-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  input[type="number"], input[type="text"], input[type="email"] {
+    background: var(--bg); border: 2px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 4px; width: 100%; font-size: 16px;
+    font-family: 'JetBrains Mono', monospace; transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-color: var(--yellow); }
+  .progress-bar { background: var(--border); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 100%; background: var(--yellow); transition: width 0.3s ease; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-tab {
+    flex: 1; text-align: center; padding: 8px 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+  .step-tab.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .step-tab.done { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+
+  /* Verdict hero */
+  .verdict-hero {
+    text-align: center; padding: 36px 24px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+  }
+  .verdict-hero.now { border-color: var(--red); background: linear-gradient(135deg, rgba(248,113,113,0.16) 0%, var(--bg-card) 65%); }
+  .verdict-hero.soon { border-color: var(--orange); background: linear-gradient(135deg, rgba(251,146,60,0.14) 0%, var(--bg-card) 65%); }
+  .verdict-hero.plan { border-color: var(--yellow); background: linear-gradient(135deg, rgba(250,204,21,0.14) 0%, var(--bg-card) 65%); }
+  .verdict-hero.wait { border-color: var(--green); background: linear-gradient(135deg, rgba(74,222,128,0.14) 0%, var(--bg-card) 65%); }
+  .verdict-hero.repair { border-color: var(--blue); background: linear-gradient(135deg, rgba(96,165,250,0.14) 0%, var(--bg-card) 65%); }
+  .verdict-headline {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 11vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 8px 0;
+  }
+  .verdict-headline.now { color: var(--red); }
+  .verdict-headline.soon { color: var(--orange); }
+  .verdict-headline.plan { color: var(--yellow); }
+  .verdict-headline.wait { color: var(--green); }
+  .verdict-headline.repair { color: var(--blue); }
+  .verdict-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  /* Reasoning cards */
+  .reason-card {
+    background: linear-gradient(135deg, rgba(250,204,21,0.08) 0%, var(--bg-card) 70%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--yellow);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .reason-card strong {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Weather window timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+    margin: 16px 0;
+  }
+  .month {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 8px 2px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .month.optimal {
+    background: var(--yellow);
+    color: #000;
+    border-color: var(--yellow);
+    font-weight: 700;
+  }
+  .month.acceptable {
+    background: rgba(250,204,21,0.15);
+    color: var(--yellow);
+    border-color: rgba(250,204,21,0.3);
+  }
+
+  /* Cost breakdown */
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px dashed var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row .val { font-family: 'JetBrains Mono', monospace; color: var(--text); font-weight: 600; }
+  .cost-row.total {
+    background: var(--bg);
+    border-radius: 4px;
+    margin-top: 6px;
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    color: var(--yellow);
+    border: none;
+  }
+  .cost-row.total .val { color: var(--yellow); font-family: 'Anton', sans-serif; font-size: 18px; }
+
+  /* Prep checklist */
+  .check-item {
+    background: linear-gradient(135deg, rgba(96,165,250,0.10) 0%, var(--bg-card) 70%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--text);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .check-item::before {
+    content: '☐';
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--blue);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Consequence card */
+  .consequence-card {
+    background: linear-gradient(135deg, rgba(248,113,113,0.10) 0%, var(--bg-card) 70%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 16px;
+    color: var(--text);
+    font-size: 13px;
+  }
+  .consequence-card strong {
+    color: var(--red);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    body, .page-shell { background: white !important; color: black !important; }
+    .question-card, .verdict-hero, .reason-card, .check-item, .consequence-card { border: 1px solid #ccc !important; background: white !important; color: black !important; }
+    .month.optimal { background: #ccc !important; color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+<script src="/assets/nav.js"></script>
+<!-- Hidden form for Netlify detection -->
+<form name="sealcoat-timing-report" data-netlify="true" hidden>
+  <input type="email" name="email">
+  <input type="text" name="name">
+  <input type="text" name="property">
+  <input type="text" name="verdict">
+  <input type="text" name="inputs">
+</form>
+<div class="page-shell">
+
+<div class="stripe-bg h-2 w-full"></div>
+
+<!-- HEADER -->
+<header class="border-b border-[#262626] sticky top-0 bg-[var(--bg)] z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <div class="section-label">// SURFACE INTELLIGENCE</div>
+      <h1 class="display text-xl uppercase">Sealcoat Timing Calculator</h1>
+    </div>
+    <a href="#" class="mono text-[10px] text-[var(--text-faint)] hover:text-[var(--yellow)] uppercase tracking-widest" id="restartBtn">↻ Restart</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+
+<!-- INTRO -->
+<section id="intro" class="text-center py-8 md:py-12">
+  <div class="section-label">▎FREE TOOL · 90 SECONDS</div>
+  <h2 class="display text-4xl md:text-6xl uppercase leading-none mb-4">
+    Should you<br/><span class="text-[var(--yellow)]">sealcoat now?</span>
+  </h2>
+  <p class="text-[var(--text-dim)] max-w-md mx-auto mb-2">
+    Most lots get sealed too often or not often enough. Both cost real money.
+  </p>
+  <p class="text-[var(--text-dim)] max-w-lg mx-auto mb-8 text-sm">
+    Tell us about your pavement and we'll tell you exactly when to sealcoat — or when to do something else first. With cost estimate, optimal weather window, and the prep work that has to happen before sealing.
+  </p>
+  <button class="primary-btn" onclick="startQuiz()">Check My Timing →</button>
+  <div class="mono text-[10px] text-[var(--text-faint)] mt-6 uppercase tracking-widest">
+    No login · Private · Printable for your board / owner
+  </div>
+
+  <div class="mt-12 grid md:grid-cols-3 gap-3 text-left">
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">01</div>
+      <h3 class="display text-sm uppercase mt-2">Timing Verdict</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Now / soon / later — with the reasoning behind it.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">02</div>
+      <h3 class="display text-sm uppercase mt-2">Cost Estimate</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Sealcoat + crack-fill + mobilization. Numbers, not vibes.</p>
+    </div>
+    <div class="question-card">
+      <div class="display text-3xl text-[var(--yellow)]">03</div>
+      <h3 class="display text-sm uppercase mt-2">Weather Window</h3>
+      <p class="text-xs text-[var(--text-dim)] mt-1">Optimal months for your climate zone — and when to avoid.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div class="flex gap-1 mb-6 no-print">
+    <div class="step-tab" data-step="0">Pavement</div>
+    <div class="step-tab" data-step="1">Condition</div>
+    <div class="step-tab" data-step="2">Context</div>
+  </div>
+
+  <div id="stepContainer"></div>
+
+  <div class="flex justify-between mt-6">
+    <button class="ghost-btn" id="backBtn" onclick="prevStep()" style="visibility: hidden;">← Back</button>
+    <button class="primary-btn" id="nextBtn" onclick="nextStep()" disabled>Next →</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden"></section>
+
+</main>
+
+<div class="stripe-bg h-2 w-full mt-12 no-print"></div>
+
+<footer class="text-center py-6 mono text-[10px] text-[var(--text-faint)] uppercase tracking-widest no-print">
+  Built by Ryan Clark · Surface Intelligence · <a href="https://www.linkedin.com/in/ryanclark-pm" class="text-[var(--yellow)]">LinkedIn</a><br/>
+  Estimates based on industry norms. Always confirm condition with on-site inspection by a qualified contractor.
+</footer>
+
+</div>
+
+<script>
+  // ========== STATE ==========
+  let currentStep = 0;
+  const TOTAL_STEPS = 3;
+  const state = {
+    pavementAge: null,
+    lastSealcoat: null,
+    sqft: null,
+    color: null,
+    texture: null,
+    cracks: null,
+    distress: null,
+    climate: null,
+    traffic: null,
+    budgetWindow: null
+  };
+
+  // ========== STEP FLOW ==========
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderStep();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.classList.remove('active', 'done');
+      if (i < currentStep) tab.classList.add('done');
+      else if (i === currentStep) tab.classList.add('active');
+    });
+    document.getElementById('progressFill').style.width = `${(currentStep / TOTAL_STEPS) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+  }
+
+  function renderStep() {
+    updateTabs();
+    const c = document.getElementById('stepContainer');
+    const renderers = [renderPavementStep, renderConditionStep, renderContextStep];
+    c.innerHTML = renderers[currentStep]();
+    updateNextBtn();
+  }
+
+  function pickBtn(field, options) {
+    return options.map(opt => `
+      <button class="option-btn ${state[field] === opt.tag ? 'selected' : ''}" onclick="state.${field} = '${opt.tag}'; renderStep();">
+        <span class="option-label">${opt.label}</span>
+        ${opt.sub ? `<span class="option-sub">${opt.sub}</span>` : ''}
+      </button>
+    `).join('');
+  }
+
+  function renderPavementStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">The pavement</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Age, history, and footprint.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Pavement age (since original install or last full repave)</label>
+          <div class="space-y-2">
+            ${pickBtn('pavementAge', [
+              { label: 'Brand new — under 12 months', sub: 'Recently paved or repaved', tag: 'new' },
+              { label: '1-3 years old', sub: 'Still in early life', tag: 'early' },
+              { label: '4-7 years old', sub: 'Mid-life pavement', tag: 'mid' },
+              { label: '8-15 years old', sub: 'Mature pavement', tag: 'mature' },
+              { label: '15+ years old', sub: 'End-of-life pavement', tag: 'old' },
+              { label: "I don't know", sub: 'No records available', tag: 'unknown' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Last sealcoat</label>
+          <div class="space-y-2">
+            ${pickBtn('lastSealcoat', [
+              { label: 'Never sealed', sub: 'No previous sealcoat applied', tag: 'never' },
+              { label: 'Less than 2 years ago', sub: 'Recently sealed', tag: 'recent' },
+              { label: '2-4 years ago', sub: 'Standard maintenance cycle', tag: 'standard' },
+              { label: '5-7 years ago', sub: 'Overdue for typical cycle', tag: 'overdue' },
+              { label: '8+ years ago', sub: 'Well past standard cycle', tag: 'very-overdue' },
+              { label: "Don't know / no records", sub: 'Treat as if never sealed', tag: 'unknown' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Total lot square footage</label>
+          <input type="number" placeholder="e.g. 45000" value="${state.sqft || ''}" oninput="state.sqft = parseInt(this.value) || null; updateNextBtn();" min="500" step="500" />
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">DRIVE AISLES + PARKING STALLS COMBINED</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderConditionStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Current condition</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">What you see when you walk the lot today.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Color / appearance</label>
+          <div class="space-y-2">
+            ${pickBtn('color', [
+              { label: 'Rich black, looks fresh', sub: 'New or recently sealed appearance', tag: 'rich' },
+              { label: 'Dark gray', sub: 'Some fade but still has color', tag: 'gray' },
+              { label: 'Light gray / silvery', sub: 'Significantly faded from sun exposure', tag: 'faded' },
+              { label: 'Very light / bleached', sub: 'Heavily oxidized, looks washed out', tag: 'bleached' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Surface texture</label>
+          <div class="space-y-2">
+            ${pickBtn('texture', [
+              { label: 'Smooth and uniform', sub: 'Tight surface, no exposed aggregate', tag: 'smooth' },
+              { label: 'Slightly rough', sub: 'Some surface raveling, light aggregate exposure', tag: 'slight' },
+              { label: 'Rough / oxidized', sub: 'Aggregate clearly visible, sandy feel', tag: 'rough' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Cracks present</label>
+          <div class="space-y-2">
+            ${pickBtn('cracks', [
+              { label: 'None visible', sub: 'Tight, intact surface', tag: 'none' },
+              { label: 'Hairline cracks only', sub: 'Thin surface cracks under 1/8 inch', tag: 'hairline' },
+              { label: 'Some small cracks (1/8 to 1/2 inch)', sub: 'Definable cracks needing fill', tag: 'small' },
+              { label: 'Many cracks or larger than 1/2 inch', sub: 'Extensive cracking', tag: 'large' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Major distress present</label>
+          <div class="space-y-2">
+            ${pickBtn('distress', [
+              { label: 'None — surface only issues', sub: 'No structural problems visible', tag: 'none' },
+              { label: 'A few isolated potholes or soft spots', sub: 'Patchable areas, not widespread', tag: 'isolated' },
+              { label: 'Alligator cracking or widespread failures', sub: 'Pattern cracking, base failure visible', tag: 'widespread' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderContextStep() {
+    return `
+      <div class="question-card fade-in">
+        <h2 class="display text-2xl md:text-3xl uppercase leading-tight mb-1">Context</h2>
+        <p class="text-sm text-[var(--text-dim)] mb-6">Climate, traffic, and timing.</p>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Climate zone</label>
+          <div class="space-y-2">
+            ${pickBtn('climate', [
+              { label: 'Hot & dry', sub: 'Inland CA, AZ, NV, TX, desert SW', tag: 'hot-dry' },
+              { label: 'Mild / temperate', sub: 'Coastal CA, Pacific NW, mild winters', tag: 'mild' },
+              { label: 'Cold & wet', sub: 'Northeast, Midwest, Pacific NW interior', tag: 'cold-wet' },
+              { label: 'Mixed / variable', sub: 'Four-season climates, big swings', tag: 'mixed' }
+            ])}
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Traffic volume</label>
+          <div class="space-y-2">
+            ${pickBtn('traffic', [
+              { label: 'Low — residential / small office', sub: 'Under 200 vehicles/day', tag: 'low' },
+              { label: 'Medium — typical commercial', sub: '200 to 800 vehicles/day', tag: 'medium' },
+              { label: 'High — retail, restaurants, multifamily', sub: '800+ vehicles/day or heavy delivery', tag: 'high' }
+            ])}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs mono uppercase tracking-widest text-[var(--text-dim)] mb-2">Budget window</label>
+          <div class="space-y-2">
+            ${pickBtn('budgetWindow', [
+              { label: 'Funded this fiscal year', sub: 'Money is available now', tag: 'now' },
+              { label: 'Next fiscal year', sub: 'Need to plan 6-12 months out', tag: 'next' },
+              { label: 'Flexible / no constraint', sub: 'Whenever is right', tag: 'flexible' }
+            ])}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateNextBtn() {
+    let valid = false;
+    if (currentStep === 0) {
+      valid = !!(state.pavementAge && state.lastSealcoat && state.sqft > 0);
+    } else if (currentStep === 1) {
+      valid = !!(state.color && state.texture && state.cracks && state.distress);
+    } else {
+      valid = !!(state.climate && state.traffic && state.budgetWindow);
+    }
+    document.getElementById('nextBtn').disabled = !valid;
+    document.getElementById('nextBtn').textContent = currentStep === TOTAL_STEPS - 1 ? 'Get My Verdict →' : 'Next →';
+  }
+
+  function nextStep() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    currentStep = 0;
+    Object.keys(state).forEach(k => state[k] = null);
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+  });
+
+  // ========== FORMATTERS ==========
+  const fmt = (n) => '$' + Math.round(n).toLocaleString();
+  const fmtK = (n) => Math.abs(n) >= 1000 ? '$' + (Math.round(n/100)/10) + 'K' : '$' + Math.round(n);
+
+  // ========== VERDICT LOGIC ==========
+  function determineVerdict() {
+    // Special case 1: Brand new pavement
+    if (state.pavementAge === 'new') {
+      return {
+        tier: 'wait',
+        headline: 'Not Yet',
+        sub: 'Wait 6 to 12 more months',
+        reasons: [
+          { header: 'New asphalt needs to cure', text: 'Fresh asphalt contains volatile oils that need 6 to 12 months to off-gas before sealcoat can adhere properly. Sealcoating too early traps these oils and causes premature sealcoat failure — you waste money and have to redo it.' },
+          { header: 'First sealcoat = the priming event', text: "When you do seal it (around 12 months), that's the most important sealcoat of the pavement's life. It primes the cycle. Don't rush it." },
+          { header: 'Use this time to plan', text: 'Get a written sealcoat schedule from your contractor for years 1, 4, and 8. Lock in pricing if possible. Most contractors give discounts for multi-year commitments.' }
+        ]
+      };
+    }
+
+    // Special case 2: Recently sealcoated
+    if (state.lastSealcoat === 'recent' && state.color !== 'bleached' && state.texture !== 'rough') {
+      return {
+        tier: 'wait',
+        headline: 'Too Soon',
+        sub: 'Wait 2 to 3 more years',
+        reasons: [
+          { header: "Sealcoat hasn't earned its life yet", text: "A properly applied sealcoat should provide 3 to 5 years of protection. Sealing again within 2 years is throwing money at a problem you don't have." },
+          { header: 'You may have a different issue', text: 'If the surface already looks bad after less than 2 years, the previous sealcoat may have been applied incorrectly (wrong temp, wrong mix ratio, dirty surface). Talk to a different contractor before re-sealing.' },
+          { header: 'Save the budget for cracks', text: "If anything has degraded, focus on crack-filling and patching — those address the actual damage. Sealcoat won't fix existing cracks or potholes." }
+        ]
+      };
+    }
+
+    // Special case 3: Widespread distress
+    if (state.distress === 'widespread') {
+      return {
+        tier: 'repair',
+        headline: 'Repair First',
+        sub: 'Sealcoat is the wrong tool',
+        reasons: [
+          { header: "Sealcoat doesn't fix structural damage", text: 'Alligator cracking and widespread failures mean the base under the asphalt has failed. Sealcoat is a surface treatment — it only protects the top layer. Applying sealcoat over alligator cracking literally seals in the failure.' },
+          { header: "You're likely facing overlay or repave", text: 'When distress is widespread, the conversation shifts from maintenance to capital work. Get a contractor to do a written condition assessment. Most lots in this state need overlay or mill-and-pave, not sealcoat.' },
+          { header: 'Patch program is an option as a bridge', text: "If full overlay isn't in budget yet, a targeted patch program addresses the worst spots. After patches cure 30 to 60 days, you can sealcoat — but the sealcoat is then a finish treatment, not maintenance." }
+        ]
+      };
+    }
+
+    // Special case 4: Old + multiple problem signals
+    if (state.pavementAge === 'old' && (state.cracks === 'large' || state.color === 'bleached')) {
+      return {
+        tier: 'repair',
+        headline: 'Beyond Sealcoat',
+        sub: 'Time to evaluate overlay',
+        reasons: [
+          { header: "You're past the maintenance window", text: "Pavement at 15+ years with major cracking or heavy oxidation is no longer a candidate for routine sealcoat maintenance. Sealing it now would be cosmetic only — it won't add structural life." },
+          { header: 'Sealcoat money is better spent on assessment', text: 'Before spending $0.20+/sqft on sealcoat, spend $500 to $1,500 on a written condition assessment from a contractor. You may find the pavement still has 5 to 8 years left with proper crack-fill, or you may find it needs overlay within 12 months.' },
+          { header: "If you sealcoat anyway, know what you're buying", text: 'A sealcoat here buys you 1 to 2 years of "looks good" but does not extend pavement life. That is fine if appearance matters before a sale or refinance. It is not fine if you think you are maintaining the asset.' }
+        ]
+      };
+    }
+
+    // Standard scoring path
+    let score = 0;
+    const reasons = [];
+
+    // Last sealcoat factor
+    if (state.lastSealcoat === 'never' || state.lastSealcoat === 'unknown') {
+      score += 35;
+      reasons.push({ header: 'Never been sealed', text: 'Your pavement has never received a sealcoat (or you have no record of one). At 3+ years old, unsealed asphalt is losing surface life every season to UV oxidation and water intrusion.' });
+    } else if (state.lastSealcoat === 'standard') {
+      score += 30;
+      reasons.push({ header: "You're in the standard cycle window", text: '2 to 4 years since last sealcoat is the typical re-application window. Sealcoat protection has largely worn off and the next cycle is timely.' });
+    } else if (state.lastSealcoat === 'overdue') {
+      score += 50;
+      reasons.push({ header: 'Overdue for re-sealing', text: '5 to 7 years since last sealcoat is past the standard cycle. Every additional year without re-sealing increases oxidation damage to the underlying asphalt.' });
+    } else if (state.lastSealcoat === 'very-overdue') {
+      score += 65;
+      reasons.push({ header: 'Significantly overdue', text: '8+ years without sealcoat means the asphalt has been exposed to full UV and water cycles for years. The protective benefit of sealcoat is diminished but not gone — sealing now still helps.' });
+    }
+
+    // Color factor
+    if (state.color === 'rich') {
+      score -= 15;
+    } else if (state.color === 'faded') {
+      score += 15;
+      reasons.push({ header: 'Visibly faded surface', text: 'Silvery / light gray color indicates oxidation. Sealcoat restores the dark color and re-protects the surface.' });
+    } else if (state.color === 'bleached') {
+      score += 25;
+      reasons.push({ header: 'Heavy oxidation visible', text: 'Bleached, washed-out appearance is severe oxidation. Sealcoat is overdue — every additional season of UV exposure accelerates aggregate raveling.' });
+    }
+
+    // Texture factor
+    if (state.texture === 'slight') {
+      score += 10;
+    } else if (state.texture === 'rough') {
+      score += 20;
+      reasons.push({ header: 'Aggregate exposure', text: 'Rough, sandy surface means raveling has started — small aggregate pieces are detaching from the asphalt binder. Sealcoat tightens the surface and stops further raveling.' });
+    }
+
+    // Cracks factor
+    if (state.cracks === 'hairline') {
+      score += 10;
+      reasons.push({ header: 'Hairline cracks present', text: "Hairline cracks are the early warning signal. They are still small enough to be sealed effectively, but they will widen each freeze-thaw cycle without action." });
+    } else if (state.cracks === 'small') {
+      score += 15;
+      reasons.push({ header: 'Crack-fill required first', text: "You have definable cracks that need to be cleaned and filled BEFORE sealcoat. Sealing over open cracks just hides them temporarily — they will telegraph through within a season." });
+    }
+
+    // Distress factor
+    if (state.distress === 'isolated') {
+      score += 5;
+      reasons.push({ header: 'Patch the isolated spots first', text: "A few potholes or soft spots don't kill the sealcoat case, but they need to be patched before sealcoat. Patch 30+ days before sealing so the patches can cure and oxidize evenly." });
+    }
+
+    // Climate factor
+    if (state.climate === 'hot-dry') {
+      score += 15;
+      reasons.push({ header: 'Hot/dry climate accelerates damage', text: 'High-UV climates degrade asphalt 25 to 40% faster than mild climates. Sealcoat cycles should be on the shorter end (3 years vs. 5) to keep up with UV oxidation.' });
+    } else if (state.climate === 'cold-wet') {
+      score += 10;
+    }
+
+    // Traffic factor
+    if (state.traffic === 'high') {
+      score += 10;
+    }
+
+    // Budget factor
+    if (state.budgetWindow === 'now') {
+      score += 10;
+    } else if (state.budgetWindow === 'next') {
+      score -= 5;
+    }
+
+    // Mid-life pavement bonus
+    if (state.pavementAge === 'mid' || state.pavementAge === 'mature') {
+      score += 5;
+    }
+
+    // Determine tier
+    let tier, headline, sub;
+    if (score >= 70) {
+      tier = 'now';
+      headline = 'Sealcoat Now';
+      sub = 'Schedule within the next 60 days';
+    } else if (score >= 45) {
+      tier = 'soon';
+      headline = 'Within 6 Months';
+      sub = 'Start planning the scope';
+    } else if (score >= 25) {
+      tier = 'plan';
+      headline = 'Plan for Next Year';
+      sub = 'Budget for next fiscal cycle';
+    } else {
+      tier = 'wait';
+      headline = 'Wait 12 to 24 Months';
+      sub = 'Re-evaluate annually';
+      reasons.push({ header: 'Pavement is doing well', text: 'Based on your inputs, the pavement is still inside its protective window from previous treatments. Re-evaluate condition annually and re-run this tool when you see fade or texture changes.' });
+    }
+
+    return { tier, headline, sub, reasons, score };
+  }
+
+  // ========== COST CALCULATION ==========
+  function calculateCost() {
+    const sqft = state.sqft;
+    // Sealcoat: $0.18-0.30/sqft
+    const sealLow = sqft * 0.18;
+    const sealMid = sqft * 0.24;
+    const sealHigh = sqft * 0.30;
+
+    // Crack-fill: only if cracks present
+    let crackLow = 0, crackMid = 0, crackHigh = 0;
+    if (state.cracks === 'hairline') {
+      crackLow = sqft * 0.03; crackMid = sqft * 0.05; crackHigh = sqft * 0.07;
+    } else if (state.cracks === 'small') {
+      crackLow = sqft * 0.06; crackMid = sqft * 0.10; crackHigh = sqft * 0.15;
+    } else if (state.cracks === 'large') {
+      crackLow = sqft * 0.12; crackMid = sqft * 0.18; crackHigh = sqft * 0.25;
+    }
+
+    // Mobilization
+    const mob = sqft < 20000 ? 500 : sqft < 50000 ? 750 : 1000;
+
+    const lowTotal = sealLow + crackLow + mob;
+    const midTotal = sealMid + crackMid + mob;
+    const highTotal = sealHigh + crackHigh + mob;
+
+    return {
+      sealLow, sealMid, sealHigh,
+      crackLow, crackMid, crackHigh,
+      mob,
+      lowTotal, midTotal, highTotal,
+      hasCracks: crackMid > 0
+    };
+  }
+
+  // ========== WEATHER WINDOW ==========
+  function getWeatherWindow() {
+    const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    let tags;
+    let summary;
+
+    if (state.climate === 'hot-dry') {
+      tags = ['avoid','avoid','acceptable','optimal','optimal','optimal','acceptable','acceptable','optimal','optimal','acceptable','avoid'];
+      summary = 'In hot/dry climates, April to June and September to October are optimal. Avoid peak heat (sealcoat dries too fast and improperly cures) and winter months (overnight temps must stay above 50°F).';
+    } else if (state.climate === 'mild') {
+      tags = ['avoid','acceptable','optimal','optimal','optimal','optimal','optimal','optimal','optimal','optimal','acceptable','avoid'];
+      summary = 'Mild climates have the widest window. March through October is optimal. Avoid the rainy winter window when surface moisture and overnight temps undermine sealcoat cure.';
+    } else if (state.climate === 'cold-wet') {
+      tags = ['avoid','avoid','avoid','acceptable','optimal','optimal','optimal','optimal','optimal','acceptable','avoid','avoid'];
+      summary = 'Cold/wet climates have the narrowest window — typically May through September. Sealcoat requires 50°F+ overnight temps and dry pavement for 24+ hours before and after application.';
+    } else {
+      tags = ['avoid','avoid','acceptable','optimal','optimal','optimal','optimal','optimal','optimal','optimal','acceptable','avoid'];
+      summary = 'Mixed-climate zones have a solid April to October window. Watch the forecast carefully near the edges — single overnight cold snaps in early spring or late fall can ruin a fresh sealcoat application.';
+    }
+
+    return { months, tags, summary };
+  }
+
+  // ========== PREP CHECKLIST ==========
+  function getPrepChecklist() {
+    const items = [];
+
+    items.push({ text: 'Schedule the work 14 to 21 days in advance to notify tenants/residents and arrange alternate parking.' });
+
+    if (state.cracks === 'hairline' || state.cracks === 'small') {
+      items.push({ text: 'Crack-fill must happen BEFORE sealcoat (not on the same day). Cracks need to be cleaned, sealed with hot rubber crack-fill, and given 24 to 48 hours to cure.' });
+    }
+
+    if (state.distress === 'isolated') {
+      items.push({ text: 'Patch isolated potholes and soft spots 30+ days before sealcoat. Fresh patches need to cure and oxidize so sealcoat adheres evenly.' });
+    }
+
+    items.push({ text: 'Verify weather forecast: no rain in the 24 hours before AND 24 hours after application. Overnight temps must stay above 50°F.' });
+
+    items.push({ text: 'Power-wash or sweep the entire lot the day before application. Oil stains require primer treatment to prevent sealcoat from peeling at those spots.' });
+
+    items.push({ text: 'Re-striping should be scheduled 48 to 72 hours AFTER sealcoat (paint will not adhere to wet sealcoat, and sealcoat needs full cure time).' });
+
+    items.push({ text: 'Confirm contractor will apply 2 coats (industry standard for commercial). Single-coat is a corner-cutting practice that halves the sealcoat life.' });
+
+    return items;
+  }
+
+  // ========== CONSEQUENCE CONTENT ==========
+  function getConsequence(verdict) {
+    if (verdict.tier === 'now') {
+      return {
+        header: 'What if you wait another year?',
+        text: 'UV oxidation and water intrusion continue. Hairline cracks widen into definable cracks (more expensive to fill). The next cycle sealcoat costs increase 15 to 25% because of additional prep and crack-fill scope. And every additional year unsealed shortens the pavement total life by 6 to 18 months.'
+      };
+    }
+    if (verdict.tier === 'soon') {
+      return {
+        header: 'What if you defer past the 6-month window?',
+        text: 'Sealcoat is most cost-effective at the right point in the cycle. Deferring past 6 months when the surface is calling for it typically adds 10 to 20% to the eventual scope (more cracks, more prep, more product). Lock in pricing now even if work happens later.'
+      };
+    }
+    return null;
+  }
+
+  // ========== RESULT ==========
+  function showResult() {
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('progressFill').style.width = '100%';
+
+    const verdict = determineVerdict();
+    const cost = calculateCost();
+    const weather = getWeatherWindow();
+    const prepItems = getPrepChecklist();
+    const consequence = getConsequence(verdict);
+    const showCost = verdict.tier !== 'repair' && verdict.tier !== 'wait';
+
+    document.getElementById('result').innerHTML = `
+      <div class="fade-in">
+
+        <!-- VERDICT HERO -->
+        <div class="verdict-hero ${verdict.tier} mb-8">
+          <div class="section-label">▎YOUR TIMING VERDICT</div>
+          <div class="verdict-headline ${verdict.tier}">${verdict.headline}</div>
+          <div class="verdict-sub">▎${verdict.sub}</div>
+          <p class="text-xs text-[var(--text-faint)] mono uppercase tracking-widest mt-6">
+            // ${state.sqft.toLocaleString()} SF LOT · ${state.pavementAge.toUpperCase()} PAVEMENT · ${state.climate.toUpperCase()} CLIMATE
+          </p>
+        </div>
+
+        <!-- REASONING -->
+        <div class="mb-8">
+          <div class="section-label">▎Why · the reasoning behind the verdict</div>
+          ${verdict.reasons.map(r => `
+            <div class="reason-card">
+              <strong>${r.header}</strong>
+              <div class="mt-1">${r.text}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        ${showCost ? `
+        <!-- COST ESTIMATE -->
+        <div class="mb-8">
+          <div class="section-label">▎Cost estimate · ${state.sqft.toLocaleString()} SF lot</div>
+          <div class="question-card">
+            <div class="cost-row">
+              <span>Sealcoat application (2 coats, $0.18 to $0.30/SF)</span>
+              <span class="val">${fmt(cost.sealLow)} to ${fmt(cost.sealHigh)}</span>
+            </div>
+            ${cost.hasCracks ? `
+              <div class="cost-row">
+                <span>Crack-fill (required prep work)</span>
+                <span class="val">${fmt(cost.crackLow)} to ${fmt(cost.crackHigh)}</span>
+              </div>
+            ` : ''}
+            <div class="cost-row">
+              <span>Mobilization / setup</span>
+              <span class="val">${fmt(cost.mob)}</span>
+            </div>
+            <div class="cost-row total">
+              <span>▎All-in range</span>
+              <span class="val">${fmtK(cost.lowTotal)} to ${fmtK(cost.highTotal)}</span>
+            </div>
+            <div class="cost-row total" style="background: transparent; padding-top: 2px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim);">Mid-point estimate</span>
+              <span class="val" style="font-family: 'Anton', sans-serif; font-size: 22px; color: var(--yellow);">${fmtK(cost.midTotal)}</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-[var(--text-faint)] mt-2 mono">GET 2 TO 3 LOCAL BIDS TO CONFIRM — PRICING VARIES BY MARKET AND SCOPE</p>
+        </div>
+
+        <!-- WEATHER WINDOW -->
+        <div class="mb-8">
+          <div class="section-label">▎Optimal weather window · ${state.climate.replace('-', '/')} climate</div>
+          <div class="timeline">
+            ${weather.months.map((m, i) => `<div class="month ${weather.tags[i]}">${m}</div>`).join('')}
+          </div>
+          <div class="flex gap-4 text-[10px] mono uppercase tracking-widest text-[var(--text-faint)] mb-3 flex-wrap">
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--yellow);margin-right:4px;vertical-align:middle;"></span>Optimal</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:rgba(250,204,21,0.15);border:1px solid rgba(250,204,21,0.3);margin-right:4px;vertical-align:middle;"></span>Acceptable</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--bg);border:1px solid var(--border);margin-right:4px;vertical-align:middle;"></span>Avoid</span>
+          </div>
+          <p class="text-sm text-[var(--text-dim)]">${weather.summary}</p>
+        </div>
+
+        <!-- PREP CHECKLIST -->
+        <div class="mb-8">
+          <div class="section-label">▎Pre-sealcoat prep · do these in order</div>
+          ${prepItems.map(item => `<div class="check-item">${item.text}</div>`).join('')}
+        </div>
+        ` : ''}
+
+        ${consequence ? `
+        <!-- CONSEQUENCE -->
+        <div class="mb-8">
+          <div class="section-label" style="color: var(--red);">▎If you defer</div>
+          <div class="consequence-card">
+            <strong>${consequence.header}</strong>
+            <div class="mt-2">${consequence.text}</div>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- EMAIL CAPTURE -->
+        <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
+          <div class="section-label">▎Get the printable timing report</div>
+          <h3 class="display text-2xl uppercase mb-2">Email me this verdict</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-5">
+            Branded PDF: verdict + cost estimate + weather window + prep checklist — ready to send to your board, owner, or contractor. Plus: Surface Intelligence newsletter (462 property managers).
+          </p>
+          <div id="emailFormContainer">
+            <input type="email" id="emailInput" placeholder="your@email.com" />
+            <input type="text" id="nameInput" placeholder="Your name" style="margin-top: 10px;" />
+            <input type="text" id="propertyInput" placeholder="Property name (optional)" style="margin-top: 10px;" />
+            <button class="primary-btn w-full mt-4" onclick="submitEmail()">Send Me The Report →</button>
+            <p class="text-[10px] text-[var(--text-faint)] mt-3 mono uppercase tracking-widest text-center">
+              Unsubscribe anytime · No spam
+            </p>
+          </div>
+          <div id="emailSuccess" class="hidden">
+            <div class="text-center py-6">
+              <div class="display text-3xl uppercase text-[var(--yellow)] mb-2">✓ Sent.</div>
+              <p class="text-sm text-[var(--text-dim)]">Check your inbox in the next 5 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 no-print mb-8">
+          <button class="ghost-btn" onclick="window.print()">⎙ Print this report</button>
+          <button class="ghost-btn" onclick="shareResult()">↗ Share with your board</button>
+        </div>
+
+        <div class="text-center no-print">
+          <button class="ghost-btn" onclick="document.getElementById('restartBtn').click()">↻ Check a different lot</button>
+        </div>
+
+      </div>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const property = document.getElementById('propertyInput').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email');
+      return;
+    }
+    const verdict = determineVerdict();
+    const inputTags = Object.entries(state).map(([k,v]) => `${k}:${v}`).join(', ');
+    const formData = new FormData();
+    formData.append('form-name', 'sealcoat-timing-report');
+    formData.append('email', email);
+    formData.append('name', name);
+    formData.append('property', property);
+    formData.append('verdict', verdict.tier);
+    formData.append('inputs', inputTags);
+    fetch('/', { method: 'POST', body: formData }).catch(() => {});
+    document.getElementById('emailFormContainer').classList.add('hidden');
+    document.getElementById('emailSuccess').classList.remove('hidden');
+  }
+
+  function shareResult() {
+    const verdict = determineVerdict();
+    const text = `I just checked my sealcoat timing with the Surface Intelligence tool. Verdict: ${verdict.headline}. Try it: ${window.location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Sealcoat Timing Calculator', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Link copied');
+    }
+  }
+</script>
+
+</body>
+</html>
