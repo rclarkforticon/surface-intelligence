@@ -1,5 +1,199 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ADA Parking Lot Risk Scorecard — Surface Intelligence</title><meta name="description" content="Free ADA parking lot risk scorecard for property managers, HOA boards, facility teams, and commercial owners."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/site.css"><style>.q{margin-bottom:14px}.check{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);background:rgba(255,255,255,.04);border-radius:var(--radius-md);cursor:pointer}.check:hover{border-color:var(--border-strong);background:rgba(250,204,21,.06)}.check input{margin-top:3px;min-width:18px;min-height:18px}.result{margin-top:26px;padding:24px;border:2px solid var(--yellow);border-radius:var(--radius-lg);background:rgba(250,204,21,.06)}.risk-high{color:var(--red)}.risk-med{color:#FB923C}.risk-low{color:var(--green)}</style></head><body><script src="/assets/nav.js"></script><main class="wrap"><section class="page-title"><div class="eyebrow">// Free tool · ADA exposure check</div><h1 class="display">ADA Parking Lot Risk Scorecard</h1><p>Check common parking lot and path-of-travel red flags. This does not certify ADA compliance, but it can help you identify issues worth reviewing before they become expensive.</p></section><section class="section" style="padding-top:0"><div class="grid2"><div class="card"><h3 class="display">Select every red flag that applies</h3><div id="checks"></div><button class="btn" type="button" onclick="score()">Calculate Risk →</button></div><div class="card"><h3 class="display">What this checks</h3><p>Accessible stalls, access aisles, signs, striping visibility, slope uncertainty, path-of-travel defects, recent paving changes, and complaint history.</p><div class="notice">Educational only. Not a CASp inspection, engineering report, or legal opinion. Field measurements and local requirements should be verified by a qualified professional.</div><div id="out"></div></div></div></section></main><script>
-const flags=[['ca','Property is in California'],['complaint','Tenant, visitor, or homeowner complaint has been made'],['slopes','Accessible stall/access aisle slopes are unknown'],['markings','Striping, signs, van markings, or access aisle markings are faded or missing'],['route','Cracks, lips, potholes, ponding water, or drainage cross the accessible route'],['recent','Recent paving, concrete, or striping changed grades or paths'],['dimensions','Accessible stall or access aisle dimensions are unknown'],['signage','Tow-away, van accessible, or required signage is missing/unclear']];
-document.getElementById('checks').innerHTML=flags.map(([id,label])=>`<label class="check q"><input type="checkbox" id="${id}"><span>${label}</span></label>`).join('');
-function score(){let s=flags.reduce((n,[id])=>n+(document.getElementById(id).checked?1:0),0);let level=s>=5?'High':s>=3?'Moderate':'Lower';let cls=s>=5?'risk-high':s>=3?'risk-med':'risk-low';document.getElementById('out').innerHTML=`<div class="result"><div class="eyebrow">// Your result</div><h2 class="display ${cls}" style="font-size:48px;margin:8px 0;text-transform:uppercase">${level} Risk</h2><p>You selected ${s} red flag${s===1?'':'s'}.</p><ul><li>Document current conditions with dated photos.</li><li>Confirm slopes with proper field measurements.</li><li>Review stalls, aisles, signs, routes, transitions, and drainage together.</li><li>If risk is moderate or high, schedule an onsite ADA review before the next paving or striping project.</li></ul><form name="ada-scorecard" method="POST" data-netlify="true"><input type="hidden" name="form-name" value="ada-scorecard"><input type="hidden" name="score" value="${s}"><label class="field"><span>Email this scorecard to yourself</span><input class="input" name="email" type="email" autocomplete="email" placeholder="you@example.com"></label><button class="btn" style="margin-top:10px" type="submit">Send Scorecard</button></form></div>`;}
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NOI Impact Calculator — Pavement Deferred Maintenance Cost Tool | Surface Intelligence</title>
+  <meta name="description" content="Free calculator showing how pavement decisions affect net operating income and property cap-rate value. Built for commercial property managers and REITs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="canonical" href="https://surface-intelligence.com/tools/noi-impact-calculator/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://surface-intelligence.com/tools/noi-impact-calculator/" />
+  <meta property="og:title" content="NOI Impact Calculator — Pavement Deferred Maintenance Cost Tool | Surface Intelligence" />
+  <meta property="og:description" content="Free calculator showing how pavement decisions affect net operating income and property cap-rate value. Built for commercial property managers and REITs." />
+  <meta property="og:image" content="https://surface-intelligence.com/tools/tool-card-images/noi-impact-calculator.png" />
+  <meta property="og:site_name" content="Surface Intelligence" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NOI Impact Calculator — Pavement Deferred Maintenance Cost Tool | Surface Intelligence" />
+  <meta name="twitter:description" content="Free calculator showing how pavement decisions affect net operating income and property cap-rate value. Built for commercial property managers and REITs." />
+  <meta name="twitter:image" content="https://surface-intelligence.com/tools/tool-card-images/noi-impact-calculator.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"NOI Impact Calculator","description":"Free tool for commercial property managers and owners to model the 10-year Net Operating Income and asset value impact of three pavement maintenance strategies: proactive maintenance, targeted reactive repairs, and deferred reconstruction.","url":"https://surface-intelligence.com/tools/noi-impact-calculator/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Person","name":"Ryan Clark","url":"https://surface-intelligence.com"}}</script>
+  <style>
+    .scenario-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-bottom: 24px; }
+    .scenario-card { padding: 22px; border: 2px solid var(--border); border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.9)); }
+    .scenario-card.best { border-color: var(--green); }
+    .scenario-card.mid { border-color: rgba(250,204,21,0.5); }
+    .scenario-card.worst { border-color: var(--red); }
+    .s-label { font: 700 10px/1 'JetBrains Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .s-label.best { color: var(--green); } .s-label.mid { color: var(--yellow); } .s-label.worst { color: var(--red); }
+    .scenario-card h3 { font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 16px; }
+    .noi-stat { margin-bottom: 14px; }
+    .noi-stat .lbl { font: 700 10px/1 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 5px; }
+    .noi-stat .val { font: 700 26px/1 'IBM Plex Sans', sans-serif; letter-spacing: -0.02em; }
+    .val.pos { color: var(--green); } .val.neg { color: var(--red); } .val.neu { color: var(--yellow); }
+    .noi-stat .sub { font: 600 12px/1 'JetBrains Mono', monospace; color: var(--muted); margin-top: 4px; }
+    .result-section { padding: 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.02); margin-bottom: 20px; }
+    @media (max-width: 820px) { .scenario-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<script src="/assets/nav.js"></script>
+<main>
+  <div class="wrap">
+
+    <section class="page-title">
+      <div class="eyebrow">// Free tool · Asset value analysis</div>
+      <h1 class="display">NOI Impact Calculator</h1>
+      <p>See how pavement maintenance decisions affect your Net Operating Income and property value over 10 years. Compare three realistic scenarios before your next board meeting or capital planning cycle.</p>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="grid2">
+        <div class="card">
+          <h2 class="display" style="font-size:clamp(22px,2.5vw,30px);margin:0 0 20px">Your property inputs</h2>
+          <div class="field"><label for="noi">Current Annual NOI ($)</label><input id="noi" class="input" type="number" placeholder="e.g. 480000" min="0" step="1000"></div>
+          <div class="field"><label for="cap">Target Cap Rate (%)</label><input id="cap" class="input" type="number" placeholder="e.g. 6.5" min="1" max="20" step="0.1"></div>
+          <div class="field"><label for="sqft">Pavement Area (sq ft)</label><input id="sqft" class="input" type="number" placeholder="e.g. 45000" min="500" step="500"></div>
+          <div class="field">
+            <label for="cond">Current Pavement Condition</label>
+            <select id="cond" class="input">
+              <option value="">Select condition</option>
+              <option value="good">Good (7–10 PCI) — minor surface wear only</option>
+              <option value="fair">Fair (4–6 PCI) — cracks, fading, some distress</option>
+              <option value="poor">Poor (1–3 PCI) — widespread failure, potholes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ptype">Property Type</label>
+            <select id="ptype" class="input">
+              <option value="">Select type</option>
+              <option value="commercial">Commercial (office, retail, mixed-use)</option>
+              <option value="hoa">HOA / Condo community</option>
+              <option value="multifamily">Multifamily / Apartment</option>
+              <option value="industrial">Industrial / Warehouse</option>
+            </select>
+          </div>
+          <button class="btn" type="button" onclick="calculate()" style="width:100%;margin-top:8px">Calculate NOI Impact →</button>
+        </div>
+        <div class="card">
+          <h2 class="display" style="font-size:clamp(22px,2.5vw,30px);margin:0 0 14px">What this models</h2>
+          <p>This tool compares three pavement maintenance strategies over a 10-year horizon:</p>
+          <ul style="margin:14px 0 0;padding-left:20px;color:var(--dim);line-height:1.9;font-size:15px">
+            <li><strong style="color:#fff">Proactive Maintenance</strong> — Sealcoat, crack-fill, and planned repairs on schedule. Predictable costs, avoided emergencies.</li>
+            <li><strong style="color:#fff">Targeted Repair Only</strong> — Fix problems as they appear. No preventive spend, but reactive repairs accumulate.</li>
+            <li><strong style="color:#fff">Defer Everything</strong> — No maintenance until forced. Short-term savings become a large capital event in years 8–10.</li>
+          </ul>
+          <div class="notice" style="margin-top:18px">Estimates based on commercial pavement norms. Actual costs vary by site, subgrade, and local market. Use as a planning tool, not a bid estimate.</div>
+        </div>
+      </div>
+
+      <div id="results" style="display:none;margin-top:32px">
+        <div class="eyebrow" style="margin-bottom:16px">// 10-year scenario comparison</div>
+        <div class="scenario-grid" id="sGrid"></div>
+        <div id="summary"></div>
+        <div id="cta" style="margin-top:20px"></div>
+      </div>
+    </section>
+
+    <section class="section" style="border-top:1px solid var(--border);padding-bottom:60px">
+      <div class="grid2">
+        <div>
+          <h2 class="display" style="font-size:clamp(24px,3vw,36px);margin:0 0 16px">Why pavement affects NOI</h2>
+          <p>Pavement maintenance is an operating expense that directly reduces net operating income when spent — but deferred maintenance converts that small annual cost into a large capital emergency. Emergency spend disrupts operations, triggers tenant complaints, and compresses asset value at exactly the wrong time.</p>
+          <p style="margin-top:12px">For value-add investors and long-term holds: proactive maintenance reduces total lifecycle cost by 30–50% compared to reactive repair and avoids the forced replacement events that hit NOI hardest.</p>
+        </div>
+        <div>
+          <h2 class="display" style="font-size:clamp(24px,3vw,36px);margin:0 0 16px">Related free tools</h2>
+          <div class="tool-list" style="display:grid;gap:10px">
+            <a class="tool-mini" href="/tools/pavement-condition-rating/"><b>Pavement Condition Rating</b><span>Get your current PCI score before planning capital spend.</span></a>
+            <a class="tool-mini" href="/tools/hoa-reserve-estimator/"><b>HOA Reserve Estimator</b><span>Calculate the annual reserve contribution your budget actually needs.</span></a>
+            <a class="tool-mini" href="/tools/bid-decoder/"><b>Three-Bid Decoder</b><span>Compare bids by cost-per-year-of-useful-life, not sticker price.</span></a>
+            <a class="tool-mini" href="/tools/material-picker/"><b>Material Picker</b><span>Asphalt vs. concrete — which is right for your property and timeline?</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+<script>
+function f(n){const a=Math.abs(Math.round(n));if(a>=1000000)return(n<0?'-':'')+'$'+(Math.round(a/10000)/100)+'M';if(a>=1000)return(n<0?'-':'')+'$'+(Math.round(a/100)/10)+'K';return(n<0?'-$':'$')+a.toLocaleString();}
+function ff(n){return(n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString();}
+function calculate(){
+  const noi=parseFloat(document.getElementById('noi').value);
+  const cap=parseFloat(document.getElementById('cap').value)/100;
+  const sqft=parseFloat(document.getElementById('sqft').value);
+  const cond=document.getElementById('cond').value;
+  const ptype=document.getElementById('ptype').value;
+  if(!noi||!cap||!sqft||!cond||!ptype){alert('Please fill in all fields.');return;}
+  const cm={good:0.12,fair:0.18,poor:0.28};
+  const tm={commercial:1.0,hoa:0.85,multifamily:0.9,industrial:1.15};
+  const base=cm[cond]*tm[ptype];
+  const repCost=sqft*(ptype==='industrial'?8:6);
+  // Scenario A
+  const pA=sqft*base, sA=(pA*10)-(repCost*0.18);
+  // Scenario B
+  const pB=sqft*base*1.6, sB=pB*10;
+  // Scenario C
+  const pC=sqft*base*0.1, sC=(pC*7)+(repCost*0.85);
+  const av=noi/cap;
+  const assetDiff=((pA/cap)-(pC/cap));
+  document.getElementById('sGrid').innerHTML=`
+    <div class="scenario-card best"><div class="s-label best">✓ Recommended</div><h3>Proactive Maintenance</h3>
+      <div class="noi-stat"><div class="lbl">Annual Cost</div><div class="val neu">${f(pA)}/yr</div></div>
+      <div class="noi-stat"><div class="lbl">10-Year Total</div><div class="val neu">${f(sA)}</div></div>
+      <div class="noi-stat"><div class="lbl">Annual NOI Impact</div><div class="val neg">-${f(pA)}/yr</div></div>
+      <div class="noi-stat"><div class="lbl">vs. Deferral (10yr saved)</div><div class="val pos">+${f(sC-sA)} saved</div></div>
+    </div>
+    <div class="scenario-card mid"><div class="s-label mid">⚡ Reactive</div><h3>Targeted Repair Only</h3>
+      <div class="noi-stat"><div class="lbl">Annual Cost</div><div class="val neg">${f(pB)}/yr</div></div>
+      <div class="noi-stat"><div class="lbl">10-Year Total</div><div class="val neg">${f(sB)}</div></div>
+      <div class="noi-stat"><div class="lbl">Annual NOI Impact</div><div class="val neg">-${f(pB)}/yr</div></div>
+      <div class="noi-stat"><div class="lbl">vs. Proactive (10yr)</div><div class="val neg">+${f(sB-sA)} more</div></div>
+    </div>
+    <div class="scenario-card worst"><div class="s-label worst">⚠ High Risk</div><h3>Defer Everything</h3>
+      <div class="noi-stat"><div class="lbl">Annual Cost (avg)</div><div class="val neg">${f(sC/10)}/yr avg</div></div>
+      <div class="noi-stat"><div class="lbl">10-Year Total</div><div class="val neg">${f(sC)}</div></div>
+      <div class="noi-stat"><div class="lbl">Emergency Replacement</div><div class="val neg">${f(repCost*0.85)} yr 8–10</div></div>
+      <div class="noi-stat"><div class="lbl">vs. Proactive (10yr)</div><div class="val neg">+${f(sC-sA)} more</div></div>
+    </div>`;
+  document.getElementById('summary').innerHTML=`<div class="result-section"><h3>Asset value summary</h3><p>At a ${(cap*100).toFixed(1)}% cap rate, your property is valued at approximately <strong style="color:#fff">${ff(av)}</strong>.</p><p style="margin-top:12px">Proactive maintenance protects this value by avoiding the NOI compression from emergency capital events. Over 10 years, the difference between proactive and full deferral is approximately <strong style="color:var(--green)">${ff(sC-sA)}</strong> in total pavement spend — and the predictability of planned maintenance makes future capital planning significantly easier.</p></div>`;
+  document.getElementById('cta').innerHTML=`<div class="notice"><strong>Next steps:</strong> Use the <a href="/tools/pavement-condition-rating/">Pavement Condition Rating tool</a> to confirm your current PCI, then the <a href="/tools/bid-decoder/">Three-Bid Decoder</a> to evaluate contractor proposals. <a href="/contact/">Request a free condition report</a> from Ryan Clark.</div>`;
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+<!-- SEO CONTENT -->
+<div style="background:rgba(7,7,6,0.85);border-top:1px solid rgba(250,204,21,0.15);margin-top:48px;padding:48px 0;">
+  <div class="wrap">
+    <div class="section-label" style="margin-bottom:20px;">▎About this tool</div>
+    <p style="max-width:640px;color:var(--muted);line-height:1.7;margin-bottom:32px;">The NOI Impact Calculator translates pavement maintenance decisions into the language commercial property owners and REITs actually use — net operating income and cap-rate asset value. Model three scenarios: proactive maintenance, targeted reactive repairs, and full deferral until reconstruction. See the 10-year spend difference and estimated asset value impact side by side. Built for commercial property managers, asset managers, and property owners who need to frame pavement as a financial decision, not a maintenance line item.</p>
+    <div class="section-label" style="margin-bottom:16px;">▎Related tools</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;">
+      <a href="/tools/material-picker/" style="padding:10px 16px;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--muted);text-decoration:none;font-size:14px;" onmouseover="this.style.borderColor='var(--yellow)';this.style.color='var(--yellow)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Material Picker →</a>
+      <a href="/tools/hoa-reserve-estimator/" style="padding:10px 16px;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--muted);text-decoration:none;font-size:14px;" onmouseover="this.style.borderColor='var(--yellow)';this.style.color='var(--yellow)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">HOA Reserve Estimator →</a>
+      <a href="/tools/bid-decoder/" style="padding:10px 16px;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--muted);text-decoration:none;font-size:14px;" onmouseover="this.style.borderColor='var(--yellow)';this.style.color='var(--yellow)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Three-Bid Decoder →</a>
+    </div>
+    <div class="section-label" style="margin-bottom:16px;">▎Common questions</div>
+    <div style="max-width:640px;">
+      <div style="border-top:1px solid var(--border);padding:20px 0;">
+        <p style="font-weight:600;color:#fff;margin:0 0 8px;">How does deferred pavement maintenance affect property NOI?</p>
+        <p style="color:var(--muted);margin:0;line-height:1.6;font-size:14px;">Deferred maintenance doesn't eliminate cost — it concentrates it. When pavement deteriorates past the point of routine maintenance, the required intervention jumps from sealcoating or crack sealing to full reconstruction. That's often a 5–8x cost increase in a single capital event, which compresses NOI significantly in the year it hits and may require emergency financing.</p>
+      </div>
+      <div style="border-top:1px solid var(--border);padding:20px 0;">
+        <p style="font-weight:600;color:#fff;margin:0 0 8px;">What cap rate impact does pavement condition have?</p>
+        <p style="color:var(--muted);margin:0;line-height:1.6;font-size:14px;">In a cap-rate valuation, property value equals NOI divided by cap rate. A large one-time pavement reconstruction event reduces NOI in that year, directly reducing the property's appraised value. Additionally, visible pavement deterioration can affect tenant retention, perceived asset quality, and the cap rate applied by a buyer during due diligence. This tool models both the spend and the value implications.</p>
+      </div>
+      <div style="border-top:1px solid var(--border);padding:20px 0 0;">
+        <p style="font-weight:600;color:#fff;margin:0 0 8px;">When does pavement maintenance become a capital event?</p>
+        <p style="color:var(--muted);margin:0;line-height:1.6;font-size:14px;">Generally when the scope exceeds routine maintenance (sealcoating, crack sealing, minor patching) and moves into structural rehabilitation or full reconstruction. This typically happens when PCI drops below 40–50, when base failure is present, or when drainage deficiencies require grade correction. At that point, the cost often exceeds $2–4/sq ft and may require board approval, financing, or reserve drawdown.</p>
+      </div>
+    </div>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does deferred pavement maintenance affect property NOI?","acceptedAnswer":{"@type":"Answer","text":"Deferred maintenance concentrates cost into large capital events. When pavement deteriorates past routine maintenance, the required intervention can jump 5–8x in cost, compressing NOI significantly in the year it hits."}},{"@type":"Question","name":"What cap rate impact does pavement condition have?","acceptedAnswer":{"@type":"Answer","text":"A large pavement reconstruction event reduces NOI in that year, directly reducing the property's appraised value in a cap-rate model. Visible deterioration can also affect tenant retention and the cap rate a buyer applies during due diligence."}},{"@type":"Question","name":"When does pavement maintenance become a capital event?","acceptedAnswer":{"@type":"Answer","text":"When the scope moves into structural rehabilitation or full reconstruction — typically when PCI drops below 40–50, when base failure is present, or when drainage deficiencies require grade correction. Costs often exceed $2–4/sq ft at that point."}}]}</script>
+  </div>
+</div>
+</body>
+</html>

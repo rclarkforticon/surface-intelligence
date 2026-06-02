@@ -27,8 +27,8 @@
     <header class="top" data-site-header>
       <div class="wrap nav">
         <a class="brand" href="/" aria-label="Ryan Clark home">
-          <small>// Ryan Clark</small>
-          <strong>Pavement &amp; Concrete Specialist</strong>
+          <small>// Ryan Clark · Forticon</small>
+          <strong>Pavement &amp; ADA Specialist</strong>
         </a>
         <nav class="links" aria-label="Primary navigation">${links}</nav>
         <a class="btn nav-cta" href="/contact/">Get Free Condition Report</a>

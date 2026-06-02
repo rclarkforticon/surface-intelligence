@@ -7,7 +7,10 @@
       "Bash(git init *)",
       "Bash(git remote *)",
       "Bash(git fetch *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "mcp__Desktop_Commander__get_file_info",
+      "Bash(echo '=== __TRACKED_VAR__ ===')",
+      "Bash(tail -5 'C:/Users/rclark/Desktop/Surface Intelligence/__TRACKED_VAR__')"
     ]
   }
 }
