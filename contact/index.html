@@ -75,6 +75,29 @@
       border-radius: var(--radius-lg);
       padding: 28px;
     }
+    .contact-proof {
+      display: grid;
+      gap: 12px;
+    }
+    .proof-quote {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+    }
+    .proof-quote blockquote {
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 10px;
+    }
+    .proof-quote cite {
+      color: var(--muted);
+      font: 700 10px/1.4 'JetBrains Mono', monospace;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
     .contact-email-row {
       display: flex;
       align-items: center;
@@ -144,6 +167,17 @@
           </div>
           <p style="font-size:14px; color:var(--muted); margin:0 0 12px">Use the tools first — they'll give you a first-pass answer in minutes. Then send me your project details and I'll give you a straight read on your specific situation.</p>
           <div class="notice">For urgent site-specific ADA, engineering, or legal questions, verify conditions with a qualified professional before acting.</div>
+        </div>
+
+        <div class="contact-proof" aria-label="Property manager feedback">
+          <div class="proof-quote">
+            <blockquote>"The bid review language helped us move the conversation away from lowest price and back to scope risk."</blockquote>
+            <cite>Commercial property manager</cite>
+          </div>
+          <div class="proof-quote">
+            <blockquote>"The ADA checklist made it obvious what needed documentation before we approved the surface work."</blockquote>
+            <cite>Facilities director</cite>
+          </div>
         </div>
 
         <!-- Forticon card -->

@@ -67,6 +67,10 @@
             <a href="/resources/">Free Resources</a>
             <a href="/start/">Start Here</a>
             <a href="/articles/">Insights</a>
+            <a href="/glossary/">Glossary</a>
+            <a href="/california-pavement-contractors/">California Contractors</a>
+            <a href="/bay-area-asphalt/">Bay Area Asphalt</a>
+            <a href="/sacramento-parking-lot-paving/">Sacramento Paving</a>
             <a href="/about/">About Ryan</a>
             <a href="/contact/">Contact</a>
           </nav>
