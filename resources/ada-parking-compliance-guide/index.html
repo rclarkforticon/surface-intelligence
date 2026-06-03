@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADA Parking Lot Compliance Guide for California Property Managers — Free Download | Surface Intelligence</title>
+  <meta name="description" content="Free ADA parking lot compliance guide for California property managers. Covers required stall counts, dimensions, slopes, signage, path-of-travel rules, and California's Unruh Act exposure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="canonical" href="https://surface-intelligence.com/resources/ada-parking-compliance-guide/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://surface-intelligence.com/resources/ada-parking-compliance-guide/" />
+  <meta property="og:title" content="ADA Parking Lot Compliance Guide for California Property Managers — Free Download" />
+  <meta property="og:description" content="Free ADA parking lot compliance guide for California property managers. Covers required stall counts, dimensions, slopes, signage, path-of-travel rules, and California's Unruh Act exposure." />
+  <meta property="og:image" content="https://surface-intelligence.com/assets/images/hero-commercial.jpg" />
+  <meta property="og:site_name" content="Surface Intelligence" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADA Parking Lot Compliance Guide for California Property Managers" />
+  <meta name="twitter:description" content="Free ADA parking lot compliance guide for California property managers — stall counts, dimensions, slopes, signage, path-of-travel, and Unruh Act exposure." />
+  <meta name="twitter:image" content="https://surface-intelligence.com/assets/images/hero-commercial.jpg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "ADA Parking Lot Compliance Guide for California Property Managers",
+    "description": "A practical compliance guide for California property managers covering required stall counts, dimensions, slope limits, signage requirements, path-of-travel obligations, and Unruh Act exposure.",
+    "url": "https://surface-intelligence.com/resources/ada-parking-compliance-guide/",
+    "author": {
+      "@type": "Person",
+      "name": "Ryan Clark",
+      "@id": "https://surface-intelligence.com/#person"
+    },
+    "step": [
+      { "@type": "HowToStep", "name": "Count required accessible stalls", "text": "Verify your stall count against the ADA Standards table and confirm van-accessible minimums." },
+      { "@type": "HowToStep", "name": "Check dimensions and access aisles", "text": "Measure stall widths and access aisle widths against ADA minimums." },
+      { "@type": "HowToStep", "name": "Measure slopes", "text": "Running slope max 1:20, cross slope max 1:48. Use a digital slope meter or hire a CASp." },
+      { "@type": "HowToStep", "name": "Inspect path of travel", "text": "Verify the accessible route from stalls to the accessible building entrance is unobstructed and compliant." },
+      { "@type": "HowToStep", "name": "Check signage", "text": "Confirm post height, wording, and van-accessible marking on all accessible stalls." },
+      { "@type": "HowToStep", "name": "Document and triage", "text": "Record findings, create a prioritized correction plan, and bring action items to the board." }
+    ]
+  }
+  </script>
+  <style>
+    /* Gate / Guide layout */
+    .guide-wrap { max-width: 780px; margin: 0 auto; padding-bottom: 80px; }
+    #guide-content { display: none; }
+
+    /* Gate state */
+    .gate-card {
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-top: 32px;
+    }
+    .gate-title { font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; margin: 0 0 8px; }
+    .gate-subtitle { font-size: 16px; color: var(--muted); margin: 0 0 28px; }
+    .whats-inside { margin: 0 0 28px; }
+    .whats-inside h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 14px; font-family: 'JetBrains Mono', monospace; }
+    .whats-inside ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+    .whats-inside li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--dim); line-height: 1.5; }
+    .whats-inside li::before { content: '→'; color: var(--yellow); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .preview-block {
+      border-left: 3px solid var(--border);
+      padding: 16px 20px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-block p { font-size: 15px; color: var(--dim); line-height: 1.7; margin: 0 0 10px; }
+    .preview-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(transparent, rgba(13,13,12,0.98));
+    }
+    .gate-form { margin-top: 28px; }
+    .gate-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .gate-fine { font-size: 12px; color: var(--faint); margin: 10px 0 0; text-align: center; }
+    .form-success { display: none; text-align: center; padding: 20px; }
+
+    /* Guide content */
+    .guide-header {
+      border-bottom: 2px solid var(--yellow);
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+    }
+    .guide-header .eyebrow { margin-bottom: 10px; }
+    .guide-header h1 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 6px; }
+    .guide-header p { margin: 0; font-size: 15px; color: var(--muted); }
+    .guide-section { margin: 40px 0; }
+    .guide-section h2 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; color: #fff; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
+    .guide-section p { font-size: 15px; line-height: 1.75; color: var(--dim); margin: 0 0 14px; }
+    .guide-section ul, .guide-section ol { padding-left: 20px; margin: 12px 0 18px; }
+    .guide-section li { font-size: 15px; line-height: 1.7; color: var(--dim); margin-bottom: 8px; }
+    .guide-section li strong { color: #fff; }
+
+    /* ADA table */
+    .ada-table { width: 100%; border-collapse: collapse; margin: 18px 0 22px; font-size: 14px; }
+    .ada-table th { background: rgba(250,204,21,0.12); color: var(--yellow2); font: 700 12px/1 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+    .ada-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--dim); }
+    .ada-table tr:last-child td { border-bottom: none; }
+    .ada-table tr:hover td { background: rgba(255,255,255,0.025); }
+
+    .callout {
+      background: rgba(250,204,21,0.07);
+      border: 1px solid rgba(250,204,21,0.2);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .callout p { color: var(--dim); font-size: 14px; margin: 0; line-height: 1.6; }
+    .callout strong { color: var(--yellow2); }
+
+    .warning-box {
+      background: rgba(251,113,133,0.07);
+      border: 1px solid rgba(251,113,133,0.25);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .warning-box p { color: var(--dim); font-size: 14px; margin: 0; line-height: 1.6; }
+    .warning-box strong { color: var(--red); }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 13px/1 'JetBrains Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 18px;
+      cursor: pointer;
+      background: none;
+      transition: color 160ms ease, border-color 160ms ease;
+      margin-bottom: 28px;
+    }
+    .print-btn:hover { color: #fff; border-color: var(--border-strong); }
+
+    .guide-tools { margin: 44px 0; padding: 28px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .guide-tools h3 { font-size: 16px; color: #fff; margin: 0 0 16px; }
+    .guide-tools-grid { display: grid; gap: 10px; }
+
+    .guide-newsletter { margin-top: 44px; }
+
+    @media (max-width: 560px) {
+      .gate-card { padding: 22px; }
+      .gate-form-row { grid-template-columns: 1fr; }
+      .ada-table { font-size: 13px; }
+      .ada-table th, .ada-table td { padding: 9px 10px; }
+    }
+    @media print {
+      #gate-state { display: none !important; }
+      #guide-content { display: block !important; }
+      .print-btn, .guide-tools, .guide-newsletter { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/nav.js"></script>
+<main>
+  <div class="wrap">
+    <div class="guide-wrap">
+
+      <!-- Page title -->
+      <section class="page-title" style="padding-bottom: 0;">
+        <div class="eyebrow">// Free resource · ADA compliance</div>
+        <h1 class="display" style="max-width: 700px;">ADA Parking Lot Compliance Guide</h1>
+        <p>For California Property Managers — 2026 Edition</p>
+      </section>
+
+      <!-- GATE STATE -->
+      <div id="gate-state">
+        <div class="gate-card">
+
+          <div class="whats-inside">
+            <h3>What's inside</h3>
+            <ul>
+              <li>Required accessible stall counts by total stall count (full ADA table)</li>
+              <li>Van-accessible stall requirements and when they apply</li>
+              <li>Access aisle dimensions and slope limits — where most lots fail</li>
+              <li>Signage requirements: post height, wording, van-accessible marking</li>
+              <li>Path-of-travel obligations when you resurface or patch</li>
+              <li>California's Unruh Act — how it multiplies exposure beyond federal ADA</li>
+            </ul>
+          </div>
+
+          <div class="preview-block">
+            <p>California property owners face dramatically higher ADA exposure than most states. Federal law allows only injunctive relief — meaning a court orders you to fix it. California's Unruh Civil Rights Act layers $4,000 minimum statutory damages per incident on top of that, plus attorney's fees. You don't need to cause harm. A technical violation is enough.</p>
+            <p>The compliance gaps that create this exposure are almost always the same: stalls that were never counted against the ADA requirement table, cross slopes that exceed the 2.08% limit, and signage that's faded or at the wrong height...</p>
+          </div>
+
+          <form class="gate-form" id="ada-gate-form" name="resource-ada-guide" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="resource-ada-guide">
+            <div class="gate-form-row">
+              <div class="field">
+                <label for="gate-name">Your name</label>
+                <input id="gate-name" class="input" name="name" autocomplete="name" placeholder="Ryan Clark" required>
+              </div>
+              <div class="field">
+                <label for="gate-email">Work email</label>
+                <input id="gate-email" class="input" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+              </div>
+            </div>
+            <button class="btn" type="submit" style="width:100%; font-size:16px;">Send Me the Free Guide →</button>
+            <p class="gate-fine">Delivered instantly. Unsubscribe anytime.</p>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- GUIDE CONTENT (shown after submission) -->
+      <div id="guide-content">
+
+        <div style="display:flex; justify-content:flex-end; margin-top:28px;">
+          <button class="print-btn" onclick="window.print()">⎙ Print / Save as PDF</button>
+        </div>
+
+        <div class="guide-header">
+          <div class="eyebrow">// Surface Intelligence · ADA Resource Guide · 2026</div>
+          <h1>ADA Parking Lot Compliance Guide</h1>
+          <p>For California Property Managers. Prepared by Ryan Clark, Pavement &amp; ADA Specialist, Forticon.</p>
+        </div>
+
+        <div class="notice" style="margin-bottom: 28px;">
+          This guide is for informational and planning purposes. For site-specific ADA determinations, slope measurements, and legal exposure assessment, consult a Certified Access Specialist (CASp) and qualified legal counsel.
+        </div>
+
+        <!-- Section 1 -->
+        <div class="guide-section">
+          <h2>Section 1: Required Number of Accessible Stalls</h2>
+          <p>The ADA Standards for Accessible Design require a minimum number of accessible parking spaces based on total lot capacity. Many property managers undercount because they only count marked accessible stalls — not the required total.</p>
+
+          <table class="ada-table">
+            <thead>
+              <tr>
+                <th>Total Parking Spaces</th>
+                <th>Minimum Accessible Spaces</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1 – 25</td><td>1</td></tr>
+              <tr><td>26 – 50</td><td>2</td></tr>
+              <tr><td>51 – 75</td><td>3</td></tr>
+              <tr><td>76 – 100</td><td>4</td></tr>
+              <tr><td>101 – 150</td><td>5</td></tr>
+              <tr><td>151 – 200</td><td>6</td></tr>
+              <tr><td>201 – 300</td><td>7</td></tr>
+              <tr><td>301 – 400</td><td>8</td></tr>
+              <tr><td>401 – 500</td><td>9</td></tr>
+              <tr><td>501 – 1,000</td><td>2% of total spaces</td></tr>
+              <tr><td>1,001 and over</td><td>20 spaces + 1 per 100 over 1,000</td></tr>
+            </tbody>
+          </table>
+
+          <p><strong style="color:#fff">Van-accessible stalls:</strong> At least 1 in every 6 accessible stalls (rounded up) must be van-accessible. For lots with fewer than 6 accessible stalls, at minimum 1 must be van-accessible.</p>
+
+          <div class="callout">
+            <p><strong>Common gap:</strong> Most commercial lots are under-counted because property managers count only currently-marked stalls rather than checking the required count against total stall capacity. If you added stalls over time or changed lot configuration, recount from total.</p>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="guide-section">
+          <h2>Section 2: Stall &amp; Access Aisle Dimensions</h2>
+          <ul>
+            <li><strong>Standard accessible stall:</strong> 96 inches (8 feet) wide minimum</li>
+            <li><strong>Van-accessible stall (option A):</strong> 132 inches (11 feet) wide with a 60-inch access aisle</li>
+            <li><strong>Van-accessible stall (option B):</strong> 96 inches wide with a 96-inch (8-foot) access aisle</li>
+            <li><strong>Access aisle beside standard stall:</strong> 60 inches (5 feet) minimum width</li>
+            <li><strong>Access aisle beside van stall:</strong> 96 inches (8 feet) minimum width</li>
+            <li><strong>Marking:</strong> Access aisles must be marked — diagonal lines or "NO PARKING" text. Shared aisles between two accessible stalls must be at least 60 inches wide.</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>Key failure point:</strong> Access aisles are frequently used for storage, landscaping encroachment, or snow/debris piles, or are never marked at all. An unmarked or obstructed access aisle is an immediate violation regardless of stall count compliance.</p>
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="guide-section">
+          <h2>Section 3: Slope Requirements — The Biggest Enforcement Target</h2>
+          <p>Slope requirements are the most commonly violated standard — and the hardest to see. Most property managers cannot identify a non-compliant slope by eye.</p>
+          <ul>
+            <li><strong>Running slope</strong> (in direction of travel): maximum 1:20 (5%)</li>
+            <li><strong>Cross slope</strong> (perpendicular to direction of travel): maximum 1:48 (approximately 2.08%)</li>
+          </ul>
+          <div class="callout">
+            <p><strong>Why cross slope matters most:</strong> The 1:48 cross slope limit is where most lots fail. Standard pavement drainage design uses 2–3% cross slopes for water runoff — which exceeds the ADA limit. Even new lots built to drainage standards often violate ADA cross slope unless the accessible area was specifically designed to comply.</p>
+          </div>
+          <p><strong style="color:#fff">Surface irregularities:</strong></p>
+          <ul>
+            <li>Vertical changes between 1/4" and 1/2" must be beveled at a slope no greater than 1:2</li>
+            <li>Vertical changes above 1/2" require a compliant ramp</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>You cannot verify slope compliance by eye.</strong> A digital slope meter, SmartToolPro, or equivalent device is the minimum for a reasonable assessment. A Certified Access Specialist (CASp) evaluation is the only legally defensible method for documentation purposes.</p>
+          </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="guide-section">
+          <h2>Section 4: Path-of-Travel Requirements</h2>
+          <p>The accessible route must connect accessible stalls to the accessible entrance of the building (or buildings) served by the parking lot. This route must be:</p>
+          <ul>
+            <li>Continuous and unobstructed</li>
+            <li>Compliant with slope and surface requirements throughout</li>
+            <li>Connected to curb cuts or ramps where elevation changes occur</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>Path-of-travel triggers — the most common California ADA surprise:</strong> Any time you resurface, patch, stripe, or otherwise alter the facility — even partially — you may trigger an obligation to bring the ENTIRE path of travel from the accessible stalls to the accessible entrance into compliance. This applies even if you're only touching an area 50 feet from the accessible parking.</p>
+          </div>
+          <div class="callout">
+            <p><strong>Budget planning:</strong> Any paving contract that touches accessible areas or routes should include a line item budget assumption for path-of-travel work. The safe assumption is that you will need it. Contractors who don't mention it aren't doing you a favor — they're leaving you exposed.</p>
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="guide-section">
+          <h2>Section 5: Signage Requirements</h2>
+          <p>Every accessible parking space must have signage that meets all of the following:</p>
+          <ul>
+            <li><strong>Sign content:</strong> "Reserved Parking" with the International Symbol of Accessibility (ISA) — the wheelchair symbol</li>
+            <li><strong>Post height:</strong> Bottom of sign must be at least 60 inches above the ground (measured to the bottom edge of the sign face)</li>
+            <li><strong>Van-accessible stalls:</strong> An additional "Van Accessible" sign below the main accessibility sign is required</li>
+            <li><strong>Tow-away language:</strong> Not required by ADA but strongly recommended: "Unauthorized vehicles may be towed at owner's expense"</li>
+            <li><strong>Faded signs:</strong> Signs that are no longer clearly legible are treated as missing — replace immediately</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>Why signage is a top enforcement target:</strong> Missing, faded, or wrong-height signage is visible from the street or parking lot entrance. It's the first thing an ADA tester notes when documenting a property. Unlike slope violations, which require measurement, signage deficiencies can be documented in seconds.</p>
+          </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="guide-section">
+          <h2>Section 6: California's Unruh Civil Rights Act</h2>
+          <p>California property owners face a fundamentally different risk profile than other states because of the Unruh Civil Rights Act (California Civil Code §51 et seq.).</p>
+          <ul>
+            <li><strong>Federal ADA</strong> provides only injunctive relief — a court orders you to fix the violation. No statutory damages.</li>
+            <li><strong>California's Unruh Act</strong> adds: $4,000 minimum statutory damages per violation, per visit. Plus attorney's fees.</li>
+            <li>This means a single site visit documenting three violations can generate $12,000 in statutory damages before attorney's fees are calculated.</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>Serial litigation is real.</strong> California has a well-documented pattern of serial ADA filers who identify technical violations at commercial properties and send demand letters or file lawsuits. They don't need to be disabled users of your property — they need to identify a technical violation. Properties with visible signage deficiencies or missing curb cuts are the primary targets.</p>
+          </div>
+          <p>The practical defense is not "we didn't know." Courts have consistently held that property owners have an affirmative obligation to know and comply with ADA requirements. The defensible position is a documented inspection, a written prioritized correction plan, and evidence of active board-level engagement with the issue.</p>
+        </div>
+
+        <!-- Section 7 -->
+        <div class="guide-section">
+          <h2>Section 7: Your First Steps</h2>
+          <ol>
+            <li><strong>Walk your lot with a slope meter.</strong> A digital slope meter costs $30–$60. Check stall surfaces and path of travel for cross slopes above 2%. Document what you find with photos and notes.</li>
+            <li><strong>Count and verify stall count.</strong> Compare total stall count against the ADA table above. Verify you have the required number of accessible stalls and the correct ratio of van-accessible stalls.</li>
+            <li><strong>Inspect signage.</strong> Check post height (60-inch minimum to bottom of sign), wording, and van-accessible markers. Replace faded or missing signs before your next board meeting.</li>
+            <li><strong>Check access aisles.</strong> Are they marked? Are they free of obstructions? Are they the right width?</li>
+            <li><strong>Walk the path of travel.</strong> From accessible stalls to building entrance — look for surface irregularities, missing curb cuts, obstructions, and drainage grates in the route.</li>
+            <li><strong>Document everything in writing.</strong> Date, what you found, what you're doing about it. This written record is your evidence of good-faith effort if a complaint is filed.</li>
+            <li><strong>Bring to the board.</strong> Frame ADA compliance as a liability management priority, not just a physical property issue. The Unruh Act exposure is a direct financial risk that belongs in board minutes.</li>
+          </ol>
+          <div class="callout">
+            <p><strong>Use the free ADA Risk Scorecard</strong> at <a href="/tools/ada-risk-scorecard/" style="color:var(--yellow2); font-weight:700;">surface-intelligence.com/tools/ada-risk-scorecard/</a> for a quick first-pass triage of your lot's exposure. It takes 3 minutes and gives you a risk score with specific action items.</p>
+          </div>
+        </div>
+
+        <!-- Related tools -->
+        <div class="guide-tools">
+          <h3>Related free tools</h3>
+          <div class="guide-tools-grid">
+            <a class="tool-mini" href="/tools/ada-risk-scorecard/">
+              <b>ADA Risk Scorecard</b>
+              <span>Quick first-pass triage of your parking lot's ADA exposure. Takes 3 minutes.</span>
+            </a>
+            <a class="tool-mini" href="/tools/bid-decoder/">
+              <b>Three-Bid Decoder</b>
+              <span>Score and compare contractor bids — including how each handles ADA scope.</span>
+            </a>
+            <a class="tool-mini" href="/tools/material-picker/">
+              <b>Material Picker</b>
+              <span>Asphalt vs. concrete decision tool for property managers.</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="guide-newsletter">
+          <div class="newsletter">
+            <div class="eyebrow" style="color:rgba(0,0,0,0.55); margin-bottom:8px">// Weekly field notes</div>
+            <h2>Get Ryan's pavement insights in your inbox.</h2>
+            <p>Short, useful notes on pavement decisions, ADA risk, bid strategy, and field observations. No spam.</p>
+            <form class="form" name="newsletter-ada-guide" method="POST" data-netlify="true">
+              <input type="hidden" name="form-name" value="newsletter-ada-guide">
+              <input class="input" name="name" placeholder="Your name" autocomplete="name" required>
+              <input class="input" name="email" type="email" placeholder="Your email" autocomplete="email" required>
+              <button class="btn" type="submit">Subscribe →</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <!-- end #guide-content -->
+
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  const form = document.getElementById('ada-gate-form');
+  const gateState = document.getElementById('gate-state');
+  const guideContent = document.getElementById('guide-content');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = form.querySelector('[name="name"]').value.trim();
+    const email = form.querySelector('[name="email"]').value.trim();
+
+    if (!name || !email) {
+      alert('Please enter your name and email to access the guide.');
+      return;
+    }
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      const data = new FormData(form);
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+      });
+    } catch (_) {
+      // Netlify will capture the submission; show guide regardless
+    }
+
+    gateState.style.display = 'none';
+    guideContent.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>

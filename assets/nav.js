@@ -2,8 +2,10 @@
   const navItems = [
     { label: 'Home', href: '/', section: 'home' },
     { label: 'Tools', href: '/tools/', section: 'tools' },
+    { label: 'Resources', href: '/resources/', section: 'resources' },
     { label: 'Insights', href: '/articles/', section: 'articles' },
     { label: 'Contact', href: '/contact/', section: 'contact' },
+    { label: 'About', href: '/about/', section: 'about' },
   ];
 
   const path = window.location.pathname.replace(/\/index\.html$/, '/');
@@ -56,12 +58,15 @@
             <h2 class="display">Ryan Clark</h2>
             <p>Pavement, ADA, and bid strategy education for property managers, HOA boards, facility teams, and commercial owners. Free tools and weekly insights to help you make better decisions before capital dollars are committed.</p>
             <p style="margin-top:12px; font-size:13px;">Pavement &amp; Concrete Specialist · <a href="https://www.forticon.com" target="_blank" rel="noopener" style="color:var(--yellow);">Forticon</a></p>
+            <p style="margin-top:12px"><a href="/start/" style="color:var(--yellow); font-weight:700">→ Not sure where to start?</a></p>
           </div>
           <nav aria-label="Footer navigation">
             <h3>Explore</h3>
             <a href="/tools/">Free Tools</a>
+            <a href="/resources/">Free Resources</a>
             <a href="/articles/">Insights</a>
             <a href="/contact/">Contact</a>
+            <a href="/about/">About Ryan</a>
           </nav>
           <nav aria-label="Tool navigation">
             <h3>Tools</h3>
