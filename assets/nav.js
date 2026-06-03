@@ -3,9 +3,10 @@
     { label: 'Home', href: '/', section: 'home' },
     { label: 'Tools', href: '/tools/', section: 'tools' },
     { label: 'Resources', href: '/resources/', section: 'resources' },
+    { label: 'Start Here', href: '/start/', section: 'start' },
     { label: 'Insights', href: '/articles/', section: 'articles' },
-    { label: 'Contact', href: '/contact/', section: 'contact' },
     { label: 'About', href: '/about/', section: 'about' },
+    { label: 'Contact', href: '/contact/', section: 'contact' },
   ];
 
   const path = window.location.pathname.replace(/\/index\.html$/, '/');
@@ -64,14 +65,18 @@
             <h3>Explore</h3>
             <a href="/tools/">Free Tools</a>
             <a href="/resources/">Free Resources</a>
+            <a href="/start/">Start Here</a>
             <a href="/articles/">Insights</a>
-            <a href="/contact/">Contact</a>
             <a href="/about/">About Ryan</a>
+            <a href="/contact/">Contact</a>
           </nav>
           <nav aria-label="Tool navigation">
             <h3>Tools</h3>
             <a href="/tools/material-picker/">Material Picker</a>
             <a href="/tools/bid-decoder/">Three-Bid Decoder</a>
+            <a href="/tools/paving-budget-estimator/">Paving Budget Estimator</a>
+            <a href="/tools/repair-vs-replace/">Repair vs. Replace ROI</a>
+            <a href="/tools/maintenance-planner/">Maintenance Planner</a>
             <a href="/tools/contractor-vetting-scorecard/">Contractor Vetting Scorecard</a>
             <a href="/tools/ada-risk-scorecard/">ADA Risk Scorecard</a>
             <a href="/tools/pavement-condition-rating/">Pavement Condition Rating</a>

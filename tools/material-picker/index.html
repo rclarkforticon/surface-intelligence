@@ -552,6 +552,7 @@
           </div>
         </div>
 
+        <div class="gated-full hidden">
         <!-- COST BREAKDOWN -->
         <div class="mt-8">
           <div class="section-label">▎20-Year lifecycle cost estimate</div>
@@ -596,12 +597,14 @@
           </div>
         </div>
 
+        </div>
+
         <!-- EMAIL CAPTURE -->
         <div class="mt-10 question-card" style="border-color: var(--yellow);">
-          <div class="section-label">▎Want the full breakdown?</div>
-          <h3 class="display text-2xl uppercase mb-2">Get the 20-year scorecard</h3>
+          <div class="section-label">▎Unlock the full breakdown</div>
+          <h3 class="display text-2xl uppercase mb-2">See the 20-year cost scorecard</h3>
           <p class="text-sm text-[var(--text-dim)] mb-5">
-            Free PDF with the full cost math, year-by-year maintenance schedule, ADA risk checklist, and the 6 questions to ask your contractor before signing. Plus: Surface Intelligence weekly newsletter — read by 452 property managers.
+            Enter your email to reveal the lifecycle cost math, recommendation reasoning, risk notes, and contractor questions. Plus: Surface Intelligence weekly newsletter — read by 452 property managers.
           </p>
           <div id="emailFormContainer">
             <input type="email" id="emailInput" placeholder="your@email.com" />
@@ -660,6 +663,7 @@
 
     document.getElementById('emailFormContainer').classList.add('hidden');
     document.getElementById('emailSuccess').classList.remove('hidden');
+    document.querySelectorAll('.gated-full').forEach(section => section.classList.remove('hidden'));
   }
 
   function shareResult() {

@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Read a Paving Bid: 12 Things That Actually Matter — Free Guide | Surface Intelligence</title>
+  <meta name="description" content="Free guide: How to evaluate a paving contractor bid. Covers cost-per-year-of-useful-life, scope gaps, red flag language, warranty analysis, and a bid scoring worksheet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="canonical" href="https://surface-intelligence.com/resources/how-to-review-a-paving-bid/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://surface-intelligence.com/resources/how-to-review-a-paving-bid/" />
+  <meta property="og:title" content="How to Read a Paving Bid: 12 Things That Actually Matter" />
+  <meta property="og:description" content="Free guide for property managers on evaluating paving contractor bids. Cost-per-year-of-useful-life, scope gaps, red flag language, and a bid scoring worksheet." />
+  <meta property="og:image" content="https://surface-intelligence.com/assets/images/hero-commercial.jpg" />
+  <meta property="og:site_name" content="Surface Intelligence" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to Read a Paving Bid: 12 Things That Actually Matter" />
+  <meta name="twitter:description" content="Free property manager's guide to evaluating contractor paving proposals. Cost-per-year analysis, scope gap detection, and a scoring worksheet." />
+  <meta name="twitter:image" content="https://surface-intelligence.com/assets/images/hero-commercial.jpg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Read a Paving Bid: 12 Things That Actually Matter",
+    "description": "A property manager's guide to evaluating contractor paving proposals — covering cost-per-year-of-useful-life, scope gaps, red flag language, and bid scoring.",
+    "url": "https://surface-intelligence.com/resources/how-to-review-a-paving-bid/",
+    "author": {
+      "@type": "Person",
+      "name": "Ryan Clark",
+      "@id": "https://surface-intelligence.com/#person"
+    }
+  }
+  </script>
+  <style>
+    .guide-wrap { max-width: 780px; margin: 0 auto; padding-bottom: 80px; }
+    #guide-content { display: none; }
+
+    .gate-card {
+      background: linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-top: 32px;
+    }
+    .gate-title { font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; margin: 0 0 8px; }
+    .gate-subtitle { font-size: 16px; color: var(--muted); margin: 0 0 28px; }
+    .whats-inside { margin: 0 0 28px; }
+    .whats-inside h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 14px; font-family: 'JetBrains Mono', monospace; }
+    .whats-inside ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+    .whats-inside li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--dim); line-height: 1.5; }
+    .whats-inside li::before { content: '→'; color: var(--yellow); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .preview-block {
+      border-left: 3px solid var(--border);
+      padding: 16px 20px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-block p { font-size: 15px; color: var(--dim); line-height: 1.7; margin: 0 0 10px; }
+    .preview-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(transparent, rgba(13,13,12,0.98));
+    }
+    .gate-form { margin-top: 28px; }
+    .gate-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .gate-fine { font-size: 12px; color: var(--faint); margin: 10px 0 0; text-align: center; }
+
+    .guide-header {
+      border-bottom: 2px solid var(--yellow);
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+    }
+    .guide-header .eyebrow { margin-bottom: 10px; }
+    .guide-header h1 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 6px; }
+    .guide-header p { margin: 0; font-size: 15px; color: var(--muted); }
+    .guide-section { margin: 40px 0; }
+    .guide-section h2 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; color: #fff; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
+    .guide-section h3 { font-size: 17px; font-weight: 700; color: #fff; margin: 24px 0 10px; }
+    .guide-section p { font-size: 15px; line-height: 1.75; color: var(--dim); margin: 0 0 14px; }
+    .guide-section ul, .guide-section ol { padding-left: 20px; margin: 12px 0 18px; }
+    .guide-section li { font-size: 15px; line-height: 1.7; color: var(--dim); margin-bottom: 8px; }
+    .guide-section li strong { color: #fff; }
+
+    .callout {
+      background: rgba(250,204,21,0.07);
+      border: 1px solid rgba(250,204,21,0.2);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .callout p { color: var(--dim); font-size: 14px; margin: 0; line-height: 1.6; }
+    .callout strong { color: var(--yellow2); }
+
+    .warning-box {
+      background: rgba(251,113,133,0.07);
+      border: 1px solid rgba(251,113,133,0.25);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .warning-box p { color: var(--dim); font-size: 14px; margin: 0; line-height: 1.6; }
+    .warning-box strong { color: var(--red); }
+
+    .bid-example {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+    .bid-example .bid-row { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--dim); }
+    .bid-example .bid-row:last-child { border-bottom: none; }
+    .bid-example .bid-row.winner { color: var(--green); }
+    .bid-example .bid-label { flex: 1; }
+    .bid-example .bid-val { white-space: nowrap; }
+
+    .score-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+    .score-table th { background: rgba(250,204,21,0.12); color: var(--yellow2); font: 700 12px/1 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+    .score-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--dim); }
+    .score-table tr:last-child td { border-bottom: none; }
+    .score-table tr:hover td { background: rgba(255,255,255,0.025); }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 13px/1 'JetBrains Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 18px;
+      cursor: pointer;
+      background: none;
+      transition: color 160ms ease, border-color 160ms ease;
+      margin-bottom: 28px;
+    }
+    .print-btn:hover { color: #fff; border-color: var(--border-strong); }
+
+    .guide-tools { margin: 44px 0; padding: 28px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .guide-tools h3 { font-size: 16px; color: #fff; margin: 0 0 16px; }
+    .guide-tools-grid { display: grid; gap: 10px; }
+    .guide-newsletter { margin-top: 44px; }
+
+    @media (max-width: 560px) {
+      .gate-card { padding: 22px; }
+      .gate-form-row { grid-template-columns: 1fr; }
+      .bid-example { font-size: 12px; }
+    }
+    @media print {
+      #gate-state { display: none !important; }
+      #guide-content { display: block !important; }
+      .print-btn, .guide-tools, .guide-newsletter { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/nav.js"></script>
+<main>
+  <div class="wrap">
+    <div class="guide-wrap">
+
+      <section class="page-title" style="padding-bottom: 0;">
+        <div class="eyebrow">// Free resource · Bid evaluation</div>
+        <h1 class="display" style="max-width: 700px;">How to Read a Paving Bid</h1>
+        <p>12 Things That Actually Matter — A Property Manager's Guide</p>
+      </section>
+
+      <!-- GATE STATE -->
+      <div id="gate-state">
+        <div class="gate-card">
+
+          <p class="gate-title">How to Read a Paving Bid: 12 Things That Actually Matter</p>
+          <p class="gate-subtitle">A Property Manager's Guide to Evaluating Contractor Proposals</p>
+
+          <div class="whats-inside">
+            <h3>What's inside</h3>
+            <ul>
+              <li>The #1 mistake property managers make when comparing bids (it's not price)</li>
+              <li>The 4 scope items most bids bury or omit entirely</li>
+              <li>How to calculate cost-per-year-of-useful-life (the only apples-to-apples comparison)</li>
+              <li>Red flag language to watch for in bid documents</li>
+              <li>What a good warranty clause actually says vs. what most say</li>
+              <li>A simple bid scoring worksheet</li>
+            </ul>
+          </div>
+
+          <div class="preview-block">
+            <p>The most common and costly mistake in paving bid evaluation is ranking bids by total price. A $95,000 bid is not automatically better than a $120,000 bid. The question is: what are you getting, for how long, and what will it cost to maintain?</p>
+            <p>This guide gives property managers the framework to answer that question — and a scoring system to make it repeatable...</p>
+          </div>
+
+          <form class="gate-form" id="bid-guide-gate-form" name="resource-bid-guide" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="resource-bid-guide">
+            <div class="gate-form-row">
+              <div class="field">
+                <label for="gate-name">Your name</label>
+                <input id="gate-name" class="input" name="name" autocomplete="name" placeholder="Ryan Clark" required>
+              </div>
+              <div class="field">
+                <label for="gate-email">Work email</label>
+                <input id="gate-email" class="input" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+              </div>
+            </div>
+            <button class="btn" type="submit" style="width:100%; font-size:16px;">Send Me the Free Guide →</button>
+            <p class="gate-fine">Delivered instantly. Unsubscribe anytime.</p>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- GUIDE CONTENT -->
+      <div id="guide-content">
+
+        <div style="display:flex; justify-content:flex-end; margin-top:28px;">
+          <button class="print-btn" onclick="window.print()">⎙ Print / Save as PDF</button>
+        </div>
+
+        <div class="guide-header">
+          <div class="eyebrow">// Surface Intelligence · Bid Evaluation Guide · 2026</div>
+          <h1>How to Read a Paving Bid: 12 Things That Actually Matter</h1>
+          <p>A Property Manager's Guide to Evaluating Contractor Proposals. Prepared by Ryan Clark, Pavement &amp; ADA Specialist, Forticon.</p>
+        </div>
+
+        <div class="notice" style="margin-bottom: 28px;">
+          This guide covers evaluation methodology for paving contractor proposals. For project-specific pricing verification, use the Three-Bid Decoder at <a href="/tools/bid-decoder/">/tools/bid-decoder/</a> to run cost-per-year calculations automatically.
+        </div>
+
+        <!-- Section 1 -->
+        <div class="guide-section">
+          <h2>Section 1: The #1 Mistake — Comparing Sticker Price</h2>
+          <p>The most common and costly mistake in paving bid evaluation is ranking bids by total price. A $95,000 bid is not automatically better than a $120,000 bid. The question is: what are you getting, for how long, and what will it cost to maintain?</p>
+          <p>The correct comparison metric is <strong style="color:#fff">cost-per-year-of-useful-life:</strong></p>
+          <div class="callout">
+            <p><strong>Formula:</strong> Total Bid Price ÷ Quoted Useful Life (years) = Annual Cost of Ownership</p>
+          </div>
+
+          <div class="bid-example">
+            <div class="bid-row"><span class="bid-label">Bid A: $95,000 ÷ 10-year life</span><span class="bid-val">= $9,500 / year</span></div>
+            <div class="bid-row"><span class="bid-label">Bid C: $108,000 ÷ 15-year life</span><span class="bid-val">= $7,200 / year</span></div>
+            <div class="bid-row winner"><span class="bid-label">Bid B: $120,000 ÷ 18-year life ← winner</span><span class="bid-val">= $6,667 / year</span></div>
+          </div>
+
+          <p>Bid B "wins" at $120,000 — the most expensive option — because it delivers the lowest annual cost of ownership. Selecting Bid A would cost $2,833 more per year and deliver 8 fewer years of service life.</p>
+
+          <div class="callout">
+            <p><strong>Use the Three-Bid Decoder</strong> at <a href="/tools/bid-decoder/" style="color:var(--yellow2); font-weight:700;">/tools/bid-decoder/</a> to run this calculation automatically for your actual bids.</p>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="guide-section">
+          <h2>Section 2: The 4 Scope Items Most Bids Bury or Omit</h2>
+
+          <h3>Item 1: Base Repair</h3>
+          <p>"As needed" is not a scope item — it's a blank check for change orders. A proper bid specifies what base work is assumed, at what square footage, and what the per-sqft adder is for additional work discovered during construction.</p>
+          <div class="warning-box">
+            <p><strong>Red flag language:</strong> "Base repair will be billed at an additional cost" without a specified rate or estimated area. This is an open-ended liability with no ceiling.</p>
+          </div>
+
+          <h3>Item 2: ADA Work</h3>
+          <p>Accessible stall restriping, slope confirmation, signage, and access aisle repair are frequently excluded from bids without notice. If ADA isn't mentioned, assume it's not included.</p>
+          <p>Ask directly: "Is this bid ADA-compliant for our lot?" If the contractor isn't sure, they haven't walked the lot carefully enough.</p>
+
+          <h3>Item 3: Mobilization &amp; Traffic Control</h3>
+          <p>These are real costs often bundled invisibly into small lots or omitted entirely. For a parking lot under 20,000 sq ft, mobilization can represent 25–35% of the total project cost. It should be a line item.</p>
+
+          <h3>Item 4: Tack Coat, Edge Milling, and Prep</h3>
+          <p>Tack coat bonds new asphalt to existing layers. Edge milling creates a clean transition. These aren't optional — they're what makes the new surface adhere. Bids that don't mention prep work are either omitting it (a quality shortcut) or not explaining what's included.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="guide-section">
+          <h2>Section 3: How to Calculate Cost-Per-Year-of-Useful-Life</h2>
+          <ol>
+            <li><strong>Ask each contractor for their quoted useful life, in years, in writing.</strong></li>
+            <li><strong>Divide total bid price by quoted useful life.</strong></li>
+            <li><strong>Add estimated maintenance costs</strong> over that period (sealcoat every 3–5 years at ~$0.20–0.30/sqft, crack fill annually on active lots).</li>
+            <li><strong>The bid with the lowest all-in annual cost is the best value</strong> — not the lowest sticker price.</li>
+          </ol>
+          <div class="callout">
+            <p><strong>If a contractor won't quote a useful life,</strong> ask why. A contractor who won't stand behind a lifecycle estimate is telling you something important about their confidence in the work they're proposing.</p>
+          </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="guide-section">
+          <h2>Section 4: Red Flag Language to Watch For</h2>
+          <p>These phrases, buried in contractor proposals, can significantly expand your liability or reduce your ability to enforce the contract:</p>
+          <ul>
+            <li><strong>"At owner's risk"</strong> clauses buried in scope language</li>
+            <li><strong>"Material substitutions may occur at contractor's discretion"</strong> without approval rights — you may not get what you specified</li>
+            <li><strong>"Warranty void if lot is sealed within 90 days"</strong> — this conflicts with normal sealcoat timing recommendations (90–120 days)</li>
+            <li><strong>"Quantities are estimates and will be reconciled at completion"</strong> without a cap — this is an open-ended final price</li>
+            <li><strong>No specified start date, only "weather permitting"</strong> with no fallback timeline — projects without start dates don't have end dates</li>
+            <li><strong>"Subcontractors will perform specialty work"</strong> without naming them or confirming their insurance</li>
+          </ul>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="guide-section">
+          <h2>Section 5: What a Good Warranty Clause Says</h2>
+          <p>A real warranty covers:</p>
+          <ul>
+            <li>Material defects (wrong mix, delamination, cracking not caused by settlement or base failure)</li>
+            <li>Workmanship defects (cold joints, improper compaction, grade errors)</li>
+            <li>Minimum duration: 1 year for overlay/patch, 3–5 years for full repave</li>
+            <li>Contact and response protocol for warranty claims</li>
+          </ul>
+          <div class="warning-box">
+            <p><strong>A poor warranty covers:</strong> "visible defects visible at time of completion." This is nearly unenforceable — and is not actually a warranty, it's a final inspection clause.</p>
+          </div>
+          <p>Ask for the warranty in writing before signing. If it's verbal, it doesn't exist.</p>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="guide-section">
+          <h2>Section 6: A Simple Bid Scoring Worksheet</h2>
+          <p>Score each bid on 5 criteria (1–5 points each). Maximum score: 21 points.</p>
+
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>Criterion</th>
+                <th>What to evaluate</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color:#fff">Scope completeness</strong></td>
+                <td>Base repair specified, ADA addressed, prep included, materials specified</td>
+                <td>1–5</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff">Annual cost rank</strong></td>
+                <td>Cost-per-year-of-useful-life rank (best = 3 pts, middle = 2 pts, worst = 1 pt)</td>
+                <td>1–3</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff">Contractor credibility</strong></td>
+                <td>License verified, insurance confirmed, references checked</td>
+                <td>1–5</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff">Warranty strength</strong></td>
+                <td>Duration, coverage specificity, written form</td>
+                <td>1–5</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff">Communication quality</strong></td>
+                <td>Responsiveness, proposal detail, showed up on time, measured accurately</td>
+                <td>1–5</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <p><strong>Use the Contractor Vetting Scorecard</strong> at <a href="/tools/contractor-vetting-scorecard/" style="color:var(--yellow2); font-weight:700;">/tools/contractor-vetting-scorecard/</a> for a more detailed version of the credibility and warranty scoring.</p>
+          </div>
+        </div>
+
+        <!-- Related tools -->
+        <div class="guide-tools">
+          <h3>Related free tools</h3>
+          <div class="guide-tools-grid">
+            <a class="tool-mini" href="/tools/bid-decoder/">
+              <b>Three-Bid Decoder</b>
+              <span>Run cost-per-year-of-useful-life automatically for up to 3 competing bids.</span>
+            </a>
+            <a class="tool-mini" href="/tools/contractor-vetting-scorecard/">
+              <b>Contractor Vetting Scorecard</b>
+              <span>Pressure-test contractor credibility: license, insurance, warranty, scope clarity.</span>
+            </a>
+            <a class="tool-mini" href="/tools/ada-risk-scorecard/">
+              <b>ADA Risk Scorecard</b>
+              <span>Triage your lot's ADA exposure before the contractor scope is written.</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="guide-newsletter">
+          <div class="newsletter">
+            <div class="eyebrow" style="color:rgba(0,0,0,0.55); margin-bottom:8px">// Weekly field notes</div>
+            <h2>Get Ryan's pavement insights in your inbox.</h2>
+            <p>Short, useful notes on pavement decisions, ADA risk, bid strategy, and field observations. No spam.</p>
+            <form class="form" name="newsletter-bid-guide" method="POST" data-netlify="true">
+              <input type="hidden" name="form-name" value="newsletter-bid-guide">
+              <input class="input" name="name" placeholder="Your name" autocomplete="name" required>
+              <input class="input" name="email" type="email" placeholder="Your email" autocomplete="email" required>
+              <button class="btn" type="submit">Subscribe →</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <!-- end #guide-content -->
+
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  const form = document.getElementById('bid-guide-gate-form');
+  const gateState = document.getElementById('gate-state');
+  const guideContent = document.getElementById('guide-content');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = form.querySelector('[name="name"]').value.trim();
+    const email = form.querySelector('[name="email"]').value.trim();
+
+    if (!name || !email) {
+      alert('Please enter your name and email to access the guide.');
+      return;
+    }
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      const data = new FormData(form);
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+      });
+    } catch (_) {
+      // Netlify will capture the submission; show guide regardless
+    }
+
+    gateState.style.display = 'none';
+    guideContent.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>

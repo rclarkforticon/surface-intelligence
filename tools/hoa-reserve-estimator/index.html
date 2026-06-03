@@ -718,6 +718,7 @@
           </div>
         </div>
 
+        <div class="gated-full hidden">
         <!-- THE NEXT EVENT -->
         <div class="question-card mb-6">
           <div class="section-label">▎The next capital event</div>
@@ -781,12 +782,14 @@
           </div>
         </div>
 
+        </div>
+
         <!-- EMAIL CAPTURE -->
         <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
-          <div class="section-label">▎Get the board-ready memo</div>
-          <h3 class="display text-2xl uppercase mb-2">Email me the printable analysis</h3>
+          <div class="section-label">▎Unlock the board-ready memo</div>
+          <h3 class="display text-2xl uppercase mb-2">See the 10-year timeline and methodology</h3>
           <p class="text-sm text-[var(--text-dim)] mb-5">
-            Branded PDF: your full reserve calculation + methodology + 10-year forecast + recommended next steps. Send directly to your board, treasurer, or reserve specialist. Plus: Surface Intelligence newsletter (462 property managers).
+            Enter your email to reveal the next capital event, funding status, lifecycle timeline, and methodology you can share with your board. Plus: Surface Intelligence newsletter (462 property managers).
           </p>
           <div id="emailFormContainer">
             <input type="email" id="emailInput" placeholder="your@email.com" />
@@ -886,6 +889,7 @@
     // TODO: hook to Netlify Forms / Supabase
     document.getElementById('emailFormContainer').classList.add('hidden');
     document.getElementById('emailSuccess').classList.remove('hidden');
+    document.querySelectorAll('.gated-full').forEach(section => section.classList.remove('hidden'));
   }
 
   function shareResult() {

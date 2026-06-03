@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free Pavement Decision Tools for Property Managers | Surface Intelligence</title>
-  <meta name="description" content="11 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, and more. No login required.">
+  <meta name="description" content="14 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, budgeting, and more. No login required.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -225,6 +225,12 @@
     }
     .photo-divider-text blockquote span { color: var(--yellow); }
 
+    .proof-section { padding: 84px 0 0; }
+    .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; margin-top: 28px; }
+    .proof-card { border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.03); padding: 24px; }
+    .proof-card blockquote { margin: 0 0 18px; color: #fff; font-size: 17px; line-height: 1.55; }
+    .proof-card cite { color: var(--muted); font-style: normal; font: 700 11px/1.5 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .08em; }
+
     /* ── ARTICLES TEASER ──────────────────────────── */
     .articles-section { padding: 96px 0; }
     .articles-section .section-header { margin-bottom: 36px; }
@@ -235,6 +241,7 @@
     /* ── RESPONSIVE ───────────────────────────────── */
     @media (max-width: 900px) {
       .teaser-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .proof-grid { grid-template-columns: 1fr; }
       .teaser-header { grid-template-columns: 1fr; }
       .hero-full { min-height: 80vh; }
     }
@@ -250,15 +257,15 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://surface-intelligence.com/" />
   <meta property="og:title" content="Free Pavement Decision Tools for Property Managers | Surface Intelligence" />
-  <meta property="og:description" content="11 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, and more. No login required." />
+  <meta property="og:description" content="14 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, budgeting, and more. No login required." />
   <meta property="og:image" content="https://surface-intelligence.com/assets/images/hero-paving.jpg" />
   <meta property="og:site_name" content="Surface Intelligence" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Free Pavement Decision Tools for Property Managers | Surface Intelligence" />
-  <meta name="twitter:description" content="11 free tools: material selection, ADA risk checks, bid comparison, reserve planning, sealcoat timing, and more. No login required." />
+  <meta name="twitter:description" content="14 free tools: material selection, ADA risk checks, bid comparison, reserve planning, budgeting, sealcoat timing, and more. No login required." />
   <meta name="twitter:image" content="https://surface-intelligence.com/assets/images/hero-paving.jpg" />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://surface-intelligence.com/#website","url":"https://surface-intelligence.com","name":"Surface Intelligence","description":"Free pavement, ADA, and bid decision tools for property managers, HOA boards, and facility teams.","publisher":{"@id":"https://surface-intelligence.com/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://surface-intelligence.com/tools/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Organization","@id":"https://surface-intelligence.com/#organization","name":"Surface Intelligence","url":"https://surface-intelligence.com","founder":{"@id":"https://surface-intelligence.com/#person"}},{"@type":"Person","@id":"https://surface-intelligence.com/#person","name":"Ryan Clark","url":"https://surface-intelligence.com","jobTitle":"Pavement & ADA Specialist","worksFor":{"@type":"Organization","name":"Forticon","url":"https://www.forticon.com"},"sameAs":["https://www.linkedin.com/in/ryanclark-pm"]},{"@type":"WebPage","@id":"https://surface-intelligence.com/#webpage","url":"https://surface-intelligence.com/","name":"Free Pavement Decision Tools for Property Managers | Surface Intelligence","isPartOf":{"@id":"https://surface-intelligence.com/#website"},"about":{"@id":"https://surface-intelligence.com/#person"},"description":"11 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, and more."}]}
+  {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://surface-intelligence.com/#website","url":"https://surface-intelligence.com","name":"Surface Intelligence","description":"Free pavement, ADA, and bid decision tools for property managers, HOA boards, and facility teams.","publisher":{"@id":"https://surface-intelligence.com/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://surface-intelligence.com/tools/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Organization","@id":"https://surface-intelligence.com/#organization","name":"Surface Intelligence","url":"https://surface-intelligence.com","founder":{"@id":"https://surface-intelligence.com/#person"}},{"@type":"Person","@id":"https://surface-intelligence.com/#person","name":"Ryan Clark","url":"https://surface-intelligence.com","jobTitle":"Pavement & ADA Specialist","worksFor":{"@type":"Organization","name":"Forticon","url":"https://www.forticon.com"},"sameAs":["https://www.linkedin.com/in/ryanclark-pm"]},{"@type":"WebPage","@id":"https://surface-intelligence.com/#webpage","url":"https://surface-intelligence.com/","name":"Free Pavement Decision Tools for Property Managers | Surface Intelligence","isPartOf":{"@id":"https://surface-intelligence.com/#website"},"about":{"@id":"https://surface-intelligence.com/#person"},"description":"14 free pavement and ADA decision tools for property managers, HOA boards, and facility teams. Material selection, bid comparison, ADA risk checks, reserve planning, budgeting, and more."}]}
   </script>
 </head>
 <body>
@@ -274,13 +281,13 @@
     <div class="wrap hero-content">
       <div class="eyebrow">// Ryan Clark · Surface Intelligence</div>
       <h1 class="display">Free pavement tools for property managers.</h1>
-      <p>11 free decision tools to help you make smarter calls on asphalt, concrete, ADA, and bids — before capital dollars are committed. No login. No pitch.</p>
+      <p>14 free decision tools to help you make smarter calls on asphalt, concrete, ADA, budgets, and bids — before capital dollars are committed. No login. No pitch.</p>
       <div class="actions">
         <a class="btn" href="/tools/">Browse the free tools</a>
         <a class="btn ghost" href="/articles/">Read the insights</a>
       </div>
       <div class="hero-badges">
-        <span class="hero-badge">11 free tools</span>
+        <span class="hero-badge">14 free tools</span>
         <span class="hero-badge">ADA risk checks</span>
         <span class="hero-badge">Bid strategy</span>
         <span class="hero-badge">Board-ready language</span>
@@ -298,7 +305,7 @@
           <h2 class="display">Decisions that used to take days. Now take minutes.</h2>
           <p>Use these before a contractor call, board meeting, or budget request. Every tool is free, private, and built for how property teams actually work.</p>
         </div>
-        <a class="btn ghost" href="/tools/">See all 11 tools</a>
+        <a class="btn ghost" href="/tools/">See all 14 tools</a>
       </div>
 
       <div class="teaser-grid">
@@ -342,8 +349,8 @@
       </div>
 
       <div class="all-tools-bar">
-        <p><strong>8 more tools</strong> — sealcoat timing, HOA reserves, NOI impact, contractor vetting, insurance claims, board language, condition rating, and tenant notices.</p>
-        <a class="btn" href="/tools/">See all 11 free tools</a>
+        <p><strong>11 more tools</strong> — budgeting, repair-vs-replace ROI, maintenance planning, sealcoat timing, HOA reserves, NOI impact, contractor vetting, insurance claims, board language, condition rating, and tenant notices.</p>
+        <a class="btn" href="/tools/">See all 14 free tools</a>
       </div>
     </div>
   </section>
@@ -355,6 +362,33 @@
       <blockquote>"Most pavement mistakes happen <span>before a contractor mobilizes.</span>"</blockquote>
     </div>
   </div>
+
+  <!-- ── SOCIAL PROOF ───────────────────────────────────── -->
+  <section class="proof-section">
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">// Field-tested guidance</div>
+          <h2 class="display">Built for the moments property teams actually face.</h2>
+          <p>Use Surface Intelligence before you explain a scope, challenge a bid, ask for funding, or document risk.</p>
+        </div>
+      </div>
+      <div class="proof-grid">
+        <div class="proof-card">
+          <blockquote>"The bid review language helped us move the conversation away from lowest price and back to scope risk."</blockquote>
+          <cite>Commercial property manager</cite>
+        </div>
+        <div class="proof-card">
+          <blockquote>"The reserve estimate gave our board a number they could discuss without getting lost in contractor jargon."</blockquote>
+          <cite>HOA board treasurer</cite>
+        </div>
+        <div class="proof-card">
+          <blockquote>"The ADA checklist made it obvious what needed documentation before we authorized the surface work."</blockquote>
+          <cite>Facilities director</cite>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ── ARTICLES ───────────────────────────────────────── -->
   <section class="articles-section" id="articles">
@@ -370,34 +404,34 @@
 
       <div class="grid3">
         <article class="card article-card">
-          <a class="article-image-link" href="/articles/#issue-14">
+          <a class="article-image-link" href="/articles/ada-lawsuit-machine-real/">
             <img class="article-thumb" src="/assets/images/ada-divider.jpg" alt="The ADA Lawsuit Machine Is Real — Surface Intelligence Issue 14" loading="lazy" width="960" height="540">
           </a>
           <div class="article-body">
             <span class="tag">ADA Risk</span>
-            <h3 class="display"><a href="/articles/#issue-14">The ADA Lawsuit Machine Is Real. Property Managers Should Act Before It Finds Them.</a></h3>
+            <h3 class="display"><a href="/articles/ada-lawsuit-machine-real/">The ADA Lawsuit Machine Is Real. Property Managers Should Act Before It Finds Them.</a></h3>
             <p>California's ADA + Unruh Act framework makes parking lots prime litigation targets. Here's a three-tier fix framework.</p>
           </div>
         </article>
 
         <article class="card article-card">
-          <a class="article-image-link" href="/articles/#issue-13">
+          <a class="article-image-link" href="/articles/board-meeting-language-pavement/">
             <img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D4E12AQGq-7S5QMxjUQ/article-cover_image-shrink_720_1280/B4EZ5jwgDqIAAU-/0/1779790121969?e=2147483647&t=2yiK4RWA_7P2dpSLej_ey25LBqJ9FIofOwiaoLrWrn0&v=beta" data-fallback="/assets/article-thumbnails/issue-13.svg" referrerpolicy="no-referrer" alt="Board Meeting Language That Gets Pavement Projects Approved" loading="lazy" width="960" height="540">
           </a>
           <div class="article-body">
             <span class="tag">Board Strategy</span>
-            <h3 class="display"><a href="/articles/#issue-13">The Board Meeting Language That Gets Pavement Projects Approved</a></h3>
+            <h3 class="display"><a href="/articles/board-meeting-language-pavement/">The Board Meeting Language That Gets Pavement Projects Approved</a></h3>
             <p>Frame pavement work as risk, lifecycle, and asset protection — not cosmetic maintenance.</p>
           </div>
         </article>
 
         <article class="card article-card">
-          <a class="article-image-link" href="/articles/#issue-12">
+          <a class="article-image-link" href="/articles/ada-compliance-lawyers-honey-pot/">
             <img class="article-thumb" src="https://media.licdn.com/dms/image/v2/D5612AQEXlN9lJvr-Gg/article-cover_image-shrink_720_1280/B56Z5QWyRZIQAQ-/0/1779464613551?e=2147483647&t=MHp1gh1BJE7On8SrTL95C4l_HNBQ6v7NfdVoXGF-1us&v=beta" data-fallback="/assets/article-thumbnails/issue-12.svg" referrerpolicy="no-referrer" alt="At What Point Did ADA Compliance Become a Lawyer's Honey Pot?" loading="lazy" width="960" height="540">
           </a>
           <div class="article-body">
             <span class="tag">ADA Risk</span>
-            <h3 class="display"><a href="/articles/#issue-12">At What Point Did ADA Compliance Become a Lawyer's Honey Pot?</a></h3>
+            <h3 class="display"><a href="/articles/ada-compliance-lawyers-honey-pot/">At What Point Did ADA Compliance Become a Lawyer's Honey Pot?</a></h3>
             <p>A straight take on California ADA lawsuit pressure and what property owners need to understand.</p>
           </div>
         </article>

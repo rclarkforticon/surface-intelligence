@@ -549,6 +549,7 @@
           </div>
         </div>
 
+        <div class="gated-full hidden">
         <!-- PER-BID BREAKDOWN -->
         <div class="section-label">▎Per-bid diagnostic</div>
         <div class="grid lg:grid-cols-3 gap-4 mb-8">
@@ -604,12 +605,14 @@
           `}
         </div>
 
+        </div>
+
         <!-- EMAIL CAPTURE -->
         <div class="question-card mb-8 no-print" style="border-color: var(--yellow);">
-          <div class="section-label">▎Get the board-ready memo</div>
-          <h3 class="display text-2xl uppercase mb-2">Email yourself the printable analysis</h3>
+          <div class="section-label">▎Unlock the board-ready memo</div>
+          <h3 class="display text-2xl uppercase mb-2">See the full scope-gap analysis</h3>
           <p class="text-sm text-[var(--text-dim)] mb-5">
-            Branded PDF you can forward to your board or owner — with the cost-per-year math, the per-bid diagnostic, and the 6 questions to ask each contractor before signing. Plus: Surface Intelligence weekly newsletter (read by 452 property managers).
+            Enter your email to reveal the per-bid diagnostic, cost-per-useful-year math, and 6 contractor questions before signing. Plus: Surface Intelligence weekly newsletter (read by 452 property managers).
           </p>
           <div id="emailFormContainer">
             <input type="email" id="emailInput" placeholder="your@email.com" />
@@ -675,6 +678,7 @@
 
     document.getElementById('emailFormContainer').classList.add('hidden');
     document.getElementById('emailSuccess').classList.remove('hidden');
+    document.querySelectorAll('.gated-full').forEach(section => section.classList.remove('hidden'));
   }
 
   function shareResult() {
