@@ -65,6 +65,7 @@
             <h3>Explore</h3>
             <a href="/tools/">Free Tools</a>
             <a href="/resources/">Free Resources</a>
+            <a href="/service-areas/">Service Areas</a>
             <a href="/start/">Start Here</a>
             <a href="/articles/">Insights</a>
             <a href="/glossary/">Glossary</a>
