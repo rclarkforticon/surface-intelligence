@@ -58,7 +58,8 @@
     }
 
     .tool-card-art {
-      height: 180px;
+      aspect-ratio: 1 / 1;
+      height: auto;
       overflow: hidden;
       flex-shrink: 0;
       position: relative;
@@ -67,13 +68,9 @@
     .tool-card-art img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center top;
+      object-fit: contain;
+      object-position: center;
       display: block;
-      transition: transform 300ms ease;
-    }
-    .tool-card:hover .tool-card-art img {
-      transform: scale(1.04);
     }
     /* Subtle gradient overlay blending image into card */
     .tool-card-art::after {
@@ -139,7 +136,6 @@
     }
     @media (max-width: 560px) {
       .tool-grid { grid-template-columns: 1fr; }
-      .tool-card-art { height: 200px; }
       .cta-bar { flex-direction: column; align-items: flex-start; }
     }
   </style>
@@ -211,7 +207,7 @@
 
       <a class="tool-card" href="/tools/paving-budget-estimator/">
         <div class="tool-card-art">
-          <img src="/assets/images/hero-paving.jpg" alt="Paving Project Budget Estimator tool" loading="lazy">
+          <img src="/tools/tool-card-images/paving-budget-estimator.png" alt="Paving Project Budget Estimator tool" loading="lazy">
         </div>
         <div class="tool-card-body">
           <span class="tag">Budget range</span>
@@ -223,7 +219,7 @@
 
       <a class="tool-card" href="/tools/repair-vs-replace/">
         <div class="tool-card-art">
-          <img src="/assets/images/paving-job-2.jpg" alt="Repair vs. Replace ROI Calculator tool" loading="lazy">
+          <img src="/tools/tool-card-images/repair-vs-replace.png" alt="Repair vs. Replace ROI Calculator tool" loading="lazy">
         </div>
         <div class="tool-card-body">
           <span class="tag">ROI decision</span>
@@ -235,7 +231,7 @@
 
       <a class="tool-card" href="/tools/maintenance-planner/">
         <div class="tool-card-art">
-          <img src="/assets/images/aerial-parking-lot.webp" alt="Annual Pavement Maintenance Planner tool" loading="lazy">
+          <img src="/tools/tool-card-images/maintenance-planner.png" alt="Annual Pavement Maintenance Planner tool" loading="lazy">
         </div>
         <div class="tool-card-body">
           <span class="tag">3-year plan</span>
