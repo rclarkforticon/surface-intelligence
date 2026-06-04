@@ -45,7 +45,10 @@
       </nav>
     </header>`;
 
-  document.body.insertAdjacentHTML('afterbegin', header);
+  const hasStaticHeader = document.querySelector('[data-site-header]');
+  if (!hasStaticHeader) {
+    document.body.insertAdjacentHTML('afterbegin', header);
+  }
 
   const onReady = () => {
     const main = document.querySelector('main');
@@ -94,7 +97,9 @@
           </nav>
         </div>
       </footer>`;
-    document.body.insertAdjacentHTML('beforeend', footer);
+    if (!document.querySelector('.footer')) {
+      document.body.insertAdjacentHTML('beforeend', footer);
+    }
 
     const toggle = document.querySelector('.menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');

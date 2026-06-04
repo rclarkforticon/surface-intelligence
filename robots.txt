@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://surface-intelligence.com/sitemap.xml
+LLMs: https://surface-intelligence.com/llms.txt

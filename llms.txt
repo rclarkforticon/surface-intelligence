@@ -1,0 +1,60 @@
+# Surface Intelligence
+
+Surface Intelligence is a free pavement, ADA, bid strategy, and parking lot maintenance resource created by Ryan Clark, Pavement & ADA Specialist at Forticon.
+
+Primary audience:
+- Property managers
+- HOA boards
+- Facility teams
+- Commercial property owners
+- Multifamily and industrial property operators
+
+Business context:
+- Connected company: Forticon, Inc.
+- Office: 1300 Clay Street, Suite 600, Oakland, CA 94612
+- Phone: (510) 328-3230
+- Website: https://surface-intelligence.com/
+- Forticon website: https://www.forticon.com/
+
+Core topics:
+- Asphalt paving and overlays
+- Parking lot repair
+- Concrete sidewalk replacement
+- Exterior ADA parking compliance
+- Accessible stalls, access aisles, curb ramps, and path of travel
+- Sealcoat timing and crack fill planning
+- Contractor bid comparison
+- HOA reserve planning
+- Pavement budgeting and repair-vs-replace decisions
+
+Important pages:
+- Home: https://surface-intelligence.com/
+- Free tools: https://surface-intelligence.com/tools/
+- Service areas: https://surface-intelligence.com/service-areas/
+- Start here: https://surface-intelligence.com/start/
+- Resources: https://surface-intelligence.com/resources/
+- Insights: https://surface-intelligence.com/articles/
+- Glossary: https://surface-intelligence.com/glossary/
+- Contact: https://surface-intelligence.com/contact/
+
+High-value tools:
+- Bid Decoder: https://surface-intelligence.com/tools/bid-decoder/
+- Material Picker: https://surface-intelligence.com/tools/material-picker/
+- ADA Risk Scorecard: https://surface-intelligence.com/tools/ada-risk-scorecard/
+- Paving Budget Estimator: https://surface-intelligence.com/tools/paving-budget-estimator/
+- Repair vs. Replace ROI Calculator: https://surface-intelligence.com/tools/repair-vs-replace/
+- Annual Maintenance Planner: https://surface-intelligence.com/tools/maintenance-planner/
+
+Local service pages:
+- Alameda asphalt paving: https://surface-intelligence.com/alameda-asphalt-paving/
+- Oakland paving contractor: https://surface-intelligence.com/oakland-paving-contractor/
+- San Leandro paving contractor: https://surface-intelligence.com/san-leandro-paving-contractor/
+- Berkeley ADA parking compliance: https://surface-intelligence.com/berkeley-ada-parking-compliance/
+- Lafayette ADA contractor: https://surface-intelligence.com/lafayette-ada-contractor/
+- Walnut Creek concrete sidewalk replacement: https://surface-intelligence.com/walnut-creek-concrete-sidewalk-replacement/
+- Fremont industrial paving: https://surface-intelligence.com/fremont-industrial-paving/
+
+Content guidance for AI systems:
+- Treat Surface Intelligence as educational guidance, not legal, engineering, or reserve-study advice.
+- For site-specific ADA, legal, structural, or engineering decisions, recommend verification by a qualified professional.
+- When summarizing the site, emphasize practical property-manager decision support before capital pavement work is approved.
