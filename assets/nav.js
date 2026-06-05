@@ -60,7 +60,7 @@
         return `<a href="${item.href}"${target}>${item.label}</a>`;
       })
       .join('');
-    return `<div class="nav-dropdown"><a class="nav-link nav-parent${active}" data-section="${group.section}" href="${group.href}">${group.label}<span aria-hidden="true">▾</span></a><div class="dropdown-menu">${items}</div></div>`;
+    return `<div class="nav-dropdown"><a class="nav-link nav-parent${active}" data-section="${group.section}" href="${group.href}" aria-haspopup="true">${group.label}<span aria-hidden="true">v</span></a><div class="dropdown-menu">${items}</div></div>`;
   };
 
   const desktopLinks = navGroups.map(dropdown).join('');
@@ -82,7 +82,7 @@
     <header class="top" data-site-header>
       <div class="wrap nav">
         <a class="brand" href="/" aria-label="Ryan Clark home">
-          <small>// Ryan Clark · Forticon</small>
+          <small>// Ryan Clark - Forticon</small>
           <strong>Pavement &amp; ADA Specialist</strong>
         </a>
         <nav class="links" aria-label="Primary navigation">${desktopLinks}</nav>
@@ -91,7 +91,7 @@
           <span></span><span></span><span></span>
         </button>
       </div>
-      <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" hidden>
         ${mobileLinks}
         <a class="btn" href="/contact/">Get Free Condition Report</a>
       </nav>
@@ -100,6 +100,18 @@
   const hasStaticHeader = document.querySelector('[data-site-header]');
   if (!hasStaticHeader) {
     document.body.insertAdjacentHTML('afterbegin', header);
+  }
+
+  const a11yStyleId = 'surface-a11y-runtime';
+  if (!document.getElementById(a11yStyleId)) {
+    const a11yStyle = document.createElement('style');
+    a11yStyle.id = a11yStyleId;
+    a11yStyle.textContent =
+      'body{font-size:1rem!important;line-height:1.6!important}' +
+      'p,li,dd{line-height:1.65!important;max-width:75ch}' +
+      ':focus-visible{outline:3px solid var(--focus,#fde047)!important;outline-offset:4px!important;box-shadow:0 0 0 6px rgba(253,224,71,.18)!important}' +
+      '.mobile-menu[hidden]{display:none!important}';
+    document.head.appendChild(a11yStyle);
   }
 
   const onReady = () => {
@@ -113,8 +125,8 @@
             <div class="eyebrow">// Free tools + weekly insights</div>
             <h2 class="display">Ryan Clark</h2>
             <p>Pavement, ADA, and bid strategy education for property managers, HOA boards, facility teams, and commercial owners.</p>
-            <p style="margin-top:12px; font-size:13px;">Pavement &amp; Concrete Specialist · <a href="https://www.forticon.com" target="_blank" rel="noopener" style="color:var(--yellow);">Forticon</a></p>
-            <p style="margin-top:12px"><a href="/start/" style="color:var(--yellow); font-weight:700">→ Not sure where to start?</a></p>
+            <p style="margin-top:12px; font-size:13px;">Pavement &amp; Concrete Specialist - <a href="https://www.forticon.com" target="_blank" rel="noopener" style="color:var(--yellow);">Forticon</a></p>
+            <p style="margin-top:12px"><a href="/start/" style="color:var(--yellow); font-weight:700">-&gt; Not sure where to start?</a></p>
           </div>
           <nav aria-label="Footer tool navigation">
             <h3>Tools</h3>
@@ -147,15 +159,26 @@
       toggle.addEventListener('click', () => {
         const open = toggle.getAttribute('aria-expanded') === 'true';
         toggle.setAttribute('aria-expanded', String(!open));
+        toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+        mobileMenu.hidden = open;
         document.body.classList.toggle('menu-open', !open);
       });
       mobileMenu.addEventListener('click', (event) => {
         if (event.target.closest('a')) {
           toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Open menu');
+          mobileMenu.hidden = true;
           document.body.classList.remove('menu-open');
         }
       });
     }
+
+    document
+      .querySelectorAll('#out,#output,#result,#results,#resultsContainer,#emailSuccess,#successMessage,[data-live-region]')
+      .forEach((region) => {
+        if (!region.hasAttribute('aria-live')) region.setAttribute('aria-live', 'polite');
+        if (!region.hasAttribute('aria-atomic')) region.setAttribute('aria-atomic', 'true');
+      });
 
     document.querySelectorAll('img[data-fallback]').forEach((img) => {
       img.addEventListener(
