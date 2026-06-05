@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADA Issue Documentation Log | Ryan Clark</title>
+  <meta name="description" content="Free ADA issue documentation tool for property managers. Create dated records for accessible parking, signage, routes, slopes, striping, pavement, and follow-up actions.">
+  <link rel="canonical" href="https://surface-intelligence.com/tools/ada-issue-documentation-log/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://surface-intelligence.com/tools/ada-issue-documentation-log/">
+  <meta property="og:title" content="ADA Issue Documentation Log - Free Tool for Property Managers">
+  <meta property="og:description" content="Document ADA parking and accessible route concerns before they become legal, budget, or contractor-scope problems.">
+  <meta property="og:image" content="https://surface-intelligence.com/tools/tool-hero-images/ada-risk-scorecard-hero.webp">
+  <meta property="og:site_name" content="Surface Intelligence">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ADA Issue Documentation Log">
+  <meta name="twitter:description" content="Create a dated ADA issue record with observations, photos to collect, follow-up actions, and board-ready summary language.">
+  <meta name="twitter:image" content="https://surface-intelligence.com/tools/tool-hero-images/ada-risk-scorecard-hero.webp">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"ADA Issue Documentation Log","description":"Free ADA issue documentation tool for property managers to create dated records for accessible parking, signage, routes, slopes, striping, pavement, and follow-up actions.","url":"https://surface-intelligence.com/tools/ada-issue-documentation-log/","isPartOf":{"@id":"https://surface-intelligence.com/#website"},"publisher":{"@type":"Person","name":"Ryan Clark","url":"https://surface-intelligence.com"},"audience":{"@type":"Audience","audienceType":"Property Managers, HOA Boards, Facility Managers, Commercial Property Owners"}}</script>
+  <style>
+    .doc-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.86fr);gap:22px;align-items:start}
+    .doc-form,.doc-output{border:1px solid var(--border);border-radius:var(--radius-lg);background:linear-gradient(180deg,rgba(26,26,23,.96),rgba(13,13,12,.94));padding:24px;box-shadow:var(--shadow)}
+    .doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .doc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .issue-list{display:grid;gap:10px;margin-top:16px}
+    .issue-pill{border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-md);background:rgba(255,255,255,.035);padding:14px}
+    .issue-pill strong{display:block;color:#fff;margin-bottom:4px}
+    .issue-pill span{display:block;color:var(--dim);font-size:14px;line-height:1.45}
+    .report{white-space:pre-wrap;color:var(--text);font:500 15px/1.65 'IBM Plex Sans',system-ui,sans-serif;margin:0}
+    .severity{display:inline-flex;min-height:26px;align-items:center;border-radius:999px;padding:6px 9px;font:700 10px/1 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+    .severity-low{color:var(--green);background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28)}
+    .severity-med{color:#FDBA74;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3)}
+    .severity-high{color:var(--red);background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.32)}
+    .tool-hero-media{width:min(1120px,calc(100vw - 40px));max-width:none;margin:0 auto 44px;position:relative;left:50%;transform:translateX(-50%)}
+    .tool-hero-frame{border:1px solid var(--border);border-radius:var(--radius-lg);background:linear-gradient(180deg,rgba(26,26,23,.96),rgba(13,13,12,.94));box-shadow:var(--shadow);overflow:hidden}
+    .tool-hero-frame img{display:block;width:100%;height:auto}
+    .tool-hero-caption{padding:14px 18px;color:var(--muted);font:700 11px/1.4 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;border-top:1px solid var(--border)}
+    @media(max-width:900px){.doc-layout,.doc-grid{grid-template-columns:1fr}.tool-hero-media{width:min(100vw - 28px,1120px)}}
+    @media print{.top,.stripe,.footer,.no-print,.tool-hero-media,.doc-form{display:none!important}body{background:#fff!important;color:#111!important}.wrap{width:100%!important}.doc-layout{display:block}.doc-output{border:0!important;box-shadow:none!important;background:#fff!important;color:#111!important}.report{color:#111!important}}
+  </style>
+</head>
+<body>
+<script src="/assets/nav.js?v=a11y-20260605"></script>
+<main class="wrap">
+  <section class="page-title">
+    <div class="eyebrow">// Free tool - documentation builder</div>
+    <h1 class="display">ADA Issue Documentation Log</h1>
+    <p>Create a clean, dated record of accessible parking or path-of-travel concerns before they become legal, budget, board, or contractor-scope problems.</p>
+  </section>
+
+  <section class="tool-hero-media">
+    <div class="tool-hero-frame">
+      <img src="/tools/tool-hero-images/ada-risk-scorecard-hero.webp" alt="ADA documentation and accessible parking risk preview" width="1254" height="1254" loading="eager" fetchpriority="high">
+      <div class="tool-hero-caption">ADA observation record builder</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="doc-layout">
+      <form class="doc-form" id="issueForm">
+        <div class="eyebrow">// Project file</div>
+        <h2 class="display" style="margin:8px 0 18px">Record the context.</h2>
+        <div class="doc-grid">
+          <div class="field"><label for="propertyName">Property / community</label><input class="input" id="propertyName" autocomplete="organization" required></div>
+          <div class="field"><label for="manager">Prepared by</label><input class="input" id="manager" autocomplete="name" required></div>
+          <div class="field"><label for="date">Observation date</label><input class="input" id="date" type="date" required></div>
+          <div class="field"><label for="reportedBy">Reported by</label><input class="input" id="reportedBy" placeholder="Staff, tenant, owner, vendor, inspection"></div>
+        </div>
+
+        <div class="notice" style="margin:16px 0">Use this for organized documentation. It is not a CASp inspection, legal opinion, engineering report, or certification of compliance.</div>
+
+        <div class="eyebrow" style="margin-top:22px">// Add an issue</div>
+        <div class="field"><label for="location">Location</label><input class="input" id="location" placeholder="Example: north accessible stall near Suite 104"></div>
+        <div class="doc-grid">
+          <div class="field">
+            <label for="category">Issue category</label>
+            <select id="category">
+              <option>Accessible stall</option>
+              <option>Access aisle</option>
+              <option>Signage</option>
+              <option>Striping / markings</option>
+              <option>Accessible route</option>
+              <option>Curb ramp / transition</option>
+              <option>Slope / drainage</option>
+              <option>Pavement condition</option>
+              <option>Concrete sidewalk / path</option>
+              <option>Other accessibility concern</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="severity">Severity</label>
+            <select id="severity">
+              <option value="low">Observed concern</option>
+              <option value="medium">Needs measurement / scope review</option>
+              <option value="high">Urgent access or safety concern</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label for="observation">What was observed?</label><textarea id="observation" rows="4" placeholder="Describe the condition in plain language. Include what changed, who noticed it, and whether the issue affects accessible parking or route access."></textarea></div>
+        <div class="field"><label for="photos">Photo / evidence notes</label><textarea id="photos" rows="3" placeholder="List photo filenames, angles to capture, measurements needed, or documents to attach."></textarea></div>
+        <div class="field"><label for="action">Immediate action / next step</label><textarea id="action" rows="3" placeholder="Example: cone off area, request slope verification, add to paving scope, ask contractor/CASp to review, notify board."></textarea></div>
+        <div class="doc-actions no-print">
+          <button class="btn" type="submit">Add issue to log</button>
+          <button class="btn ghost" type="button" id="clearIssues">Clear issues</button>
+        </div>
+        <div class="issue-list" id="issueList" aria-live="polite"></div>
+      </form>
+
+      <aside class="doc-output" aria-live="polite" aria-atomic="true">
+        <div class="eyebrow">// Documentation output</div>
+        <h2 class="display" style="margin:8px 0 14px">Board-ready record</h2>
+        <p>Generate a record after adding one or more issues. Print it, save as PDF, or copy it into a board packet, contractor scope email, or project file.</p>
+        <div class="doc-actions no-print">
+          <button class="btn" type="button" id="generate">Generate record</button>
+          <button class="btn ghost" type="button" id="copy">Copy</button>
+          <button class="btn ghost" type="button" onclick="window.print()">Print / PDF</button>
+        </div>
+        <div class="notice" id="emptyState" style="margin-top:18px">No record generated yet.</div>
+        <pre class="report" id="report" hidden></pre>
+        <form name="ada-documentation-log" method="POST" data-netlify="true" style="margin-top:18px" class="no-print">
+          <input type="hidden" name="form-name" value="ada-documentation-log">
+          <input type="hidden" name="record" id="recordField">
+          <label class="field"><span>Email for follow-up</span><input class="input" name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+          <button class="btn" type="submit">Send record for follow-up</button>
+        </form>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<section class="section tool-seo-support" aria-labelledby="tool-seo-ada-doc">
+  <div class="wrap">
+    <div class="notice">
+      <h2 id="tool-seo-ada-doc">Using the ADA Issue Documentation Log</h2>
+      <p>Documentation protects managers from vague decision-making. When an ADA parking, accessible route, signage, striping, slope, drainage, or pavement issue is observed, the record should show when it was noticed, where it was located, what photos were taken, what follow-up was recommended, and whether it needs measurement or professional review.</p>
+      <p>Use this log before paving, sealcoat, striping, concrete repair, board approval, budget planning, insurance review, or contractor scope approval. Save the output with dated photos, proposals, field measurements, emails, and board notes so the decision trail is clear later.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px">
+      <a class="btn ghost" href="/tools/ada-risk-scorecard/">ADA Risk Scorecard</a>
+      <a class="btn ghost" href="/tools/bid-decoder/">Three-Bid Decoder</a>
+      <a class="btn ghost" href="/resources/ada-parking-compliance-guide/">ADA Parking Guide</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const issues = [];
+const today = new Date();
+document.getElementById('date').value = today.toISOString().split('T')[0];
+
+function val(id){ return document.getElementById(id).value.trim(); }
+function severityLabel(sev){
+  return sev === 'high' ? 'Urgent access or safety concern' : sev === 'medium' ? 'Needs measurement / scope review' : 'Observed concern';
+}
+function severityClass(sev){ return sev === 'high' ? 'severity-high' : sev === 'medium' ? 'severity-med' : 'severity-low'; }
+function renderIssues(){
+  const list = document.getElementById('issueList');
+  if (!issues.length) {
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = issues.map((issue, index) => `
+    <div class="issue-pill">
+      <span class="severity ${severityClass(issue.severity)}">${severityLabel(issue.severity)}</span>
+      <strong>${index + 1}. ${issue.category} - ${issue.location}</strong>
+      <span>${issue.observation}</span>
+    </div>
+  `).join('');
+}
+function resetIssueFields(){
+  ['location','observation','photos','action'].forEach((id) => document.getElementById(id).value = '');
+  document.getElementById('category').selectedIndex = 0;
+  document.getElementById('severity').value = 'low';
+}
+document.getElementById('issueForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!val('propertyName') || !val('manager') || !val('date') || !val('location') || !val('observation')) {
+    alert('Add the property, prepared by, date, location, and observation before adding the issue.');
+    return;
+  }
+  issues.push({
+    location: val('location'),
+    category: val('category'),
+    severity: val('severity'),
+    observation: val('observation'),
+    photos: val('photos') || 'Photos or measurements not yet attached.',
+    action: val('action') || 'Follow-up action not yet assigned.'
+  });
+  resetIssueFields();
+  renderIssues();
+});
+document.getElementById('clearIssues').addEventListener('click', () => {
+  issues.length = 0;
+  renderIssues();
+  document.getElementById('report').hidden = true;
+  document.getElementById('emptyState').hidden = false;
+  document.getElementById('recordField').value = '';
+});
+function buildReport(){
+  const property = val('propertyName') || 'Property not entered';
+  const manager = val('manager') || 'Prepared by not entered';
+  const date = val('date') || 'Date not entered';
+  const reportedBy = val('reportedBy') || 'Not specified';
+  const urgentCount = issues.filter((issue) => issue.severity === 'high').length;
+  const measureCount = issues.filter((issue) => issue.severity === 'medium').length;
+  const issueText = issues.map((issue, index) => `
+ISSUE ${index + 1}: ${issue.category}
+Location: ${issue.location}
+Severity: ${severityLabel(issue.severity)}
+Observation: ${issue.observation}
+Photo / evidence notes: ${issue.photos}
+Immediate action / next step: ${issue.action}`).join('\n');
+  return `ADA ISSUE DOCUMENTATION LOG
+
+Property / community: ${property}
+Prepared by: ${manager}
+Observation date: ${date}
+Reported by: ${reportedBy}
+Number of documented issues: ${issues.length}
+Urgent access or safety concerns: ${urgentCount}
+Items needing measurement / scope review: ${measureCount}
+
+MANAGER SUMMARY
+The following ADA parking or accessible route concerns were observed and documented for the project file. This record is intended to preserve the date, location, observed condition, photo/evidence notes, and recommended follow-up before the issue becomes a complaint, change order, budget surprise, or board approval problem.
+
+${issueText}
+
+RECOMMENDED DOCUMENTATION NEXT STEPS
+1. Save dated photos showing the overall location, close-up condition, and path of travel.
+2. Confirm field measurements where slope, dimensions, access aisle width, signage height, or route transitions are unclear.
+3. Add confirmed ADA-related corrections to the paving, striping, concrete, or maintenance scope before bids are approved.
+4. If an urgent access or safety concern is present, restrict access where appropriate and request review from a qualified ADA/CASp, design, or legal professional.
+5. Keep this record with contractor proposals, board notes, owner approvals, emails, and follow-up photos.
+
+Important note: This record is educational documentation only. It is not a CASp inspection, legal opinion, engineering report, or certification of ADA compliance.`;
+}
+document.getElementById('generate').addEventListener('click', () => {
+  if (!issues.length) {
+    alert('Add at least one issue before generating the record.');
+    return;
+  }
+  const report = buildReport();
+  document.getElementById('report').textContent = report;
+  document.getElementById('report').hidden = false;
+  document.getElementById('emptyState').hidden = true;
+  document.getElementById('recordField').value = report;
+});
+document.getElementById('copy').addEventListener('click', async () => {
+  const report = document.getElementById('report');
+  if (report.hidden || !report.textContent) {
+    alert('Generate the record before copying it.');
+    return;
+  }
+  await navigator.clipboard.writeText(report.textContent);
+  document.getElementById('copy').textContent = 'Copied';
+  setTimeout(() => document.getElementById('copy').textContent = 'Copy', 1600);
+});
+</script>
+</body>
+</html>
