@@ -10,7 +10,12 @@
       "Bash(git reset *)",
       "mcp__Desktop_Commander__get_file_info",
       "Bash(echo '=== __TRACKED_VAR__ ===')",
-      "Bash(tail -5 'C:/Users/rclark/Desktop/Surface Intelligence/__TRACKED_VAR__')"
+      "Bash(tail -5 'C:/Users/rclark/Desktop/Surface Intelligence/__TRACKED_VAR__')",
+      "Bash(npm --version)",
+      "Bash(npx --yes terser assets/nav.js -o assets/nav.js --compress --mangle)",
+      "Bash(npx --yes clean-css-cli assets/landing.css -o assets/landing.css)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
