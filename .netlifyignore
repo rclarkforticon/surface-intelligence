@@ -1,0 +1,7 @@
+.git
+.claude
+.agents
+.codex
+.netlify
+*.docx
+*.md

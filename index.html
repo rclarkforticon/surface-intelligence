@@ -98,6 +98,81 @@
       padding: 8px 14px;
     }
 
+    .podcast-callout-section {
+      padding: 32px 0 0;
+      margin-top: -18px;
+      position: relative;
+      z-index: 2;
+    }
+    .podcast-callout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+      gap: 24px;
+      align-items: start;
+      border: 1px solid rgba(250,204,21,0.32);
+      border-left: 4px solid var(--yellow);
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, rgba(250,204,21,0.11), rgba(255,255,255,0.035) 42%, rgba(13,13,12,0.94)),
+        linear-gradient(180deg, rgba(26,26,23,0.96), rgba(13,13,12,0.96));
+      box-shadow: 0 24px 70px rgba(0,0,0,0.38);
+      padding: 28px;
+    }
+    .podcast-callout h2 {
+      font-size: clamp(28px, 3.2vw, 42px);
+      line-height: 1.04;
+      margin: 10px 0 14px;
+    }
+    .podcast-callout p {
+      margin: 0;
+      color: var(--dim);
+      max-width: 68ch;
+    }
+    .podcast-callout p a {
+      color: var(--yellow2);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .podcast-callout .actions {
+      margin-top: 22px;
+    }
+    .podcast-tool-list {
+      display: grid;
+      gap: 10px;
+    }
+    .podcast-tool {
+      display: block;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.18);
+      padding: 15px 16px;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+    .podcast-tool:hover {
+      border-color: rgba(250,204,21,0.48);
+      background: rgba(250,204,21,0.07);
+      transform: translateY(-2px);
+    }
+    .podcast-tool strong {
+      display: block;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .podcast-tool span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .podcast-expiry {
+      margin-top: 14px;
+      color: var(--faint);
+      font: 700 10px/1.4 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
     /* ── TOOL TEASER ──────────────────────────────── */
     .teaser-section {
       padding: 96px 0;
@@ -280,6 +355,7 @@
 
     /* ── RESPONSIVE ───────────────────────────────── */
     @media (max-width: 900px) {
+      .podcast-callout { grid-template-columns: 1fr; }
       .teaser-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .proof-grid { grid-template-columns: 1fr; }
       .seo-copy { grid-template-columns: 1fr; }
@@ -290,6 +366,9 @@
       .teaser-grid { grid-template-columns: 1fr; }
       .hero-content { padding: 120px 0 80px; }
       .hero-content h1 { font-size: 42px; }
+      .podcast-callout-section { padding-top: 22px; margin-top: 0; }
+      .podcast-callout { padding: 22px; }
+      .podcast-callout .actions .btn { width: 100%; }
       .all-tools-bar { flex-direction: column; align-items: flex-start; }
       .photo-divider { height: 240px; }
     }
@@ -339,6 +418,42 @@
   </section>
 
   <!-- ── TOOL TEASER ────────────────────────────────────── -->
+  <!-- Podcast callout: remove after the HOA podcast traffic window passes. -->
+  <section class="podcast-callout-section" aria-labelledby="podcast-callout-title">
+    <div class="wrap">
+      <div class="podcast-callout">
+        <div>
+          <div class="eyebrow">// Welcome HOA - It's A True Story listeners</div>
+          <h2 class="display" id="podcast-callout-title">ADA risk tools for HOA and property managers.</h2>
+          <p>If you heard Ryan on GB Group Construction's <a href="https://www.gbgroupinc.com/the-gbg-podcast-hoa-its-a-true-story" target="_blank" rel="noopener">HOA - It's A True Story</a>, start here. These free tools help managers document accessible parking risk, ask better contractor questions, and reduce the chance that a paving or striping project creates avoidable ADA exposure.</p>
+          <div class="actions">
+            <a class="btn" href="/tools/ada-risk-scorecard/">Start with the ADA Risk Scorecard</a>
+            <a class="btn ghost" href="/articles/ada-lawsuit-machine-real/">Read the ADA risk primer</a>
+          </div>
+          <div class="podcast-expiry">Temporary listener guide - planned through August 2026</div>
+        </div>
+        <div class="podcast-tool-list" aria-label="Recommended ADA prevention tools">
+          <a class="podcast-tool" href="/tools/ada-risk-scorecard/">
+            <strong>ADA Risk Scorecard</strong>
+            <span>Check accessible stalls, slopes, signage, striping, paths of travel, and documentation gaps before a complaint arrives.</span>
+          </a>
+          <a class="podcast-tool" href="/tools/ada-issue-documentation-log/">
+            <strong>ADA Issue Documentation Log</strong>
+            <span>Create a defensible record of observed issues, photos, dates, and next actions for your project file.</span>
+          </a>
+          <a class="podcast-tool" href="/tools/bid-decoder/">
+            <strong>Three-Bid Decoder</strong>
+            <span>Compare paving bids beyond price and flag missing ADA scope, striping responsibility, and warranty assumptions.</span>
+          </a>
+          <a class="podcast-tool" href="/tools/board-meeting-language-generator/">
+            <strong>Board Meeting Language Generator</strong>
+            <span>Turn risk findings into plain-English board language that explains why preventive work matters.</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="teaser-section" id="tools">
     <div class="wrap">
       <div class="teaser-header">
@@ -465,13 +580,24 @@
           <h2 class="display">Pavement decisions made simpler, every week.</h2>
           <p>ADA red flags, bid strategy, board communication, and maintenance decisions — published weekly on LinkedIn and archived here.</p>
         </div>
-        <a class="btn ghost" href="/articles/">Read all 14 insights</a>
+        <a class="btn ghost" href="/articles/">Read all 14 articles</a>
       </div>
 
       <div class="grid3">
         <article class="card article-card">
+          <a class="article-image-link" href="/articles/the-4-crack-400000-problem/">
+            <img class="article-thumb" src="/assets/images/hero-parking-lot.webp" alt="The $4 Crack That Becomes a $400,000 Problem" loading="lazy" width="960" height="540">
+          </a>
+          <div class="article-body">
+            <span class="tag">Lifecycle Cost</span>
+            <h3 class="display"><a href="/articles/the-4-crack-400000-problem/">The $4 Crack That Becomes a $400,000 Problem</a></h3>
+            <p>A Contra Costa HOA skipped a $14,000 crack seal window. Eighteen months later, the repaving bid was $310,000.</p>
+          </div>
+        </article>
+
+        <article class="card article-card">
           <a class="article-image-link" href="/articles/ada-lawsuit-machine-real/">
-            <img class="article-thumb" src="/assets/images/ada-divider-960.webp" alt="The ADA Lawsuit Machine Is Real — Surface Intelligence Issue 14" loading="lazy" width="960" height="540">
+            <img class="article-thumb" src="/assets/images/ada-divider-960.webp" data-fallback="/assets/article-thumbnails/issue-13.svg" alt="The ADA Lawsuit Machine Is Real" loading="lazy" width="960" height="540">
           </a>
           <div class="article-body">
             <span class="tag">ADA Risk</span>
@@ -482,23 +608,12 @@
 
         <article class="card article-card">
           <a class="article-image-link" href="/articles/board-meeting-language-pavement/">
-            <img class="article-thumb" src="/assets/images/hero-paving-960.webp" data-fallback="/assets/article-thumbnails/issue-13.svg" alt="Board Meeting Language That Gets Pavement Projects Approved" loading="lazy" width="960" height="540">
+            <img class="article-thumb" src="/assets/images/hero-paving-960.webp" data-fallback="/assets/article-thumbnails/issue-12.svg" alt="Board Meeting Language That Gets Pavement Projects Approved" loading="lazy" width="960" height="540">
           </a>
           <div class="article-body">
             <span class="tag">Board Strategy</span>
             <h3 class="display"><a href="/articles/board-meeting-language-pavement/">The Board Meeting Language That Gets Pavement Projects Approved</a></h3>
-            <p>Frame pavement work as risk, lifecycle, and asset protection — not cosmetic maintenance.</p>
-          </div>
-        </article>
-
-        <article class="card article-card">
-          <a class="article-image-link" href="/articles/ada-compliance-lawyers-honey-pot/">
-            <img class="article-thumb" src="/assets/images/ada-divider-960.webp" data-fallback="/assets/article-thumbnails/issue-12.svg" alt="At What Point Did ADA Compliance Become a Lawyer's Honey Pot?" loading="lazy" width="960" height="540">
-          </a>
-          <div class="article-body">
-            <span class="tag">ADA Risk</span>
-            <h3 class="display"><a href="/articles/ada-compliance-lawyers-honey-pot/">At What Point Did ADA Compliance Become a Lawyer's Honey Pot?</a></h3>
-            <p>A straight take on California ADA lawsuit pressure and what property owners need to understand.</p>
+            <p>Frame pavement work as risk, lifecycle, and asset protection - not cosmetic maintenance.</p>
           </div>
         </article>
       </div>
@@ -531,3 +646,4 @@
 
 </body>
 </html>
+

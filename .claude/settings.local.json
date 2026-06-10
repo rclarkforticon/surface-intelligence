@@ -15,7 +15,11 @@
       "Bash(npx --yes terser assets/nav.js -o assets/nav.js --compress --mangle)",
       "Bash(npx --yes clean-css-cli assets/landing.css -o assets/landing.css)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(python -)"
     ]
   }
 }
